@@ -2,7 +2,6 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>عيد ميلاد الهبه 💖</title>
 <style>
 body {
@@ -10,7 +9,7 @@ body {
     padding: 0;
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    min-height: 100svh; /* مناسب للجوال */
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -35,6 +34,8 @@ input {
     border-radius: 10px;
     border: 1px solid #ccc;
     font-size: 14px;
+    background: white;
+    color: black;
 }
 
 button {
@@ -83,7 +84,7 @@ canvas {
     z-index: 998;
 }
 
-/* ملاحظة أسفل الشاشة */
+/* ملاحظة أسفل الشاشة - سطر واحد */
 #footerNoteContainer {
     position: fixed;
     bottom: 20px;
@@ -94,25 +95,24 @@ canvas {
 }
 
 #footerTitle {
-    font-size: 22px; /* أكبر من الفقرة */
+    font-size: 22px; 
     color: white;
     font-weight: bold;
     text-shadow: 0 0 6px #000;
 }
 
 #footerNote {
-    font-size: 16px; /* أصغر شوي */
+    font-size: 16px; 
     color: white;
     background: rgba(0,0,0,0.3);
     padding: 6px 12px;
     border-radius: 12px;
     backdrop-filter: blur(4px);
     margin-top: 4px;
-}
 
-#footerNote span {
-    color: #ff69b4;
-    font-weight: bold;
+    white-space: nowrap; /* سطر واحد */
+    overflow: hidden; 
+    text-overflow: ellipsis; 
 }
 </style>
 </head>
@@ -133,7 +133,7 @@ canvas {
 <div id="footerNoteContainer">
     <div id="footerTitle">ملاحظة</div>
     <div id="footerNote">
-        هذا الموقع مصمّم فقط لأجل <span>( هِبــه)</span> نور عيوني ❤️ وليس لأي شخص آخر  و(شكرأ)
+        هذا الموقع مصمّم فقط لأجل <span>( هِبــه)</span> نور عيوني ❤️ وليس لأي شخص آخر و(شكرأ)
     </div>
 </div>
 
@@ -147,12 +147,11 @@ function login() {
     const error = document.getElementById("error-msg");
     const loginBox = document.getElementById("loginBox");
     const stageText = document.getElementById("stageText");
-    const footerNote = document.getElementById("footerNoteContainer");
+    const footerNoteContainer = document.getElementById("footerNoteContainer");
 
     if(u === correctUser && p === correctPass){
-        // اختفاء الملاحظة فور الضغط
-        footerNote.style.display = "none";
         loginBox.style.display = "none";
+        footerNoteContainer.style.display = "none"; // تخفي الملاحظة بعد الضغط
 
         // عرض النص الأول
         stageText.textContent = "شاطرة يا حلوتي";
@@ -194,7 +193,7 @@ function launchConfetti() {
     for(let i=0; i<100; i++){
         confetti.push({
             x: Math.random()*canvas.width,
-            y: canvas.height + Math.random()*200, // يبدأ من تحت
+            y: canvas.height + Math.random()*200, 
             r: Math.random()*6 + 4,
             d: Math.random()*20 + 10,
             color: colors[Math.floor(Math.random()*colors.length)],
@@ -225,7 +224,7 @@ function launchConfetti() {
         for(let i=0;i<confetti.length;i++){
             let c = confetti[i];
             c.tiltAngle += c.tiltAngleIncremental;
-            c.y -= (Math.cos(angle + c.d) + 3 + c.r/2)/2; // يتحرك للأعلى
+            c.y -= (Math.cos(angle + c.d) + 3 + c.r/2)/2;
             c.tilt = Math.sin(c.tiltAngle) * 15;
             if(c.y < -10){
                 c.x = Math.random()*canvas.width;
