@@ -15,24 +15,25 @@
         align-items: center;
         flex-direction: column;
         text-align: center;
-        padding-top: 80px; /* مسافة من فوق */
+        padding-top: 30px; /* قللت المسافة من فوق لتقريب المحتوى */
     }
 
     .message-box {
         background: rgba(255,255,255,0.25);
-        padding: 20px 30px;
+        padding: 15px 25px;
         border-radius: 20px;
         backdrop-filter: blur(5px);
         color: white;
         font-size: 18px;
-        max-width: 400px;
-        margin-bottom: 40px;
+        max-width: 350px; /* قللت شوي من العرض */
+        margin-bottom: 30px;
+        line-height: 1.4; /* لتقليل الفراغ بين السطور */
     }
 
     .btn-row {
-        display: flex; /* وضع الأزرار جنب بعض */
+        display: flex; 
         justify-content: center;
-        gap: 20px; /* مسافة بين الأزرار */
+        gap: 15px; /* مسافة أصغر بين الأزرار */
         position: relative;
     }
 
@@ -42,7 +43,7 @@
     }
 
     button {
-        padding: 12px 25px;
+        padding: 10px 20px; /* صغرنا البادينج لتناسب الهاتف */
         font-size: 16px;
         border: none;
         border-radius: 12px;
@@ -58,34 +59,33 @@
 
     #hint {
         display: none;
-        margin-top: 15px;
+        margin-top: 10px; /* قللنا المسافة */
         color: #fff;
-        font-size: 16px;
+        font-size: 15px; /* أصغر شوي */
     }
 
     /* سهم فوق الزر */
     #arrow {
         display: none;
         position: absolute;
-        top: -35px; /* فوق الزر */
+        top: -30px; /* رفعنا السهم شوي للأقرب */
         left: 50%;
         transform: translateX(-50%);
-        font-size: 30px;
+        font-size: 28px;
         color: yellow;
         animation: bounce 1s infinite;
     }
 
     @keyframes bounce {
         0%, 100% { transform: translate(-50%, 0); }
-        50% { transform: translate(-50%, -10px); }
+        50% { transform: translate(-50%, -8px); }
     }
 </style>
 </head>
 <body>
 
 <div class="message-box">
-    شـوفي يا عيوني، بسألك شويه أسئله لازم تجاوبي عشان توصلي للهديه 
-(تم؟)
+    شـوفي يا عيوني، بسألك شويه أسئله لازم تجاوبي عشان توصلي للهديه (تم؟)
 </div>
 
 <div class="btn-row">
@@ -99,27 +99,26 @@
 <div id="hint">شفيه؟ حتي هنا تقولي (ها) اضغطي على (أوك يل)</div>
 
 <script>
-    let haClicks = 0; // عداد عدد الضغطات على زر "ها"
+    let haClicks = 0;
 
     function goQuiz() {
-        window.location.href = "سؤال واحد.html"; // الصفحة اللي فيها الأسئلة
+        window.location.href = "سؤال واحد.html";
     }
 
     function showHint() {
-        haClicks++; // زيادة العداد عند كل ضغطة
+        haClicks++;
         const hint = document.getElementById("hint");
         const arrow = document.getElementById("arrow");
 
         hint.style.display = "block";
         arrow.style.display = "block";
 
-        if(haClicks === 2){ // الضغطة الثانية
+        if(haClicks === 2){
             hint.textContent = "بربك! قولي والله";
         }
 
-        if(haClicks === 3){ // الضغطة الثالثة
+        if(haClicks === 3){
             hint.textContent = "لا تخليني اشفشفك هسا🫦😔";
-            // بعد ثانية واحدة، يظهر النص الجديد
             setTimeout(() => {
                 hint.textContent = "يل اضغطي";
             }, 1000);
