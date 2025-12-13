@@ -7,17 +7,18 @@
     body {
         margin: 0;
         padding: 0;
-        font-family: Arial;
-        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4); /* اللون الأصلي */
         height: 100vh;
         display: flex;
-        justify-content: flex-start; /* رفع المحتوى للأعلى */
-        align-items: center;
+        justify-content: flex-start;
+        align-items: flex-start; /* محتوى أعلى الشاشة */
         flex-direction: column;
-        text-align: center;
-        padding-top: 0px; /* أعلى الشاشة */
-        transform: scale(2.3); /* تقريب إضافي مرتين عن السابق */
-        transform-origin: top center; /* الزوم من الأعلى */
+        text-align: left; /* نحرك السؤال لليسار */
+        padding-top: 20px; /* مسافة من الأعلى */
+        padding-left: 20px; /* مسافة من اليسار */
+        transform: scale(2.3); /* تقريب المحتوى */
+        transform-origin: top left; /* الزوم من أعلى اليسار */
     }
 
     .message-box {
@@ -26,7 +27,7 @@
         border-radius: 20px;
         backdrop-filter: blur(5px);
         color: white;
-        font-size: 22px; /* زيادة الحجم لتناسب الزوم */
+        font-size: 22px;
         max-width: 360px;
         margin-bottom: 20px;
         line-height: 1.4;
@@ -34,9 +35,10 @@
 
     .btn-row {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start; /* الأزرار على يسار الشاشة */
         gap: 15px;
         position: relative;
+        margin-left: 10px;
     }
 
     .btn-container {
