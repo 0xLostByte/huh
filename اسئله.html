@@ -7,35 +7,33 @@
     body {
         margin: 0;
         padding: 0;
-        font-family: Arial;
+        font-family: Arial, sans-serif;
         background: linear-gradient(135deg, #ff9a9e, #fad0c4);
         height: 100vh;
         display: flex;
-        justify-content: flex-start; 
+        justify-content: flex-start; /* رفع المحتوى لأعلى */
         align-items: center;
         flex-direction: column;
         text-align: center;
-        padding-top: 10px; /* قرب المحتوى أكثر */
-        transform: scale(1.2); /* تكبير الصفحة */
-        transform-origin: top center; /* خليه يزوم من فوق */
+        padding-top: 10px; /* قريب جدًا من الأعلى */
     }
 
     .message-box {
         background: rgba(255,255,255,0.25);
-        padding: 15px 25px;
+        padding: 20px 30px;
         border-radius: 20px;
         backdrop-filter: blur(5px);
         color: white;
-        font-size: 18px;
-        max-width: 350px;
-        margin-bottom: 30px;
+        font-size: 20px; /* أكبر شوي للوضوح */
+        max-width: 360px;
+        margin-bottom: 25px;
         line-height: 1.4;
     }
 
     .btn-row {
-        display: flex; 
+        display: flex;
         justify-content: center;
-        gap: 15px; 
+        gap: 15px;
         position: relative;
     }
 
@@ -45,8 +43,8 @@
     }
 
     button {
-        padding: 10px 20px;
-        font-size: 16px;
+        padding: 14px 28px; /* تكبير البادينج للأزرار */
+        font-size: 18px; /* تكبير الخط للأزرار */
         border: none;
         border-radius: 12px;
         background-color: #ff7a8a;
@@ -61,26 +59,26 @@
 
     #hint {
         display: none;
-        margin-top: 10px; 
+        margin-top: 12px;
         color: #fff;
-        font-size: 15px;
+        font-size: 16px;
     }
 
     /* سهم فوق الزر */
     #arrow {
         display: none;
         position: absolute;
-        top: -30px; 
+        top: -35px;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 28px;
+        font-size: 32px;
         color: yellow;
         animation: bounce 1s infinite;
     }
 
     @keyframes bounce {
         0%, 100% { transform: translate(-50%, 0); }
-        50% { transform: translate(-50%, -8px); }
+        50% { transform: translate(-50%, -10px); }
     }
 </style>
 </head>
