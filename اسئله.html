@@ -4,25 +4,20 @@
 <meta charset="UTF-8">
 <title>أسئلتك يا عيوني</title>
 <style>
-    html, body {
+    body {
         margin: 0;
         padding: 0;
         font-family: Arial;
         background: linear-gradient(135deg, #ff9a9e, #fad0c4);
         height: 100vh;
-        width: 100%;
-        overflow-x: hidden;
-    }
-
-    body {
         display: flex;
-        flex-direction: column;
-        justify-content: flex-start; /* المحتوى يكون أعلى */
+        justify-content: flex-start; 
         align-items: center;
+        flex-direction: column;
         text-align: center;
-        padding-top: 20px;
-        transform: scale(1.55); /* تقريبية لتتناسب مع شاشة 6.56" */
-        transform-origin: top center; /* التكبير من الأعلى */
+        padding-top: 10px; /* قرب المحتوى أكثر */
+        transform: scale(1.2); /* تكبير الصفحة */
+        transform-origin: top center; /* خليه يزوم من فوق */
     }
 
     .message-box {
@@ -32,15 +27,15 @@
         backdrop-filter: blur(5px);
         color: white;
         font-size: 18px;
-        max-width: 360px;
-        margin-bottom: 25px;
+        max-width: 350px;
+        margin-bottom: 30px;
         line-height: 1.4;
     }
 
     .btn-row {
         display: flex; 
         justify-content: center;
-        gap: 15px;
+        gap: 15px; 
         position: relative;
     }
 
@@ -66,15 +61,16 @@
 
     #hint {
         display: none;
-        margin-top: 10px;
+        margin-top: 10px; 
         color: #fff;
         font-size: 15px;
     }
 
+    /* سهم فوق الزر */
     #arrow {
         display: none;
         position: absolute;
-        top: -30px;
+        top: -30px; 
         left: 50%;
         transform: translateX(-50%);
         font-size: 28px;
