@@ -11,11 +11,13 @@
         background: linear-gradient(135deg, #ff9a9e, #fad0c4);
         height: 100vh;
         display: flex;
-        justify-content: flex-start; /* رفع المحتوى لأعلى */
+        justify-content: flex-start; /* رفع المحتوى للأعلى */
         align-items: center;
         flex-direction: column;
         text-align: center;
-        padding-top: 10px; /* قريب جدًا من الأعلى */
+        padding-top: 0px; /* تقريبا أعلى الشاشة */
+        transform: scale(1.3); /* تقريب 3 مرات من الحجم الحالي */
+        transform-origin: top center; /* الزوم من الأعلى */
     }
 
     .message-box {
@@ -24,7 +26,7 @@
         border-radius: 20px;
         backdrop-filter: blur(5px);
         color: white;
-        font-size: 20px; /* أكبر شوي للوضوح */
+        font-size: 20px;
         max-width: 360px;
         margin-bottom: 25px;
         line-height: 1.4;
@@ -43,8 +45,8 @@
     }
 
     button {
-        padding: 14px 28px; /* تكبير البادينج للأزرار */
-        font-size: 18px; /* تكبير الخط للأزرار */
+        padding: 14px 28px;
+        font-size: 18px;
         border: none;
         border-radius: 12px;
         background-color: #ff7a8a;
