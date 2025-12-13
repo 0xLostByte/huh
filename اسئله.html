@@ -15,9 +15,10 @@
         align-items: flex-start;
         flex-direction: column;
         text-align: center;
-        padding-top: 60px; /* مسافة من فوق */
-        transform: scale(1.7); /* تكبير بسيط */
+        padding-top: 50px;
+        transform: scale(2); /* زوم أكبر */
         transform-origin: top center;
+        overflow-x: hidden;
     }
 
     .message-box {
@@ -28,9 +29,9 @@
         color: white;
         font-size: 20px;
         max-width: 360px;
-        margin: 0 auto 25px auto; /* منتصف الشاشة أفقياً */
+        margin: 0 auto 25px auto; /* مركزية أفقية */
         line-height: 1.4;
-        transform: translateX(15%); /* تحريك السؤال لليمين */
+        transform: translateX(-10%); /* تحريك قليل لليسار */
     }
 
     .btn-row {
@@ -39,6 +40,7 @@
         gap: 15px;
         position: relative;
         width: 100%;
+        margin-top: 10px;
     }
 
     .btn-container {
@@ -68,7 +70,6 @@
         font-size: 16px;
     }
 
-    /* سهم فوق الزر */
     #arrow {
         display: none;
         position: absolute;
