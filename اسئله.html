@@ -4,19 +4,24 @@
 <meta charset="UTF-8">
 <title>أسئلتك يا عيوني</title>
 <style>
-    body {
+    html, body {
         margin: 0;
         padding: 0;
         font-family: Arial;
         background: linear-gradient(135deg, #ff9a9e, #fad0c4);
         height: 100vh;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    body {
         display: flex;
-        justify-content: flex-start; /* رفع المحتوى فوق */
-        align-items: center;
         flex-direction: column;
+        justify-content: flex-start; /* المحتوى يكون أعلى */
+        align-items: center;
         text-align: center;
-        padding-top: 30px;
-        transform: scale(1.6); /* تكبير المحتوى 160% */
+        padding-top: 20px;
+        transform: scale(1.55); /* تقريبية لتتناسب مع شاشة 6.56" */
         transform-origin: top center; /* التكبير من الأعلى */
     }
 
@@ -27,8 +32,8 @@
         backdrop-filter: blur(5px);
         color: white;
         font-size: 18px;
-        max-width: 350px;
-        margin-bottom: 30px;
+        max-width: 360px;
+        margin-bottom: 25px;
         line-height: 1.4;
     }
 
@@ -66,7 +71,6 @@
         font-size: 15px;
     }
 
-    /* سهم فوق الزر */
     #arrow {
         display: none;
         position: absolute;
