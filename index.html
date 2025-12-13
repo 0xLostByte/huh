@@ -2,6 +2,7 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>عيد ميلاد الهبه 💖</title>
 <style>
 body {
@@ -9,21 +10,17 @@ body {
     padding: 0;
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    min-height: 100vh;
+    min-height: 100svh; /* مناسب للجوال */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
-    position: relative;
 }
 
-/* صندوق تسجيل الدخول */
 .login-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background: rgba(255,255,255,0.9);
     padding: 20px;
     width: 280px;
-    max-width: 90%;
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
@@ -62,7 +59,6 @@ button:hover {
     font-size: 13px;
 }
 
-/* نصوص الكونفيتي */
 #stageText {
     display: none;
     position: absolute;
@@ -79,7 +75,6 @@ button:hover {
     z-index: 999;
 }
 
-/* كانفاسي الكونفيتي */
 canvas {
     position: absolute;
     top: 0;
@@ -99,54 +94,32 @@ canvas {
 }
 
 #footerTitle {
-    font-size: 22px;
+    font-size: 22px; /* أكبر من الفقرة */
     color: white;
     font-weight: bold;
     text-shadow: 0 0 6px #000;
 }
 
 #footerNote {
-    font-size: 16px;
+    font-size: 16px; /* أصغر شوي */
     color: white;
     background: rgba(0,0,0,0.3);
     padding: 6px 12px;
     border-radius: 12px;
     backdrop-filter: blur(4px);
     margin-top: 4px;
-    white-space: nowrap; /* سطر واحد */
 }
 
 #footerNote span {
     color: #ff69b4;
     font-weight: bold;
 }
-
-/* Media query لهاتف Honor X6b */
-@media screen and (max-width: 720px) {
-    #stageText {
-        font-size: 20px;
-        padding: 12px 20px;
-    }
-
-    #footerTitle {
-        font-size: 20px;
-    }
-
-    #footerNote {
-        font-size: 14px;
-        padding: 5px 10px;
-    }
-
-    input, button {
-        font-size: 15px;
-    }
-}
 </style>
 </head>
 <body>
 
 <div class="login-box" id="loginBox">
-    <h2>منوره يا روحي 💗</h2>
+<h2>منوره يا روحي 💗</h2>
     <input type="text" id="username" placeholder="اكتبي اسمك">
     <input type="password" id="password" placeholder="الباسورد">
     <button onclick="login()">دخول</button>
@@ -177,8 +150,9 @@ function login() {
     const footerNote = document.getElementById("footerNoteContainer");
 
     if(u === correctUser && p === correctPass){
+        // اختفاء الملاحظة فور الضغط
+        footerNote.style.display = "none";
         loginBox.style.display = "none";
-        footerNote.style.display = "none"; // تختفي الملاحظة عند تسجيل الدخول
 
         // عرض النص الأول
         stageText.textContent = "شاطرة يا حلوتي";
@@ -188,6 +162,7 @@ function login() {
         // تفعيل الكونفيتي
         launchConfetti();
 
+        // بعد ثانيتين → يظهر النص الثاني
         setTimeout(() => {
             stageText.style.opacity = 0;
             clearConfetti();
@@ -219,7 +194,7 @@ function launchConfetti() {
     for(let i=0; i<100; i++){
         confetti.push({
             x: Math.random()*canvas.width,
-            y: canvas.height + Math.random()*200,
+            y: canvas.height + Math.random()*200, // يبدأ من تحت
             r: Math.random()*6 + 4,
             d: Math.random()*20 + 10,
             color: colors[Math.floor(Math.random()*colors.length)],
@@ -250,7 +225,7 @@ function launchConfetti() {
         for(let i=0;i<confetti.length;i++){
             let c = confetti[i];
             c.tiltAngle += c.tiltAngleIncremental;
-            c.y -= (Math.cos(angle + c.d) + 3 + c.r/2)/2;
+            c.y -= (Math.cos(angle + c.d) + 3 + c.r/2)/2; // يتحرك للأعلى
             c.tilt = Math.sin(c.tiltAngle) * 15;
             if(c.y < -10){
                 c.x = Math.random()*canvas.width;
