@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>أسئلتك يا عيوني</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        height: 100vh;
+        display: flex;
+        justify-content: flex-start; /* رفع المحتوى فوق شوي */
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        padding-top: 80px; /* مسافة من فوق */
+    }
+
+    .message-box {
+        background: rgba(255,255,255,0.25);
+        padding: 20px 30px;
+        border-radius: 20px;
+        backdrop-filter: blur(5px);
+        color: white;
+        font-size: 18px;
+        max-width: 400px;
+        margin-bottom: 40px;
+    }
+
+    .btn-row {
+        display: flex; /* وضع الأزرار جنب بعض */
+        justify-content: center;
+        gap: 20px; /* مسافة بين الأزرار */
+        position: relative;
+    }
+
+    .btn-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    button {
+        padding: 12px 25px;
+        font-size: 16px;
+        border: none;
+        border-radius: 12px;
+        background-color: #ff7a8a;
+        color: white;
+        cursor: pointer;
+        position: relative;
+    }
+
+    button:hover {
+        background-color: #ff5b72;
+    }
+
+    #hint {
+        display: none;
+        margin-top: 15px;
+        color: #fff;
+        font-size: 16px;
+    }
+
+    /* سهم فوق الزر */
+    #arrow {
+        display: none;
+        position: absolute;
+        top: -35px; /* فوق الزر */
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 30px;
+        color: yellow;
+        animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translate(-50%, 0); }
+        50% { transform: translate(-50%, -10px); }
+    }
+</style>
+</head>
+<body>
+
+<div class="message-box">
+    شـوفي يا عيوني، بسألك شويه أسئله لازم تجاوبي عشان توصلي للهديه 
+(تم؟)
+</div>
+
+<div class="btn-row">
+    <div class="btn-container">
+        <button id="okBtn" onclick="goQuiz()">أوك يل</button>
+        <div id="arrow">⬇️</div>
+    </div>
+    <button id="haBtn" onclick="showHint()">ها</button>
+</div>
+
+<div id="hint">شفيه؟ حتي هنا تقولي (ها) اضغطي على (أوك يل)</div>
+
+<script>
+    let haClicks = 0; // عداد عدد الضغطات على زر "ها"
+
+    function goQuiz() {
+        window.location.href = "سؤال واحد.html"; // الصفحة اللي فيها الأسئلة
+    }
+
+    function showHint() {
+        haClicks++; // زيادة العداد عند كل ضغطة
+        const hint = document.getElementById("hint");
+        const arrow = document.getElementById("arrow");
+
+        hint.style.display = "block";
+        arrow.style.display = "block";
+
+        if(haClicks === 2){ // الضغطة الثانية
+            hint.textContent = "بربك! قولي والله";
+        }
+
+        if(haClicks === 3){ // الضغطة الثالثة
+            hint.textContent = "لا تخليني اشفشفك هسا🫦😔";
+            // بعد ثانية واحدة، يظهر النص الجديد
+            setTimeout(() => {
+                hint.textContent = "يل اضغطي";
+            }, 1000);
+        }
+    }
+</script>
+
+</body>
+</html>

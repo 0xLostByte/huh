@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>سؤال أول</title>
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.25);
+    z-index: 1;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    text-align: center;
+    color: white;
+}
+
+h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px #000;
+}
+
+button {
+    padding: 15px 25px;
+    margin: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: rgba(255, 122, 138, 0.8);
+    color: white;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: rgba(255, 91, 114, 0.9);
+}
+</style>
+</head>
+<body>
+
+<!-- فيديو الخلفية -->
+<video autoplay loop muted playsinline>
+    <source src="1.mp4" type="video/mp4">
+    متصفحك لا يدعم الفيديو.
+</video>
+
+<div class="overlay"></div>
+
+<div class="container">
+    <h2 id="questionText">لو كان قدامك ثلاث رجال فمن تختاري؟:</h2>
+    <div id="buttonsDiv">
+        <button id="btnFry" onclick="openFry()">وراك فراخ بالبصل الاحمر</button>
+        <button id="btnOld" onclick="openOld()">واحد قديم ابن كلب</button>
+        <button id="btnMe">أنا</button>
+    </div>
+</div>
+
+<!-- تشغيل الأغنية 8 -->
+<audio id="song8" autoplay loop></audio>
+
+<script>
+function openFry(){
+    sessionStorage.setItem("fryClicked", "true");
+    window.location.href = "وراك فراخ بالبصل الاحمر.html";
+}
+
+function openOld(){
+    sessionStorage.setItem("oldClicked", "true");
+    window.location.href = "واحد قديم ابن كلب.html";
+}
+
+// تشغيل الأغنية واستكمال الوقت
+const song = document.getElementById("song8");
+song.src = "8.mp3";
+const lastTime = localStorage.getItem('song8Time');
+if(lastTime){
+    song.currentTime = lastTime;
+}
+song.addEventListener('timeupdate', () => {
+    localStorage.setItem('song8Time', song.currentTime);
+});
+
+window.onload = () => {
+    const btnFry = document.getElementById("btnFry");
+    const btnOld = document.getElementById("btnOld");
+    const question = document.getElementById("questionText");
+
+    let hiddenCount = 0;
+
+    if(sessionStorage.getItem("fryClicked")) {
+        btnFry.style.display = "none";
+        hiddenCount++;
+    }
+
+    if(sessionStorage.getItem("oldClicked")) {
+        btnOld.style.display = "none";
+        hiddenCount++;
+    }
+
+    if(hiddenCount > 0){
+        question.textContent = "لو كان قدامك اثنين من الرجال فمن تختاري؟:";
+    }
+}
+</script>
+
+</body>
+</html>

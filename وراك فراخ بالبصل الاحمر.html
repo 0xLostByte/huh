@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>None فراخ</title>
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    background: black;
+    color: white;
+    text-align: center;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+#message {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+#countdown {
+    font-size: 36px;
+    color: red;
+    margin-top: 20px;
+}
+
+input, button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    margin: 10px;
+}
+
+button {
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<!-- فيديوهات -->
+<video id="video2" autoplay>
+    <source src="2.mp4" type="video/mp4">
+    متصفحك لا يدعم الفيديو.
+</video>
+
+<video id="video3" class="hidden">
+    <source src="3.mp4" type="video/mp4">
+    متصفحك لا يدعم الفيديو.
+</video>
+
+<div class="overlay hidden" id="overlay">
+    <div id="message"></div>
+    <input type="text" id="loveInput" class="hidden" placeholder="اكتبي بحبك هنا">
+    <button id="returnBtn" class="hidden">الصفحة الرئيسية</button>
+    <div id="countdown" class="hidden"></div>
+</div>
+
+<script>
+const video2 = document.getElementById("video2");
+const video3 = document.getElementById("video3");
+const overlay = document.getElementById("overlay");
+const message = document.getElementById("message");
+const loveInput = document.getElementById("loveInput");
+const returnBtn = document.getElementById("returnBtn");
+const countdown = document.getElementById("countdown");
+
+// بعد انتهاء الفيديو 2
+video2.onended = () => {
+    video2.classList.add("hidden");
+    video3.classList.remove("hidden");
+    video3.play();
+}
+
+// بعد انتهاء الفيديو 3
+video3.onended = () => {
+    video3.classList.add("hidden");
+    overlay.classList.remove("hidden");
+
+    // سلسلة النصوص الأولية قبل العقاب
+    const texts = [
+        { text: "تحبي الفراخ هيهيههي", duration: 3000 },
+        { text: "انضحك عليك صح ههيهيهي", duration: 3000 },
+        { text: "تبي ترجعي صح؟", duration: 3000 },
+        { text: "هذا عقاب لك", duration: 5000 }
+    ];
+
+    let index = 0;
+
+    function showNextText() {
+        if(index < texts.length){
+            message.textContent = texts[index].text;
+
+            // عند ظهور "هذا عقاب لك" نبدأ العدّاد + input
+            if(index === 3){
+                countdown.classList.remove("hidden"); // العدّاد يظهر فورًا
+                message.textContent = texts[index].text;
+                loveInput.classList.add("hidden"); // مخفي أولًا
+                let timeLeft = 15;
+                countdown.textContent = timeLeft;
+
+                // بعد 5 ثوانٍ → يظهر input + نص "اكتبي بحبك"
+                setTimeout(()=>{
+                    loveInput.classList.remove("hidden");
+                    message.textContent = "اكتبي بحبك لين ما يخلص الوقت";
+                }, 5000);
+
+                const interval = setInterval(()=>{
+                    timeLeft--;
+                    countdown.textContent = timeLeft;
+                    if(timeLeft <= 0){
+                        clearInterval(interval);
+                        returnBtn.classList.remove("hidden"); // زر يظهر بعد انتهاء العدّاد
+                        returnBtn.onclick = () => {
+                            if(loveInput.value.trim() === "بحبك"){
+                                overlay.classList.add("hidden");
+                                loveInput.classList.add("hidden");
+                                returnBtn.classList.add("hidden");
+                                countdown.classList.add("hidden");
+
+                                // عرض النص الجديد قبل فيديو 3.mp4
+                                overlay.classList.remove("hidden");
+                                message.textContent = "وأنا بموت عليكي يا روحي❤️";
+
+                                setTimeout(()=>{
+                                    overlay.classList.add("hidden");
+                                    video3.classList.remove("hidden");
+                                    video3.play();
+
+                                    video3.onended = () => {
+                                        video3.classList.add("hidden");
+                                        overlay.classList.remove("hidden");
+                                        message.textContent = "هيهيهييي انضحك عليكي كمان مره😝";
+                                        setTimeout(()=>{
+                                            message.textContent = "خلاص امزح ارجعي";
+                                            setTimeout(()=>{
+                                                window.location.href = " سؤال واحد.html"; // الصفحة الرئيسية
+                                            },3000);
+                                        },3000);
+                                    }
+
+                                },2000); // مدة ظهور النص قبل تشغيل الفيديو
+                            } else {
+                                alert("وين بحبك؟");
+                            }
+                        }
+                    }
+                },1000);
+            }
+
+            index++;
+            setTimeout(showNextText, texts[index-1].duration);
+        }
+    }
+
+    showNextText();
+}
+</script>
+
+</body>
+</html>

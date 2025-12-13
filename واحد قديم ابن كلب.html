@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>واحد قديم ابن كلب</title>
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    text-align: center;
+}
+
+#text {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 26px;
+    width: 90%;
+    z-index: 2;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+#timer {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 28px;
+    color: red;
+    display: none;
+    z-index: 3;
+}
+
+#noteText {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    background: rgba(0,0,0,0.5);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 22px;
+    font-weight: bold;
+    z-index: 3;
+}
+
+#inputBox {
+    display: none;
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    background: rgba(0,0,0,0.4);
+    padding: 15px 25px;
+    border-radius: 12px;
+}
+
+input {
+    padding: 10px;
+    font-size: 18px;
+    width: 260px;
+    text-align: center;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#finalImage {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+</style>
+</head>
+
+<body>
+
+<div id="text"></div>
+
+<video id="video4" src="4.mp4"></video>
+<video id="video5" src="5.mp4"></video>
+
+<div id="timer"></div>
+<div id="noteText"></div>
+
+<div id="inputBox">
+    <div>اكتبي بحبك عشر مرات عشان ترضيني</div>
+    <div>المتبقي: <span id="count">10</span></div>
+    <input type="text" id="loveInput">
+    <br>
+    <button id="doneBtn" onclick="finish()" style="display:none;">تم</button>
+</div>
+
+<img id="finalImage" src="7.jpg" alt="الصورة الأخيرة">
+<audio id="audio" src="6.mp3"></audio>
+
+<script>
+const text = document.getElementById("text");
+const noteText = document.getElementById("noteText");
+const video4 = document.getElementById("video4");
+const video5 = document.getElementById("video5");
+const timerEl = document.getElementById("timer");
+const inputBox = document.getElementById("inputBox");
+const loveInput = document.getElementById("loveInput");
+const countEl = document.getElementById("count");
+const doneBtn = document.getElementById("doneBtn");
+const finalImage = document.getElementById("finalImage");
+const audio = document.getElementById("audio");
+
+let remaining = 10;
+let totalTime = 600; // 10 دقائق
+
+// البداية
+text.innerHTML = "ويت؟؟؟";
+setTimeout(() => {
+    text.innerHTML = "هو أصلاً زلمة عشان تختاريه؟ 🤨";
+}, 2000);
+
+setTimeout(() => {
+    text.innerHTML = "";
+    playVideo4();
+}, 5000);
+
+// فيديو 4
+function playVideo4() {
+    video4.style.display = "block";
+    video4.play();
+    video4.onended = () => {
+        video4.style.display = "none";
+        punishmentIntro();
+    };
+}
+
+// مقدمة العقاب
+function punishmentIntro() {
+    text.innerHTML = "راح أوريكي العقاب الصح هسا";
+    setTimeout(() => {
+        text.innerHTML = "يلا تفرجي على فيديو 10 دقايق كرنج وتافه";
+    }, 3000);
+
+    setTimeout(() => {
+        text.innerHTML = "";
+        playVideo5();
+    }, 6000);
+}
+
+// فيديو 5 + مؤقت
+function playVideo5() {
+    video5.style.display = "block";
+    video5.play();
+    timerEl.style.display = "block";
+    updateTimer();
+
+    const countdown = setInterval(() => {
+        totalTime--;
+        updateTimer();
+        if (totalTime <= 0) finish();
+    }, 1000);
+
+    // بعد 10 ثواني
+    setTimeout(() => {
+        noteText.innerHTML = "أحس كذا حرام… أنا بحبك ";
+        noteText.style.display = "block";
+        setTimeout(() => {
+            noteText.innerHTML = "بخفف العقاب شوي";
+        }, 3000);
+
+        setTimeout(() => {
+            noteText.style.display = "none";
+            showInput();
+        }, 6000);
+    }, 10000);
+}
+
+function updateTimer() {
+    const m = Math.floor(totalTime / 60);
+    const s = totalTime % 60;
+    timerEl.innerHTML = `${m}:${s < 10 ? "0"+s : s}`;
+}
+
+// إدخال بحبك
+function showInput() {
+    inputBox.style.display = "block";
+}
+
+loveInput.addEventListener("input", () => {
+    const matches = loveInput.value.match(/بحبك/g);
+    const count = matches ? matches.length : 0;
+    remaining = Math.max(10 - count, 0);
+    countEl.textContent = remaining;
+
+    if (remaining === 0) {
+        doneBtn.style.display = "inline-block";
+    }
+});
+
+// إنهاء
+function finish() {
+    inputBox.style.display = "none";
+    timerEl.style.display = "none";
+    video4.pause(); video4.style.display = "none";
+    video5.pause(); video5.style.display = "none";
+
+    // نصوص النهاية
+    text.innerHTML = "رجعنا للفضاء الأسود 🌌";
+    setTimeout(() => {
+        text.innerHTML = "سامحتك يا حلوتي 🤍";
+    }, 3000);
+
+    setTimeout(() => {
+        text.innerHTML = "لكن …";
+        setTimeout(() => {
+            text.innerHTML = "لا تعيديها يا حلوتي 🫦";
+            text.style.display = "block";
+
+            // بعد النص الأخير، عرض الصورة + تشغيل الصوت
+            setTimeout(() => {
+                text.style.display = "none";
+                finalImage.style.display = "block";
+                audio.play();
+                audio.onended = () => {
+                    finalImage.style.display = "none";
+                    window.location.href = "سؤال واحد.html";
+                };
+            }, 3000);
+
+        }, 2000); // مدة ظهور "لكن بعدين…" قبل النص النهائي
+    }, 6000);
+}
+</script>
+
+</body>
+</html>
