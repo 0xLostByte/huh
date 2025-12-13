@@ -2,13 +2,13 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>عيد ميلاد الهبه 💖</title>
 
 <style>
 html, body {
     margin: 0;
     padding: 0;
-    width: 100%;
     height: 100%;
 }
 
@@ -21,49 +21,38 @@ body {
     overflow: hidden;
 }
 
-/* إطار الجوال */
-#mobileFrame {
-    width: 100%;
-    max-width: 390px; /* مناسب لهونر */
-    height: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* صندوق الدخول */
+/* الصندوق – نفس شكله الأصلي */
 .login-box {
-    background: rgba(255,255,255,0.95);
-    padding: 22px;
-    width: 85%;
+    background: rgba(255,255,255,0.9);
+    padding: 20px;
+    width: 280px;
     text-align: center;
-    border-radius: 22px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
     font-size: 14px;
 }
 
 .login-box h2 {
     margin-top: 0;
-    margin-bottom: 12px;
 }
 
+/* الحقول – رجعناها مثل أول */
 input {
-    width: 100%;
-    padding: 11px;
+    width: 90%;
+    padding: 10px;
     margin: 8px 0;
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid #ccc;
     font-size: 14px;
+    box-sizing: border-box;
 }
 
 button {
-    width: 100%;
+    width: 95%;
     padding: 12px;
-    margin-top: 8px;
     background: #ff7a8a;
     border: none;
-    border-radius: 14px;
+    border-radius: 10px;
     font-size: 16px;
     color: white;
     cursor: pointer;
@@ -75,7 +64,7 @@ button:hover {
 
 .error {
     color: red;
-    margin-top: 8px;
+    margin-top: 10px;
     display: none;
     font-size: 13px;
 }
@@ -87,19 +76,19 @@ button:hover {
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 21px;
+    font-size: 22px;
     font-weight: bold;
     color: #fff;
     text-align: center;
-    background: rgba(0,0,0,0.45);
-    padding: 14px 22px;
+    background: rgba(0,0,0,0.4);
+    padding: 15px 25px;
     border-radius: 20px;
+    backdrop-filter: blur(5px);
     opacity: 0;
     transition: opacity 0.5s;
     z-index: 999;
 }
 
-/* الكونفيتي */
 canvas {
     position: absolute;
     inset: 0;
@@ -107,10 +96,10 @@ canvas {
     z-index: 998;
 }
 
-/* الملاحظة */
+/* الملاحظة – رجعت كاملة ومرفوعة شوي */
 #footerNoteContainer {
-    position: absolute;
-    bottom: 70px;
+    position: fixed;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -119,19 +108,20 @@ canvas {
 }
 
 #footerTitle {
-    font-size: 18px;
+    font-size: 22px;
     color: white;
     font-weight: bold;
-    margin-bottom: 4px;
     text-shadow: 0 0 6px #000;
 }
 
 #footerNote {
-    font-size: 13px;
+    font-size: 16px;
     color: white;
-    background: rgba(0,0,0,0.35);
-    padding: 8px 14px;
-    border-radius: 14px;
+    background: rgba(0,0,0,0.3);
+    padding: 6px 12px;
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+    margin-top: 4px;
     line-height: 1.5;
 }
 
@@ -144,26 +134,24 @@ canvas {
 
 <body>
 
-<div id="mobileFrame">
+<div class="login-box" id="loginBox">
+    <h2>منوره يا روحي 💗</h2>
+    <input type="text" id="username" placeholder="اكتبي اسمك">
+    <input type="password" id="password" placeholder="الباسورد">
+    <button onclick="login()">دخول</button>
+    <p class="error" id="error-msg">الاسم أو الباسورد غلط 😢</p>
+</div>
 
-    <div class="login-box" id="loginBox">
-        <h2>منوره يا روحي 💗</h2>
-        <input type="text" id="username" placeholder="اكتبي اسمك">
-        <input type="password" id="password" placeholder="الباسورد">
-        <button onclick="login()">دخول</button>
-        <p class="error" id="error-msg">الاسم أو الباسورد غلط 😢</p>
+<div id="stageText">شاطرة يا حلوتي</div>
+<canvas id="confettiCanvas"></canvas>
+
+<!-- الملاحظة كاملة -->
+<div id="footerNoteContainer">
+    <div id="footerTitle">ملاحظة</div>
+    <div id="footerNote">
+        هذا الموقع مصمّم فقط لأجل <span>( هِبــه )</span> نور عيوني ❤️  
+        وليس لأي شخص آخر ( وشكرًا )
     </div>
-
-    <div id="stageText">شاطرة يا حلوتي</div>
-    <canvas id="confettiCanvas"></canvas>
-
-    <div id="footerNoteContainer">
-        <div id="footerTitle">ملاحظة</div>
-        <div id="footerNote">
-            هذا الموقع مصمّم فقط لأجل <span>هِبــه</span> نور عيوني ❤️
-        </div>
-    </div>
-
 </div>
 
 <script>
@@ -205,7 +193,6 @@ function login() {
 
 /* الكونفيتي */
 let confettiInterval;
-
 function launchConfetti() {
     const canvas = document.getElementById('confettiCanvas');
     const ctx = canvas.getContext('2d');
