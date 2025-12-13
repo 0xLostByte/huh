@@ -8,16 +8,16 @@
         margin: 0;
         padding: 0;
         font-family: Arial;
-        background: linear-gradient(135deg, #ff9a9e, #fad0c4); /* رجعنا الخلفية زي الأول */
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
         height: 100vh;
         display: flex;
-        justify-content: flex-start; /* رفع المحتوى شوي فوق */
+        justify-content: flex-start;
         align-items: center;
         flex-direction: column;
-        text-align: center; /* السؤال في النص */
-        padding-top: 60px; /* مسافة بسيطة من الأعلى */
-        transform: scale(1.6); /* تقريب المحتوى */
-        transform-origin: top center; /* الزوم من الأعلى والمنتصف */
+        text-align: center;
+        padding-top: 60px; /* مسافة من فوق */
+        transform: scale(1.6) translateX(-10%); /* تكبير وتحريك لليسار */
+        transform-origin: top center;
     }
 
     .message-box {
@@ -34,7 +34,7 @@
 
     .btn-row {
         display: flex;
-        justify-content: center; /* الأزرار في الوسط */
+        justify-content: center;
         gap: 15px;
         position: relative;
     }
