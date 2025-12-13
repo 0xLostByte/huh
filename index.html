@@ -2,10 +2,6 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-
-<!-- مهم جداً للموبايل -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <title>عيد ميلاد الهبه 💖</title>
 
 <style>
@@ -19,51 +15,55 @@ html, body {
 body {
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-
-    /* ضبط عرض مناسب لـ Honor X6b */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
 
-/* حاوية تحاكي شاشة الجوال */
+/* إطار الجوال */
 #mobileFrame {
     width: 100%;
-    max-width: 390px;   /* مناسب لهونر X6b */
-    height: 100vh;
+    max-width: 390px; /* مناسب لهونر */
+    height: 100%;
     position: relative;
-    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* صندوق الدخول */
 .login-box {
-    background: rgba(255,255,255,0.9);
-    padding: 20px;
-    width: 90%;
-    max-width: 300px;
-    margin: auto;
+    background: rgba(255,255,255,0.95);
+    padding: 22px;
+    width: 85%;
     text-align: center;
-    border-radius: 20px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 22px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
     font-size: 14px;
 }
 
+.login-box h2 {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
 input {
-    width: 90%;
-    padding: 10px;
+    width: 100%;
+    padding: 11px;
     margin: 8px 0;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid #ccc;
     font-size: 14px;
 }
 
 button {
-    width: 95%;
+    width: 100%;
     padding: 12px;
+    margin-top: 8px;
     background: #ff7a8a;
     border: none;
-    border-radius: 10px;
+    border-radius: 14px;
     font-size: 16px;
     color: white;
     cursor: pointer;
@@ -75,7 +75,7 @@ button:hover {
 
 .error {
     color: red;
-    margin-top: 10px;
+    margin-top: 8px;
     display: none;
     font-size: 13px;
 }
@@ -84,56 +84,55 @@ button:hover {
 #stageText {
     display: none;
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 22px;
+    font-size: 21px;
     font-weight: bold;
     color: #fff;
     text-align: center;
-    background: rgba(0,0,0,0.4);
-    padding: 15px 25px;
+    background: rgba(0,0,0,0.45);
+    padding: 14px 22px;
     border-radius: 20px;
-    backdrop-filter: blur(5px);
     opacity: 0;
     transition: opacity 0.5s;
     z-index: 999;
 }
 
+/* الكونفيتي */
 canvas {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     pointer-events: none;
     z-index: 998;
 }
 
-/* ملاحظة أسفل الشاشة */
+/* الملاحظة */
 #footerNoteContainer {
     position: absolute;
-    bottom: 16px;
+    bottom: 70px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    z-index: 999;
     width: 90%;
+    z-index: 999;
 }
 
 #footerTitle {
-    font-size: 20px;
+    font-size: 18px;
     color: white;
     font-weight: bold;
+    margin-bottom: 4px;
     text-shadow: 0 0 6px #000;
 }
 
 #footerNote {
-    font-size: 14px;
+    font-size: 13px;
     color: white;
-    background: rgba(0,0,0,0.3);
-    padding: 6px 12px;
-    border-radius: 12px;
-    backdrop-filter: blur(4px);
-    margin-top: 4px;
+    background: rgba(0,0,0,0.35);
+    padding: 8px 14px;
+    border-radius: 14px;
+    line-height: 1.5;
 }
 
 #footerNote span {
@@ -158,11 +157,10 @@ canvas {
     <div id="stageText">شاطرة يا حلوتي</div>
     <canvas id="confettiCanvas"></canvas>
 
-    <!-- ملاحظة -->
     <div id="footerNoteContainer">
         <div id="footerTitle">ملاحظة</div>
         <div id="footerNote">
-            هذا الموقع مصمّم فقط لأجل <span>( هِبــه)</span> نور عيوني ❤️ وليس لأي شخص آخر
+            هذا الموقع مصمّم فقط لأجل <span>هِبــه</span> نور عيوني ❤️
         </div>
     </div>
 
@@ -192,7 +190,7 @@ function login() {
             stageText.style.opacity = 0;
             clearConfetti();
             setTimeout(() => {
-                stageText.textContent = "اهخخ نفسي اشفشفك بس مقدرر😔";
+                stageText.textContent = "اهخخ نفسي اشفشفك بس مقدرر 😔";
                 stageText.style.opacity = 1;
                 setTimeout(() => {
                     window.location.href = "اسئله.html";
@@ -207,6 +205,7 @@ function login() {
 
 /* الكونفيتي */
 let confettiInterval;
+
 function launchConfetti() {
     const canvas = document.getElementById('confettiCanvas');
     const ctx = canvas.getContext('2d');
@@ -233,21 +232,27 @@ function launchConfetti() {
 
     function draw() {
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        for(let c of confetti){
+        confetti.forEach(c => {
             ctx.beginPath();
             ctx.lineWidth = c.r/2;
             ctx.strokeStyle = c.color;
-            ctx.moveTo(c.x + c.tilt, c.y);
+            ctx.moveTo(c.x + c.tilt + c.r/4, c.y);
             ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r/2);
             ctx.stroke();
-        }
+        });
+        update();
+    }
+
+    function update() {
         angle += 0.01;
-        for(let c of confetti){
-            c.y -= (Math.cos(angle + c.d) + 3)/2;
+        confetti.forEach(c => {
+            c.tiltAngle += c.tiltAngleIncremental;
+            c.y -= (Math.cos(angle + c.d) + 3 + c.r/2)/2;
+            c.tilt = Math.sin(c.tiltAngle) * 15;
             if(c.y < -10){
                 c.y = canvas.height + 10;
             }
-        }
+        });
     }
 
     confettiInterval = setInterval(draw, 20);
