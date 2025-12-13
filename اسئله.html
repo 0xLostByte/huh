@@ -12,7 +12,7 @@
         height: 100vh;
         display: flex;
         justify-content: flex-start;
-        align-items: center;
+        align-items: flex-start;
         flex-direction: column;
         text-align: center;
         padding-top: 60px; /* مسافة من فوق */
@@ -28,7 +28,7 @@
         color: white;
         font-size: 20px;
         max-width: 360px;
-        margin-bottom: 25px;
+        margin: 0 auto 25px auto; /* يجعل العنصر في منتصف الشاشة أفقياً */
         line-height: 1.4;
     }
 
@@ -37,6 +37,7 @@
         justify-content: center;
         gap: 15px;
         position: relative;
+        width: 100%;
     }
 
     .btn-container {
