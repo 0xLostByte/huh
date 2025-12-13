@@ -2,24 +2,47 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+
+<!-- مهم جداً للموبايل -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>عيد ميلاد الهبه 💖</title>
+
 <style>
-body {
+html, body {
     margin: 0;
     padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    height: 100vh;
+
+    /* ضبط عرض مناسب لـ Honor X6b */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
 
+/* حاوية تحاكي شاشة الجوال */
+#mobileFrame {
+    width: 100%;
+    max-width: 390px;   /* مناسب لهونر X6b */
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* صندوق الدخول */
 .login-box {
     background: rgba(255,255,255,0.9);
     padding: 20px;
-    width: 280px;
+    width: 90%;
+    max-width: 300px;
+    margin: auto;
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
@@ -57,9 +80,13 @@ button:hover {
     font-size: 13px;
 }
 
+/* النص المرحلي */
 #stageText {
     display: none;
     position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 22px;
     font-weight: bold;
     color: #fff;
@@ -83,23 +110,24 @@ canvas {
 
 /* ملاحظة أسفل الشاشة */
 #footerNoteContainer {
-    position: fixed;
-    bottom: 20px;
+    position: absolute;
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
     z-index: 999;
+    width: 90%;
 }
 
 #footerTitle {
-    font-size: 22px; /* أكبر من الفقرة */
+    font-size: 20px;
     color: white;
     font-weight: bold;
     text-shadow: 0 0 6px #000;
 }
 
 #footerNote {
-    font-size: 16px; /* أصغر شوي */
+    font-size: 14px;
     color: white;
     background: rgba(0,0,0,0.3);
     padding: 6px 12px;
@@ -114,25 +142,30 @@ canvas {
 }
 </style>
 </head>
+
 <body>
 
-<div class="login-box" id="loginBox">
-<h2>منوره يا روحي 💗</h2>
-    <input type="text" id="username" placeholder="اكتبي اسمك">
-    <input type="password" id="password" placeholder="الباسورد">
-    <button onclick="login()">دخول</button>
-    <p class="error" id="error-msg">الاسم أو الباسورد غلط 😢</p>
-</div>
+<div id="mobileFrame">
 
-<div id="stageText">شاطرة يا حلوتي</div>
-<canvas id="confettiCanvas"></canvas>
-
-<!-- ملاحظة أسفل الصفحة -->
-<div id="footerNoteContainer">
-    <div id="footerTitle">ملاحظة</div>
-    <div id="footerNote">
-        هذا الموقع مصمّم فقط لأجل <span>( هِبــه)</span>  نور عيوني ❤️ وليس لأي شخص آخر  و(شكرأ)
+    <div class="login-box" id="loginBox">
+        <h2>منوره يا روحي 💗</h2>
+        <input type="text" id="username" placeholder="اكتبي اسمك">
+        <input type="password" id="password" placeholder="الباسورد">
+        <button onclick="login()">دخول</button>
+        <p class="error" id="error-msg">الاسم أو الباسورد غلط 😢</p>
     </div>
+
+    <div id="stageText">شاطرة يا حلوتي</div>
+    <canvas id="confettiCanvas"></canvas>
+
+    <!-- ملاحظة -->
+    <div id="footerNoteContainer">
+        <div id="footerTitle">ملاحظة</div>
+        <div id="footerNote">
+            هذا الموقع مصمّم فقط لأجل <span>( هِبــه)</span> نور عيوني ❤️ وليس لأي شخص آخر
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -149,15 +182,12 @@ function login() {
     if(u === correctUser && p === correctPass){
         loginBox.style.display = "none";
 
-        // عرض النص الأول
         stageText.textContent = "شاطرة يا حلوتي";
         stageText.style.display = "block";
         stageText.style.opacity = 1;
 
-        // تفعيل الكونفيتي
         launchConfetti();
 
-        // بعد ثانيتين → يظهر النص الثاني
         setTimeout(() => {
             stageText.style.opacity = 0;
             clearConfetti();
@@ -175,7 +205,7 @@ function login() {
     }
 }
 
-// الكونفيتي
+/* الكونفيتي */
 let confettiInterval;
 function launchConfetti() {
     const canvas = document.getElementById('confettiCanvas');
@@ -189,7 +219,7 @@ function launchConfetti() {
     for(let i=0; i<100; i++){
         confetti.push({
             x: Math.random()*canvas.width,
-            y: canvas.height + Math.random()*200, // يبدأ من تحت
+            y: canvas.height + Math.random()*200,
             r: Math.random()*6 + 4,
             d: Math.random()*20 + 10,
             color: colors[Math.floor(Math.random()*colors.length)],
@@ -203,27 +233,18 @@ function launchConfetti() {
 
     function draw() {
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        for(let i=0; i<confetti.length; i++){
-            let c = confetti[i];
+        for(let c of confetti){
             ctx.beginPath();
             ctx.lineWidth = c.r/2;
             ctx.strokeStyle = c.color;
-            ctx.moveTo(c.x + c.tilt + c.r/4, c.y);
+            ctx.moveTo(c.x + c.tilt, c.y);
             ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r/2);
             ctx.stroke();
         }
-        update();
-    }
-
-    function update() {
         angle += 0.01;
-        for(let i=0;i<confetti.length;i++){
-            let c = confetti[i];
-            c.tiltAngle += c.tiltAngleIncremental;
-            c.y -= (Math.cos(angle + c.d) + 3 + c.r/2)/2; // يتحرك للأعلى
-            c.tilt = Math.sin(c.tiltAngle) * 15;
+        for(let c of confetti){
+            c.y -= (Math.cos(angle + c.d) + 3)/2;
             if(c.y < -10){
-                c.x = Math.random()*canvas.width;
                 c.y = canvas.height + 10;
             }
         }
@@ -234,9 +255,6 @@ function launchConfetti() {
 
 function clearConfetti() {
     clearInterval(confettiInterval);
-    const canvas = document.getElementById('confettiCanvas');
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0,0,canvas.width,canvas.height);
 }
 </script>
 
