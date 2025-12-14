@@ -2,77 +2,89 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<!-- تحديد عرض الشاشة لتكون 100% من عرض الجهاز الفعلي (مهم جداً للجوالات) -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>سؤال أول</title>
 <style>
-/* ضمان أن كل من الـ html والـ body يغطيان الشاشة بالكامل */
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%; 
-    font-family: Arial, sans-serif;
-    overflow: hidden; /* لمنع أي شريط تمرير غير مرغوب فيه */
-}
+    /* الإعدادات الأساسية لملء الشاشة */
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden; 
+    }
 
-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* يضمن أن الفيديو يغطي الخلفية بالكامل دون تشوه */
-    position: fixed; /* تثبيت الفيديو في الخلفية */
-}
+    /* فيديو الخلفية */
+    video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+        position: fixed; 
+        top: 0;
+        left: 0;
+    }
 
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.4); /* جعل التعتيم أغمق قليلاً لتحسين قراءة النص */
-    z-index: 1;
-}
+    /* طبقة التعتيم والضبابية (Blur) */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5); 
+        backdrop-filter: blur(5px); 
+        z-index: 1;
+    }
 
-.container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    text-align: center;
-    color: white;
-    width: 90%; /* إضافة عرض نسبي للحاوية الرئيسية لتحسين المظهر على الشاشات الطويلة */
-}
+    /* حاوية المحتوى في المنتصف */
+    .container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        text-align: center;
+        color: white;
+        width: 90%; 
+    }
 
-h2 {
-    font-size: 26px; /* تصغير الخط قليلاً ليتناسب مع شاشة الجوال بشكل أفضل */
-    margin-bottom: 30px;
-    text-shadow: 0 0 10px #000, 0 0 10px #000; /* ظل أقوى */
-}
+    /* تنسيق السؤال */
+    h2 {
+        font-size: 30px; 
+        margin-bottom: 35px;
+        text-shadow: 0 0 10px #000, 0 0 10px #000; 
+        line-height: 1.5;
+        font-weight: bold;
+    }
 
-button {
-    padding: 12px 20px; /* تصغير حجم الأزرار قليلاً */
-    margin: 8px; /* تقليل المسافة بين الأزرار */
-    font-size: 16px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: rgba(255, 122, 138, 0.9); /* شفافية أقل قليلاً */
-    color: white;
-    transition: 0.3s;
-    /* لجعل الأزرار مكدسة بشكل أفضل على الشاشات الصغيرة */
-    display: block; 
-    width: 80%;
-    margin: 10px auto;
-}
+    /* تنسيق الأزرار */
+    button {
+        padding: 18px 25px; 
+        margin: 15px auto; 
+        font-size: 20px; 
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        background-color: #ff7a8a; 
+        color: white;
+        transition: transform 0.2s, background-color 0.3s;
+        display: block; 
+        width: 85%; 
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
 
-button:hover {
-    background-color: rgba(255, 91, 114, 1);
-}
+    button:hover {
+        background-color: #ff5b72;
+        transform: scale(1.02);
+    }
+
+    button:active {
+        transform: scale(0.98);
+    }
 </style>
 </head>
 <body>
 
-<!-- فيديو الخلفية -->
 <video autoplay loop muted playsinline>
     <source src="1.mp4" type="video/mp4">
     متصفحك لا يدعم الفيديو.
@@ -85,22 +97,30 @@ button:hover {
     <div id="buttonsDiv">
         <button id="btnFry" onclick="openFry()">وراك فراخ بالبصل الاحمر</button>
         <button id="btnOld" onclick="openOld()">واحد قديم ابن كلب</button>
-        <button id="btnMe">أنا</button>
+        <button id="btnMe" onclick="openMe()">أنا</button>
     </div>
 </div>
 
-<!-- تشغيل الأغنية 8 -->
 <audio id="song8" autoplay loop></audio>
 
 <script>
+// دالة زر الفراخ
 function openFry(){
     sessionStorage.setItem("fryClicked", "true");
     window.location.href = "وراك فراخ بالبصل الاحمر.html";
 }
 
+// دالة زر القديم
 function openOld(){
     sessionStorage.setItem("oldClicked", "true");
     window.location.href = "واحد قديم ابن كلب.html";
+}
+
+// دالة زر أنا (الاختيار الطوعي/الحب)
+function openMe(){
+    // نحفظ الحالة "love" عشان الصفحة الجاية تعرف إنها اختارتك بنفسها
+    sessionStorage.setItem("meStatus", "love");
+    window.location.href = "me.html";
 }
 
 // تشغيل الأغنية واستكمال الوقت
@@ -117,10 +137,12 @@ song.addEventListener('timeupdate', () => {
 window.onload = () => {
     const btnFry = document.getElementById("btnFry");
     const btnOld = document.getElementById("btnOld");
+    const btnMe = document.getElementById("btnMe");
     const question = document.getElementById("questionText");
 
     let hiddenCount = 0;
 
+    // إخفاء الأزرار اللي انضغطت مسبقاً
     if(sessionStorage.getItem("fryClicked")) {
         btnFry.style.display = "none";
         hiddenCount++;
@@ -131,7 +153,24 @@ window.onload = () => {
         hiddenCount++;
     }
 
-    if(hiddenCount > 0){
+    // المنطق الجديد: إذا اختفى الخيارين وبقي بس "أنت"
+    if(hiddenCount === 2){
+        // 1. نخفي زر أنا عشان ما تضغطه هي
+        btnMe.style.display = "none";
+        
+        // 2. نغير النص للكلام اللي طلبته
+        question.textContent = "ما ضل غيري اصلا فا خلاص بختار نفسي بنفسي :/";
+        
+        // 3. نحفظ الحالة "forced" (إجباري)
+        sessionStorage.setItem("meStatus", "forced");
+        
+        // 4. الانتقال التلقائي بعد 3 ثواني
+        setTimeout(() => {
+            window.location.href = "me.html";
+        }, 3000);
+
+    } else if (hiddenCount > 0){
+        // إذا اختفى زر واحد بس نغير السؤال
         question.textContent = "لو كان قدامك اثنين من الرجال فمن تختاري؟:";
     }
 }
