@@ -4,14 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>عيد ميلاد الهبه 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 <style>
+/* إعدادات الصفحة الأساسية */
 body {
     margin: 0 auto;
     padding: 0;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Cairo', sans-serif; /* استخدام الخط الجديد */
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    width: 390px; /* محاكاة عرض A05s */
-    height: 844px; /* محاكاة ارتفاع A05s */
+    width: 390px; /* عرض A05s */
+    height: 844px; /* ارتفاع A05s */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,62 +21,132 @@ body {
     position: relative;
 }
 
+/* خلفية القلوب المتحركة */
+.hearts-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.heart {
+    position: absolute;
+    bottom: -50px;
+    background-color: rgba(255, 255, 255, 0.4);
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    margin: 0 10px;
+    transform: rotate(-45deg);
+    animation: float 6s linear infinite;
+}
+
+.heart:before, .heart:after {
+    content: "";
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.4);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.heart:before { top: -15px; left: 0; }
+.heart:after { left: 15px; top: 0; }
+
+@keyframes float {
+    0% { transform: translateY(0) rotate(-45deg); opacity: 1; }
+    100% { transform: translateY(-800px) rotate(-45deg); opacity: 0; }
+}
+
+/* صندوق الدخول */
 .login-box {
-    background: rgba(255,255,255,0.95);
-    padding: 15px; /* تصغير البادينج */
-    width: 80%; /* جعل الصندوق أضيق */
+    background: rgba(255, 255, 255, 0.85);
+    padding: 20px 15px;
+    width: 80%;
     text-align: center;
-    border-radius: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    border-radius: 25px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     font-size: 14px;
     z-index: 10;
-    margin-top: -80px; /* رفع الصندوق للأعلى أكثر */
+    margin-top: -60px;
+    /* حركة دخول بسيطة */
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    color: #ff69b4;
+    margin-bottom: 15px;
+    font-size: 22px;
 }
 
 input {
-    width: 90%; /* جعل المدخلات أنحف */
-    padding: 8px; /* تقليل ارتفاع خانة الإدخال */
-    margin: 6px 0; /* تقليل المسافة بين المدخلات */
-    border-radius: 8px; /* حواف أقل دائرية قليلاً */
-    border: 1px solid #ccc;
-    font-size: 13px; /* تصغير الخط قليلاً */
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 12px;
+    border: 1px solid #ffccd5;
+    background: rgba(255,255,255,0.9);
+    font-size: 14px;
     box-sizing: border-box;
+    font-family: 'Cairo', sans-serif;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #ff7a8a;
+    box-shadow: 0 0 8px rgba(255, 122, 138, 0.3);
 }
 
 button {
-    width: 95%;
-    padding: 10px; /* تقليل ارتفاع الزر */
-    background: #ff7a8a;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #ff7a8a, #ff5b72);
     border: none;
-    border-radius: 10px;
-    font-size: 15px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
     color: white;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(255, 91, 114, 0.4);
+    font-family: 'Cairo', sans-serif;
+    transition: 0.3s;
 }
 
-button:hover {
-    background: #ff5b72;
+button:active {
+    transform: scale(0.95);
 }
 
 .error {
-    color: red;
+    color: #e74c3c;
     margin-top: 10px;
     display: none;
+    font-weight: bold;
     font-size: 13px;
 }
 
 #stageText {
     display: none;
     position: absolute;
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
     color: #fff;
     text-align: center;
-    background: rgba(0,0,0,0.4);
-    padding: 15px 25px;
+    background: rgba(255, 122, 138, 0.9);
+    padding: 20px 30px;
     border-radius: 20px;
-    backdrop-filter: blur(5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     opacity: 0;
     transition: opacity 0.5s;
     z-index: 999;
@@ -90,46 +162,66 @@ canvas {
     height: 100%;
 }
 
-/* ملاحظة أسفل الشاشة */
+/* تنسيق الملاحظة السفلية المحسن */
 #footerNoteContainer {
     position: absolute;
-    bottom: 90px; /* تم رفعها بشكل كبير لضمان ظهورها */
+    bottom: 80px; /* موقع ممتاز للجوال */
     left: 0;
     right: 0;
     text-align: center;
     z-index: 999;
-    padding: 0 10px;
+    padding: 0 15px;
+    /* حركة النبض للملاحظة */
+    animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
 #footerTitle {
-    font-size: 16px; /* تصغير العنوان قليلاً */
-    color: white;
+    font-size: 14px;
+    color: #fff;
     font-weight: bold;
-    text-shadow: 0 0 5px #000, 0 0 5px #000;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
     margin-bottom: 5px;
+    letter-spacing: 1px;
 }
 
 #footerNote {
-    font-size: 12px; /* تصغير حجم خط الملاحظة */
+    font-size: 12px;
     color: white;
-    background: rgba(0,0,0,0.4);
-    padding: 8px 15px;
+    background: rgba(0, 0, 0, 0.5); /* خلفية داكنة لتباين أفضل */
+    padding: 10px 15px;
     border-radius: 15px;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.2);
+    
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
     display: inline-block;
     max-width: 100%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 #footerNote span {
-    color: #ff69b4;
+    color: #ff9a9e; /* لون مميز لاسمها */
     font-weight: bold;
+    font-size: 13px;
 }
 </style>
 </head>
 <body>
+
+<div class="hearts-bg">
+    <div class="heart" style="left: 10%; animation-duration: 7s; animation-delay: 0s;"></div>
+    <div class="heart" style="left: 30%; animation-duration: 5s; animation-delay: 1s;"></div>
+    <div class="heart" style="left: 70%; animation-duration: 6s; animation-delay: 2s;"></div>
+    <div class="heart" style="left: 90%; animation-duration: 8s; animation-delay: 0.5s;"></div>
+    <div class="heart" style="left: 50%; animation-duration: 9s; animation-delay: 3s;"></div>
+</div>
 
 <div class="login-box" id="loginBox">
 <h2>منوره يا روحي 💗</h2>
@@ -142,9 +234,8 @@ canvas {
 <div id="stageText">شاطرة يا حلوتي</div>
 <canvas id="confettiCanvas"></canvas>
 
-<!-- ملاحظة أسفل الصفحة -->
 <div id="footerNoteContainer">
-    <div id="footerTitle">ملاحظة</div>
+    <div id="footerTitle">⚠️ ملاحظة هامة</div>
     <div id="footerNote">
         هذا الموقع مصمّم فقط لأجل <span>( هِبــه)</span> نور عيوني ❤️ وليس لأي شخص آخر و(شكرأ)
     </div>
@@ -163,12 +254,18 @@ function login() {
     const footerNoteCont = document.getElementById("footerNoteContainer");
 
     if(u === correctUser && p === correctPass){
+        // إخفاء الملاحظة والصندوق
         footerNoteCont.style.display = "none";
         loginBox.style.display = "none";
 
-        stageText.textContent = "شاطرة يا حلوتي";
+        // إظهار نص الترحيب
+        stageText.textContent = "شاطرة يا حلوتي 😍";
         stageText.style.display = "block";
-        stageText.style.opacity = 1;
+        
+        // تأخير بسيط لتفعيل الـ animation
+        setTimeout(() => {
+            stageText.style.opacity = 1;
+        }, 10);
 
         launchConfetti();
 
@@ -186,8 +283,23 @@ function login() {
 
     } else {
         error.style.display = "block";
+        // هز الصندوق عند الخطأ
+        loginBox.style.animation = "shake 0.3s";
+        setTimeout(() => { loginBox.style.animation = ""; }, 300);
     }
 }
+
+// إضافة حركة اهتزاز للصندوق عند الخطأ في الستايل
+const styleSheet = document.createElement("style");
+styleSheet.innerText = `
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}`;
+document.head.appendChild(styleSheet);
 
 // الكانفاس والكونفيتي (بدون تغيير)
 let confettiInterval;
