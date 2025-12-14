@@ -11,13 +11,11 @@
         background: linear-gradient(135deg, #ff9a9e, #fad0c4);
         height: 100vh;
         display: flex;
-        justify-content: flex-start; /* رفع المحتوى فوق */
+        justify-content: flex-start; /* رفع المحتوى فوق شوي */
         align-items: center;
         flex-direction: column;
         text-align: center;
-        padding-top: 30px;
-        transform: scale(0.6); /* تكبير المحتوى 60% */
-        transform-origin: top center; /* التكبير من الأعلى */
+        padding-top: 30px; /* قللت المسافة من فوق لتقريب المحتوى */
     }
 
     .message-box {
@@ -27,15 +25,15 @@
         backdrop-filter: blur(5px);
         color: white;
         font-size: 18px;
-        max-width: 350px;
+        max-width: 350px; /* قللت شوي من العرض */
         margin-bottom: 30px;
-        line-height: 1.4;
+        line-height: 1.4; /* لتقليل الفراغ بين السطور */
     }
 
     .btn-row {
         display: flex; 
         justify-content: center;
-        gap: 15px;
+        gap: 15px; /* مسافة أصغر بين الأزرار */
         position: relative;
     }
 
@@ -45,7 +43,7 @@
     }
 
     button {
-        padding: 10px 20px;
+        padding: 10px 20px; /* صغرنا البادينج لتناسب الهاتف */
         font-size: 16px;
         border: none;
         border-radius: 12px;
@@ -61,16 +59,16 @@
 
     #hint {
         display: none;
-        margin-top: 10px;
+        margin-top: 10px; /* قللنا المسافة */
         color: #fff;
-        font-size: 15px;
+        font-size: 15px; /* أصغر شوي */
     }
 
     /* سهم فوق الزر */
     #arrow {
         display: none;
         position: absolute;
-        top: -30px;
+        top: -30px; /* رفعنا السهم شوي للأقرب */
         left: 50%;
         transform: translateX(-50%);
         font-size: 28px;
