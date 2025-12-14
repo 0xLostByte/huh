@@ -8,195 +8,140 @@
 <style>
     /* الإعدادات العامة */
     body {
-        margin: 0;
-        padding: 0;
+        margin: 0; padding: 0;
         font-family: 'Cairo', sans-serif;
-        background-color: #f0f0f0; /* لون الخلفية خارج إطار الهاتف */
+        background-color: #f0f0f0;
         height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        overflow: hidden;
+        display: flex; justify-content: center; align-items: center;
+        text-align: center; overflow: hidden;
     }
 
     /* حاوية الهاتف */
     .phone-container {
-        width: 390px;
-        height: 844px;
+        width: 390px; height: 844px;
         background: linear-gradient(135deg, #ff9a9e, #fad0c4);
         border-radius: 40px;
         box-shadow: 0 0 25px rgba(0,0,0,0.2);
-        overflow: hidden; /* مهم عشان العناصر ما تطلع برا */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 60px; /* مساحة من فوق */
+        overflow: hidden;
+        display: flex; flex-direction: column;
+        align-items: center; padding-top: 60px;
         position: relative;
     }
 
-    /* خلفية القلوب المتحركة داخل الهاتف */
-    .hearts-bg {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        overflow: hidden; z-index: 0; pointer-events: none;
-    }
-    .heart {
-        position: absolute; bottom: -50px;
-        background-color: rgba(255, 255, 255, 0.3);
-        width: 30px; height: 30px; margin: 0 10px;
-        transform: rotate(-45deg);
-        animation: float 6s linear infinite;
-    }
-    .heart:before, .heart:after {
-        content: ""; position: absolute;
-        background-color: rgba(255, 255, 255, 0.3);
-        width: 30px; height: 30px; border-radius: 50%;
-    }
+    /* خلفية القلوب */
+    .hearts-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; pointer-events: none; }
+    .heart { position: absolute; bottom: -50px; background-color: rgba(255, 255, 255, 0.3); width: 30px; height: 30px; margin: 0 10px; transform: rotate(-45deg); animation: float 6s linear infinite; }
+    .heart:before, .heart:after { content: ""; position: absolute; background-color: rgba(255, 255, 255, 0.3); width: 30px; height: 30px; border-radius: 50%; }
     .heart:before { top: -15px; left: 0; }
     .heart:after { left: 15px; top: 0; }
-    @keyframes float {
-        0% { transform: translateY(0) rotate(-45deg); opacity: 1; }
-        100% { transform: translateY(-800px) rotate(-45deg); opacity: 0; }
-    }
+    @keyframes float { 0% { transform: translateY(0) rotate(-45deg); opacity: 1; } 100% { transform: translateY(-800px) rotate(-45deg); opacity: 0; } }
 
     /* صندوق الرسالة */
     .message-box {
         background: rgba(255, 255, 255, 0.25);
-        padding: 20px 25px;
-        border-radius: 25px;
+        padding: 20px 25px; border-radius: 25px;
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.4);
-        color: white;
-        font-size: 20px;
-        font-weight: bold;
-        max-width: 320px;
-        margin-bottom: 50px;
-        line-height: 1.5;
-        z-index: 10;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        color: white; font-size: 20px; font-weight: bold;
+        max-width: 320px; margin-bottom: 30px;
+        line-height: 1.5; z-index: 10;
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
     /* منطقة الأزرار */
-    .btn-container {
+    .buttons-wrapper {
         position: relative;
         width: 100%;
-        height: 300px; /* مساحة لحركة الزر */
+        height: 100px;
         display: flex;
-        justify-content: center;
+        justify-content: center; 
         gap: 20px;
+        align-items: center;
         z-index: 10;
     }
 
     button {
         padding: 12px 30px;
-        font-size: 18px;
-        font-family: 'Cairo', sans-serif;
-        font-weight: bold;
-        border: none;
-        border-radius: 15px;
-        color: white;
-        cursor: pointer;
+        font-size: 18px; font-family: 'Cairo', sans-serif; font-weight: bold;
+        border: none; border-radius: 15px; color: white; cursor: pointer;
         transition: transform 0.2s, background 0.3s;
         box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        height: 50px; /* ارتفاع ثابت */
+        height: 55px; z-index: 20;
     }
 
-    /* زر الموافقة */
-    #okBtn {
-        background: linear-gradient(45deg, #ff7a8a, #ff5b72);
-        z-index: 20;
-    }
+    #okBtn { background: linear-gradient(45deg, #ff7a8a, #ff5b72); }
     #okBtn:hover { transform: scale(1.05); }
 
-    /* زر الرفض المتحرك */
     #haBtn {
         background: linear-gradient(45deg, #a18cd1, #fbc2eb);
-        position: absolute; /* عشان نقدر نحركه */
-        left: 55%; /* مكانه المبدئي جنب زر الموافقة */
-        z-index: 20;
-        transition: top 0.3s ease, left 0.3s ease; /* حركة ناعمة */
+        transition: top 0.4s ease, left 0.4s ease, opacity 0.2s; /* إضافة حركة للشفافية */
     }
 
     /* التلميح */
     #hint {
-        margin-top: -200px; /* تعديل المكان */
-        color: #fff;
-        font-size: 16px;
+        position: absolute;
+        top: 450px;
+        width: 90%;
+        color: #fff; 
+        font-size: 14px;
         font-weight: bold;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        z-index: 15;
         min-height: 30px;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        z-index: 10;
-        padding: 0 20px;
+        transition: opacity 0.3s;
     }
 
-    /* سهم التوجيه */
+    /* السهم */
     #arrow {
-        display: none;
-        font-size: 30px;
+        display: none; 
+        font-size: 35px;
         color: #fff06d;
+        position: absolute;
+        top: -45px;
+        left: 50%; transform: translateX(-50%);
         animation: bounceArrow 1s infinite;
-        margin-top: 10px;
-        z-index: 10;
+        text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 25;
     }
     @keyframes bounceArrow {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(10px); }
+        0%, 100% { top: -45px; }
+        50% { top: -55px; }
     }
 
-    /* انميشن الانفجار */
-    @keyframes explode {
-        0% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.5); background-color: #ff4d4d; opacity: 0.8; }
-        100% { transform: scale(2); opacity: 0; }
-    }
-    .exploded {
-        animation: explode 0.5s forwards;
-        pointer-events: none;
-    }
+    .ok-container { position: relative; }
 
-    /* --- الملاحظة السفلية --- */
-    #footerNoteContainer {
+    /* --- تأثيرات الانفجار الجديدة --- */
+    
+    /* حاوية لتأثيرات الانفجار عشان ما تطلع برا الجوال */
+    #explosion-container {
         position: absolute;
-        bottom: 20px; /* مرفوعة بشكل مناسب */
-        left: 0; 
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 999;
-        animation: bounceNote 2.5s infinite ease-in-out;
+        top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none; z-index: 30; overflow: hidden;
     }
-    @keyframes bounceNote {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-5px); }
+
+    /* شكل الانفجار (موجة نارية) */
+    .boom-effect {
+        position: absolute;
+        width: 100px; height: 100px;
+        /* تدرج لوني ناري (أصفر في الوسط، برتقالي وأحمر في الأطراف) */
+        background: radial-gradient(circle, #ffeb3b 0%, #ff9800 40%, #ff5722 70%, transparent 80%);
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0); /* يبدأ صغيراً جداً */
+        animation: boomAnim 0.6s ease-out forwards; /* حركة سريعة */
+        opacity: 0.9;
+        box-shadow: 0 0 20px #ff5722; /* توهج */
     }
-    
-    #footerTitle {
-        font-size: 14px; color: #fff; font-weight: bold;
-        text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        margin-bottom: 5px;
+
+    @keyframes boomAnim {
+        0% { transform: translate(-50%, -50%) scale(0.1); opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(5); opacity: 0; } /* يكبر جداً ويختفي */
     }
-    
-    #footerNote {
-        font-size: 13px;
-        color: white;
-        background: rgba(0, 0, 0, 0.5);
-        padding: 10px 15px;
-        border-radius: 15px;
-        backdrop-filter: blur(5px);
-        width: 85%;
-        max-width: 350px;
-        line-height: 1.5;
-    }
-    
-    #footerNote span { color: #ff9a9e; font-weight: bold; }
 
 </style>
 </head>
 <body>
+
+<audio id="explosionSound" src="tnt.mp3" preload="auto"></audio>
 
 <div class="phone-container" id="containerArea">
     
@@ -207,27 +152,21 @@
         <div class="heart" style="left: 50%; animation-duration: 9s;"></div>
     </div>
 
+    <div id="explosion-container"></div>
+
     <div class="message-box">
         شـوفي يا عيوني، بسألك شويه أسئله لازم تجاوبي عشان توصلي للهديه (تم؟)
     </div>
 
-    <div class="btn-container">
-        <div>
+    <div class="buttons-wrapper">
+        <button id="haBtn" onclick="moveHaBtn()">ها؟</button>
+        <div class="ok-container">
+            <div id="arrow">⬇️</div>
             <button id="okBtn" onclick="goQuiz()">أوك يل</button>
-            <div id="arrow">⬆️ اضغطي هنا</div>
         </div>
-
-        <button id="haBtn" onclick="moveHaBtn()">ها</button>
     </div>
 
     <div id="hint"></div>
-
-    <div id="footerNoteContainer">
-        <div id="footerTitle">ملاحظة</div>
-        <div id="footerNote">
-            هذا الموقع مصمّم فقط لأجل <span>( هِبــه)</span> نور عيوني ❤️ وليس لأي شخص آخر و(شكرأ)
-        </div>
-    </div>
 
 </div>
 
@@ -236,7 +175,8 @@
     const haBtn = document.getElementById("haBtn");
     const hint = document.getElementById("hint");
     const arrow = document.getElementById("arrow");
-    const container = document.getElementById("containerArea");
+    const explosionSound = document.getElementById("explosionSound");
+    const explosionContainer = document.getElementById("explosion-container");
 
     function goQuiz() {
         window.location.href = "سؤال واحد.html";
@@ -244,34 +184,56 @@
 
     function moveHaBtn() {
         haClicks++;
-        
-        // إظهار التلميح والسهم
-        hint.style.display = "block";
         arrow.style.display = "block";
 
+        if (haClicks === 1) {
+            haBtn.style.position = "absolute";
+        }
+
         if (haClicks < 4) {
-            // تغيير النصوص
-            if(haClicks === 1) hint.textContent = "شفيه؟ حتي هنا تقولي (ها)؟ اضغطي (أوك يل) 😉";
-            if(haClicks === 2) hint.textContent = "بربك! قولي والله 😂";
-            if(haClicks === 3) hint.textContent = "لا تخليني اشفشفك هسا🫦😔.. آخر فرصة!";
-
-            // حساب مكان عشوائي (داخل حدود الهاتف)
-            // نستخدم أرقام تقريبية لضمان بقاء الزر داخل الشاشة
-            const randomX = Math.random() * (300 - 50) + 20; // عرض عشوائي
-            const randomY = Math.random() * (500 - 200) + 200; // ارتفاع عشوائي (نتجنب المنطقة العلوية جداً)
-
+            // --- الحركات العشوائية (المرات 1, 2, 3) ---
+            const randomX = Math.random() * (280 - 20) + 20; 
+            const randomY = Math.random() * (600 - 350) + 350; 
             haBtn.style.left = randomX + "px";
             haBtn.style.top = randomY + "px";
+
+            if(haClicks === 1) hint.textContent = "شفيه؟ حتي هنا تقولي (ها)؟ اضغطي (أوك يل) 😉";
+            if(haClicks === 2) hint.textContent = "بربك! قولي والله 😂";
+            if(haClicks === 3) {
+                hint.textContent = "لا تخليني اشفشفك هسا 🫦😔";
+                setTimeout(() => { hint.textContent = "يل اضغطي"; }, 1000);
+            }
             
         } else {
-            // المرة الرابعة: انفجار
-            hint.textContent = "بوووووم! 💥 انفجر الزر.. ما ضل غير (أوك يل) 😎";
-            haBtn.classList.add("exploded"); // تشغيل انميشن الانفجار
+            // --- المرة الرابعة (الانفجار TNT) ---
+            
+            // 1. تشغيل الصوت
+            explosionSound.play().catch(e => console.log("Sound error (needs interaction first):", e));
 
-            // إخفاء الزر بعد الانفجار
+            // 2. إنشاء تأثير الانفجار البصري مكان الزر
+            // نحسب مكان الزر الحالي بدقة
+            const rect = haBtn.getBoundingClientRect();
+            const containerRect = document.getElementById("containerArea").getBoundingClientRect();
+            // نحسب الموقع النسبي داخل حاوية الهاتف
+            const x = rect.left - containerRect.left + (rect.width / 2);
+            const y = rect.top - containerRect.top + (rect.height / 2);
+
+            // ننشئ عنصر الانفجار
+            const boom = document.createElement("div");
+            boom.className = "boom-effect";
+            boom.style.left = x + "px";
+            boom.style.top = y + "px";
+            explosionContainer.appendChild(boom);
+
+            // 3. تحديث النص وإخفاء الزر
+            hint.textContent = "ارتحتي هيك يلا هي الزر زهق وانفجر 😂";
+            haBtn.style.opacity = "0"; // نخفي الزر فوراً لكي يظهر الانفجار مكانه
+
+            // 4. تنظيف العناصر بعد انتهاء الانميشن
             setTimeout(() => {
                 haBtn.style.display = "none";
-            }, 450);
+                boom.remove(); // نحذف عنصر الانفجار بعد ما يخلص
+            }, 600);
         }
     }
 </script>
