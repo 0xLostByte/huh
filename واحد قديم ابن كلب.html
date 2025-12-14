@@ -2,6 +2,8 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<!-- تأكيد أن مقياس العرض هو مقياس الجهاز 1:1 لهاتف Honor X6b -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>واحد قديم ابن كلب</title>
 <style>
 html, body {
@@ -10,79 +12,111 @@ html, body {
     height: 100%;
     background: black;
     color: white;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* خط أوضح */
     overflow: hidden;
     text-align: center;
+    position: relative; /* لتموضع العناصر المطلقة بشكل صحيح */
+}
+
+/* حاوية لعناصر الواجهة لتطبيق Blur على الخلفية فقط */
+.ui-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
 }
 
 #text {
     position: absolute;
-    top: 40%;
+    top: 40%; /* رفع النص قليلاً للأعلى */
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 26px;
+    font-size: 28px; /* تكبير الخط */
     width: 90%;
-    z-index: 2;
+    z-index: 3;
+    text-shadow: 0 0 10px #000, 0 0 10px #000; /* ظل أقوى */
+    padding: 10px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
 }
 
 video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* ملء الشاشة */
+    position: fixed; /* تثبيت الخلفية */
+    top: 0;
+    left: 0;
     display: none;
 }
 
 #timer {
     position: absolute;
-    top: 20px;
+    top: 30px; /* رفعه للأعلى */
     left: 50%;
     transform: translateX(-50%);
-    font-size: 28px;
-    color: red;
+    font-size: 32px; /* تكبير المؤقت */
+    color: #ff4d6d;
     display: none;
     z-index: 3;
+    text-shadow: 0 0 8px #000;
 }
 
 #noteText {
     position: absolute;
-    top: 80px;
+    top: 100px; /* رفعه للأعلى */
     left: 50%;
     transform: translateX(-50%);
     display: none;
-    background: rgba(0,0,0,0.5);
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-size: 22px;
+    background: rgba(0,0,0,0.6);
+    padding: 15px 25px;
+    border-radius: 15px;
+    font-size: 24px; /* تكبير الخط */
     font-weight: bold;
     z-index: 3;
+    backdrop-filter: blur(4px); /* تأثير ضبابية بسيط هنا */
 }
 
 #inputBox {
     display: none;
     position: absolute;
-    top: 100px;
+    top: 50%; /* توسيط صندوق الإدخال في الشاشة */
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     z-index: 3;
-    background: rgba(0,0,0,0.4);
-    padding: 15px 25px;
-    border-radius: 12px;
+    background: rgba(0,0,0,0.7);
+    padding: 20px 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(8px); /* تأثير ضبابية قوي على الصندوق */
+    width: 80%; /* عرض مناسب للجوال */
+}
+
+#inputBox div {
+    font-size: 18px;
+    margin-bottom: 10px;
 }
 
 input {
-    padding: 10px;
-    font-size: 18px;
-    width: 260px;
+    padding: 12px;
+    font-size: 16px;
+    width: 100%; /* ملء عرض الصندوق */
     text-align: center;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* لضمان أن العرض 100% يشمل البادينج والبوردر */
 }
 
 button {
-    margin-top: 10px;
-    padding: 10px 25px;
+    margin-top: 15px;
+    padding: 12px 30px;
     font-size: 18px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    background-color: #ff4d6d;
+    color: white;
 }
 
 #finalImage {
@@ -100,20 +134,22 @@ button {
 
 <body>
 
-<div id="text"></div>
+<!-- فيديو 4 و 5 يعملان كخلفية ثابتة -->
+<video id="video4" src="4.mp4" playsinline></video>
+<video id="video5" src="5.mp4" playsinline></video>
 
-<video id="video4" src="4.mp4"></video>
-<video id="video5" src="5.mp4"></video>
+<div class="ui-container">
+    <div id="text"></div>
+    <div id="timer"></div>
+    <div id="noteText"></div>
 
-<div id="timer"></div>
-<div id="noteText"></div>
-
-<div id="inputBox">
-    <div>اكتبي بحبك عشر مرات عشان ترضيني</div>
-    <div>المتبقي: <span id="count">10</span></div>
-    <input type="text" id="loveInput">
-    <br>
-    <button id="doneBtn" onclick="finish()" style="display:none;">تم</button>
+    <div id="inputBox">
+        <div>اكتبي بحبك عشر مرات عشان ترضيني</div>
+        <div>المتبقي: <span id="count">10</span></div>
+        <input type="text" id="loveInput">
+        <br>
+        <button id="doneBtn" onclick="finish()" style="display:none;">تم</button>
+    </div>
 </div>
 
 <img id="finalImage" src="7.jpg" alt="الصورة الأخيرة">
@@ -135,7 +171,7 @@ const audio = document.getElementById("audio");
 let remaining = 10;
 let totalTime = 600; // 10 دقائق
 
-// البداية
+// البداية (تم التأكد من صحة التسلسل)
 text.innerHTML = "ويت؟؟؟";
 setTimeout(() => {
     text.innerHTML = "هو أصلاً زلمة عشان تختاريه؟ 🤨";
@@ -227,6 +263,7 @@ function finish() {
     video5.pause(); video5.style.display = "none";
 
     // نصوص النهاية
+    text.style.display = "block";
     text.innerHTML = "رجعنا للفضاء الأسود 🌌";
     setTimeout(() => {
         text.innerHTML = "سامحتك يا حلوتي 🤍";
@@ -236,7 +273,6 @@ function finish() {
         text.innerHTML = "لكن …";
         setTimeout(() => {
             text.innerHTML = "لا تعيديها يا حلوتي 🫦";
-            text.style.display = "block";
 
             // بعد النص الأخير، عرض الصورة + تشغيل الصوت
             setTimeout(() => {
@@ -249,7 +285,7 @@ function finish() {
                 };
             }, 3000);
 
-        }, 2000); // مدة ظهور "لكن بعدين…" قبل النص النهائي
+        }, 2000);
     }, 6000);
 }
 </script>
