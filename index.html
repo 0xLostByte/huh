@@ -98,12 +98,12 @@ button:active { transform: scale(0.95); }
 
 canvas { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 998; width: 100%; height: 100%; }
 
-/* --- تعديل الملاحظة السفلية (الحل للمشكلة) --- */
+/* --- تعديل الملاحظة السفلية --- */
 #footerNoteContainer {
     position: absolute;
-    bottom: 40px; /* مسافة جيدة من الأسفل */
+    bottom: 15px; /* تم تعديل القيمة هنا لرفع الملاحظة */
     left: 0; 
-    width: 100%; /* تأخذ عرض الشاشة بالكامل */
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -124,20 +124,19 @@ canvas { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 998
 }
 
 #footerNote {
-    font-size: 13px; /* خط مقروء */
+    font-size: 13px; 
     color: white;
-    background: rgba(0, 0, 0, 0.6); /* خلفية داكنة ليكون الكلام واضح */
+    background: rgba(0, 0, 0, 0.6); 
     padding: 10px 20px;
     border-radius: 15px;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255,255,255,0.2);
     
-    /* أهم التعديلات هنا */
-    width: 85%; /* عرض الصندوق 85% من الشاشة */
+    width: 85%; 
     max-width: 350px;
-    white-space: normal; /* السماح للنص بالنزول لسطر جديد */
-    line-height: 1.6; /* مسافة بين السطور للقراءة المريحة */
-    text-align: center; /* توسيط النص داخل الصندوق */
+    white-space: normal; 
+    line-height: 1.6; 
+    text-align: center; 
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
