@@ -2,31 +2,32 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- أضفت هذه -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>أسئلتك يا عيوني</title>
 <style>
     body {
         margin: 0;
         padding: 0;
         font-family: Arial;
-        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        /* الخلفية الخارجية الآن لون ثابت أو أي شيء */
+        background-color: #f0f0f0; 
         height: 100vh;
         display: flex;
-        justify-content: center; /* توسيط الحاوية في الصفحة */
+        justify-content: center; 
         align-items: center;
         text-align: center;
     }
 
-    /* الحاوية الجديدة التي تحاكي أبعاد الهاتف A05s */
     .phone-container {
-        /* الأبعاد التقريبية بالبكسل لهاتف A05s بناءً على نسبة العرض إلى الارتفاع */
-        width: 390px;  /* عرض تقريبي */
-        height: 844px; /* ارتفاع تقريبي */
+        width: 390px;
+        height: 844px;
         
-        background-color: white; /* يمكن تغيير الخلفية لرؤية حدود الهاتف */
-        border-radius: 40px; /* لإعطاء شكل الهاتف بحواف دائرية */
+        /* نقل التدرج اللوني إلى هنا */
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        
+        border-radius: 40px;
         box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        overflow: hidden; /* لضمان بقاء المحتوى داخل الحدود */
+        overflow: hidden;
         
         display: flex;
         flex-direction: column;
@@ -34,15 +35,15 @@
         padding-top: 30px; 
     }
     
-    /* تعديل تنسيقات العناصر لتكون داخل الحاوية الجديدة */
     .message-box {
-        background: rgba(255,150,150,0.5); /* لتبدو جيدة داخل الحاوية البيضاء */
+        /* رجعت الألوان لتتناسب مع الخلفية الوردية */
+        background: rgba(255,255,255,0.25); 
         padding: 15px 25px;
         border-radius: 20px;
         backdrop-filter: blur(5px);
-        color: black; /* لون الخط */
+        color: white; 
         font-size: 18px;
-        max-width: 300px; /* تم تضييق العرض قليلا ليتناسب مع عرض الحاوية */
+        max-width: 300px; 
         margin-bottom: 30px;
         line-height: 1.4; 
     }
@@ -77,19 +78,18 @@
     #hint {
         display: none;
         margin-top: 10px; 
-        color: #ff7a8a; /* لون مناسب */
+        color: #fff; /* لون أبيض مناسب */
         font-size: 15px; 
     }
 
-    /* سهم فوق الزر */
     #arrow {
         display: none;
         position: absolute;
-        top: -50%; /* يرفع السهم تمام فوق الزر */
+        top: -50%;
         left: 50%;
         transform: translateX(-50%) translateY(-50%);
         font-size: 28px;
-        color: #ff7a8a; /* لون مناسب */
+        color: yellow; /* رجعت اللون الأصفر */
         animation: bounce 1s infinite;
     }
 
@@ -101,7 +101,6 @@
 </head>
 <body>
 
-<!-- المحتوى الأصلي تم وضعه داخل الحاوية الجديدة -->
 <div class="phone-container">
     <div class="message-box">
         شـوفي يا عيوني، بسألك شويه أسئله لازم تجاوبي عشان توصلي للهديه (تم؟)
@@ -117,7 +116,6 @@
 
     <div id="hint">شفيه؟ حتي هنا تقولي (ها) اضغطي على (أوك يل)</div>
 </div>
-<!-- نهاية الحاوية -->
 
 <script>
     let haClicks = 0;
