@@ -2,25 +2,37 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<!-- الأبعاد الحقيقية لـ A05s هي 77.8mm عرض و 168.0mm طول -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>عيد ميلاد الهبه 💖</title>
 <style>
+/* 
+  تأكد من أن الـ body الآن هو الحاوية الخارجية التي تضبط الحجم 
+  عند العرض على متصفح الحاسوب سيعرض الأبعاد المحددة
+  أما على الجوال الحقيقي فسيأخذ حجم الشاشة الكامل
+*/
 body {
-    margin: 0;
+    margin: 0 auto; /* توسيط الحاوية في الشاشة الكبيرة */
     padding: 0;
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    min-height: 100svh; /* مناسب للجوال */
+    
+    /* الأبعاد التقريبية لهاتف A05s بالبكسل */
+    width: 390px;
+    height: 844px;
+    
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: hidden; /* منع التمرير الأفقي تمامًا */
+    position: relative; /* لتحديد مكان العناصر المطلقة */
 }
 
+/* لا نحتاج لـ login-box لتحديد العرض بعد الآن، فقد ضبطناه في body */
 .login-box {
     background: rgba(255,255,255,0.9);
     padding: 20px;
-    width: 280px;
+    width: 90%; /* أصبح عرض نسبي داخل الـ body/الهاتف */
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
@@ -81,33 +93,41 @@ canvas {
     left: 0;
     pointer-events: none;
     z-index: 998;
+    width: 100%;
+    height: 100%;
 }
 
 /* ملاحظة أسفل الشاشة */
 #footerNoteContainer {
-    position: fixed;
+    position: absolute; /* تغير من fixed إلى absolute لأن body هو الحاوية الرئيسية */
     bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
     text-align: center;
     z-index: 999;
+    padding: 0 5px; /* هوامش بسيطة من الجوانب */
 }
 
 #footerTitle {
-    font-size: 22px; /* أكبر من الفقرة */
+    font-size: 18px; /* أصغر قليلاً ليتناسب مع الحجم */
     color: white;
     font-weight: bold;
-    text-shadow: 0 0 6px #000;
+    text-shadow: 0 0 4px #000;
 }
 
 #footerNote {
-    font-size: 16px; /* أصغر شوي */
+    font-size: 13px; /* أصغر قليلاً */
     color: white;
     background: rgba(0,0,0,0.3);
-    padding: 6px 12px;
+    padding: 6px 10px;
     border-radius: 12px;
     backdrop-filter: blur(4px);
     margin-top: 4px;
+    
+    /* منع التفاف النص */
+    white-space: nowrap; 
+    overflow: hidden; /* إخفاء النص الزائد عن العرض */
+    text-overflow: ellipsis; /* إضافة ... للنص المخفي */
 }
 
 #footerNote span {
@@ -133,7 +153,7 @@ canvas {
 <div id="footerNoteContainer">
     <div id="footerTitle">ملاحظة</div>
     <div id="footerNote">
-        هذا الموقع مصمّم فقط لأجل <span>( هِبــه)</span> نور عيوني ❤️ وليس لأي شخص آخر  و(شكرأ)
+        هذا الموقع مصمّم فقط لأجل <span>( هِبــه)</span> نور عيوني ❤️ وليس لأي شخص آخر و(شكرأ)
     </div>
 </div>
 
@@ -147,11 +167,11 @@ function login() {
     const error = document.getElementById("error-msg");
     const loginBox = document.getElementById("loginBox");
     const stageText = document.getElementById("stageText");
-    const footerNote = document.getElementById("footerNoteContainer");
+    const footerNoteCont = document.getElementById("footerNoteContainer"); // تم تصحيح اسم المتغير
 
     if(u === correctUser && p === correctPass){
         // اختفاء الملاحظة فور الضغط
-        footerNote.style.display = "none";
+        footerNoteCont.style.display = "none"; // تم استخدام المتغير الصحيح
         loginBox.style.display = "none";
 
         // عرض النص الأول
@@ -187,6 +207,7 @@ function launchConfetti() {
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    // عند ضبط الابعاد على الـ body قد تحتاج لتغيير عرض وطول الكانفاس لـ 390 و 844 اذا كانت القياسات غير صحيحة تلقائيا
 
     const confetti = [];
     const colors = ['#ff69b4','#ffc0cb','#ffffff'];
