@@ -10,7 +10,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* خط أوضح وأجمل */
     overflow: hidden; /* منع التمرير */
     background: black;
     color: white;
@@ -37,8 +37,8 @@ video {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgba(0,0,0,0.5); /* تعتيم أقوى قليلاً */
-    backdrop-filter: blur(5px); /* تأثير الضبابية (Blur) هنا */
+    background: rgba(0,0,0,0.6); /* تعتيم أقوى قليلاً */
+    backdrop-filter: blur(8px); /* تأثير الضبابية (Blur) قوي هنا */
 }
 
 .hidden {
@@ -46,45 +46,54 @@ video {
 }
 
 #message {
-    font-size: 28px; /* تكبير الخط ليكون أوضح */
-    margin-bottom: 25px;
-    text-shadow: 0 0 10px #000, 0 0 10px #000;
-    padding: 0 15px; /* هوامش أكبر للنص الطويل */
-    line-height: 1.4; /* مسافة بين السطور */
+    font-size: 34px; /* كبيييير جداً ليكون أوضح */
+    margin-bottom: 30px;
+    text-shadow: 0 0 12px #000, 0 0 12px #000;
+    padding: 0 20px; /* هوامش أكبر للنص الطويل */
+    line-height: 1.5; /* مسافة بين السطور */
 }
 
 #countdown {
-    font-size: 60px; /* حجم كبير جداً للعد التنازلي */
+    font-size: 72px; /* حجم كبير جداً للعد التنازلي */
     color: #ff69b4; 
-    margin-top: 25px;
-    text-shadow: 0 0 8px #000;
+    margin-top: 30px;
+    text-shadow: 0 0 10px #000;
 }
 
 input, button {
-    padding: 12px 24px; /* حجم أكبر للمدخلات والأزرار */
-    font-size: 18px; /* خط أكبر */
-    border-radius: 12px;
+    padding: 16px 32px; /* حجم أكبر للمدخلات والأزرار */
+    font-size: 22px; /* خط أكبر */
+    border-radius: 15px;
     border: none;
     margin: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
 button {
     cursor: pointer;
-    background-color: #ff7a8a;
+    background-color: #ff4d6d; /* لون أحمر/وردي جذاب وقوي */
     color: white;
+    width: 80%; /* جعل الزر أعرض قليلاً */
+    max-width: 300px;
+}
+
+input {
+    width: 75%; /* جعل الإدخال أعرض قليلاً */
+    max-width: 300px;
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #333;
 }
 </style>
 </head>
 <body>
 
 <!-- فيديوهات -->
-<video id="video2" autoplay>
+<video id="video2" autoplay playsinline>
     <source src="2.mp4" type="video/mp4">
     متصفحك لا يدعم الفيديو.
 </video>
 
-<video id="video3" class="hidden">
+<video id="video3" class="hidden" playsinline>
     <source src="3.mp4" type="video/mp4">
     متصفحك لا يدعم الفيديو.
 </video>
