@@ -12,13 +12,12 @@ html, body {
     height: 100%;
     background: black;
     color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* خط أوضح */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
     text-align: center;
-    position: relative; /* لتموضع العناصر المطلقة بشكل صحيح */
+    position: relative;
 }
 
-/* حاوية لعناصر الواجهة لتطبيق Blur على الخلفية فقط */
 .ui-container {
     position: absolute;
     top: 0;
@@ -30,23 +29,24 @@ html, body {
 
 #text {
     position: absolute;
-    top: 40%; /* رفع النص قليلاً للأعلى */
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 28px; /* تكبير الخط */
+    font-size: 34px; /* كبييييير جداً */
     width: 90%;
     z-index: 3;
-    text-shadow: 0 0 10px #000, 0 0 10px #000; /* ظل أقوى */
-    padding: 10px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 10px;
+    text-shadow: 0 0 12px #000, 0 0 12px #000;
+    padding: 15px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 12px;
+    line-height: 1.4;
 }
 
 video {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* ملء الشاشة */
-    position: fixed; /* تثبيت الخلفية */
+    object-fit: cover;
+    position: fixed;
     top: 0;
     left: 0;
     display: none;
@@ -54,66 +54,67 @@ video {
 
 #timer {
     position: absolute;
-    top: 30px; /* رفعه للأعلى */
+    top: 40px; /* رفعه أكثر */
     left: 50%;
     transform: translateX(-50%);
-    font-size: 32px; /* تكبير المؤقت */
+    font-size: 44px; /* كبيييير جداً */
     color: #ff4d6d;
     display: none;
     z-index: 3;
-    text-shadow: 0 0 8px #000;
+    text-shadow: 0 0 10px #000;
 }
 
 #noteText {
     position: absolute;
-    top: 100px; /* رفعه للأعلى */
+    top: 120px; /* رفعه أكثر */
     left: 50%;
     transform: translateX(-50%);
     display: none;
-    background: rgba(0,0,0,0.6);
-    padding: 15px 25px;
-    border-radius: 15px;
-    font-size: 24px; /* تكبير الخط */
+    background: rgba(0,0,0,0.7);
+    padding: 20px 30px;
+    border-radius: 20px;
+    font-size: 28px; /* كبيييير جداً */
     font-weight: bold;
     z-index: 3;
-    backdrop-filter: blur(4px); /* تأثير ضبابية بسيط هنا */
+    backdrop-filter: blur(6px);
+    width: 80%;
 }
 
 #inputBox {
     display: none;
     position: absolute;
-    top: 50%; /* توسيط صندوق الإدخال في الشاشة */
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 3;
-    background: rgba(0,0,0,0.7);
-    padding: 20px 30px;
-    border-radius: 15px;
-    backdrop-filter: blur(8px); /* تأثير ضبابية قوي على الصندوق */
-    width: 80%; /* عرض مناسب للجوال */
+    background: rgba(0,0,0,0.85); /* خلفية أغمق */
+    padding: 30px; /* حجم الصندوق أكبر */
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    width: 85%;
 }
 
 #inputBox div {
-    font-size: 18px;
-    margin-bottom: 10px;
+    font-size: 24px; /* تكبير خط التعليمات */
+    margin-bottom: 15px;
 }
 
 input {
-    padding: 12px;
-    font-size: 16px;
-    width: 100%; /* ملء عرض الصندوق */
+    padding: 18px; /* حجم أكبر لخانة الإدخال */
+    font-size: 20px; /* خط أكبر في الإدخال */
+    width: 100%;
     text-align: center;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid #ccc;
-    box-sizing: border-box; /* لضمان أن العرض 100% يشمل البادينج والبوردر */
+    box-sizing: border-box;
 }
 
 button {
-    margin-top: 15px;
-    padding: 12px 30px;
-    font-size: 18px;
+    margin-top: 20px;
+    padding: 16px 40px; /* حجم أكبر للزر */
+    font-size: 22px; /* خط أكبر للزر */
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
     background-color: #ff4d6d;
     color: white;
@@ -134,7 +135,6 @@ button {
 
 <body>
 
-<!-- فيديو 4 و 5 يعملان كخلفية ثابتة -->
 <video id="video4" src="4.mp4" playsinline></video>
 <video id="video5" src="5.mp4" playsinline></video>
 
@@ -171,7 +171,6 @@ const audio = document.getElementById("audio");
 let remaining = 10;
 let totalTime = 600; // 10 دقائق
 
-// البداية (تم التأكد من صحة التسلسل)
 text.innerHTML = "ويت؟؟؟";
 setTimeout(() => {
     text.innerHTML = "هو أصلاً زلمة عشان تختاريه؟ 🤨";
@@ -182,7 +181,6 @@ setTimeout(() => {
     playVideo4();
 }, 5000);
 
-// فيديو 4
 function playVideo4() {
     video4.style.display = "block";
     video4.play();
@@ -192,7 +190,6 @@ function playVideo4() {
     };
 }
 
-// مقدمة العقاب
 function punishmentIntro() {
     text.innerHTML = "راح أوريكي العقاب الصح هسا";
     setTimeout(() => {
@@ -205,7 +202,6 @@ function punishmentIntro() {
     }, 6000);
 }
 
-// فيديو 5 + مؤقت
 function playVideo5() {
     video5.style.display = "block";
     video5.play();
@@ -218,7 +214,6 @@ function playVideo5() {
         if (totalTime <= 0) finish();
     }, 1000);
 
-    // بعد 10 ثواني
     setTimeout(() => {
         noteText.innerHTML = "أحس كذا حرام… أنا بحبك ";
         noteText.style.display = "block";
@@ -239,7 +234,6 @@ function updateTimer() {
     timerEl.innerHTML = `${m}:${s < 10 ? "0"+s : s}`;
 }
 
-// إدخال بحبك
 function showInput() {
     inputBox.style.display = "block";
 }
@@ -255,14 +249,12 @@ loveInput.addEventListener("input", () => {
     }
 });
 
-// إنهاء
 function finish() {
     inputBox.style.display = "none";
     timerEl.style.display = "none";
     video4.pause(); video4.style.display = "none";
     video5.pause(); video5.style.display = "none";
 
-    // نصوص النهاية
     text.style.display = "block";
     text.innerHTML = "رجعنا للفضاء الأسود 🌌";
     setTimeout(() => {
@@ -274,7 +266,6 @@ function finish() {
         setTimeout(() => {
             text.innerHTML = "لا تعيديها يا حلوتي 🫦";
 
-            // بعد النص الأخير، عرض الصورة + تشغيل الصوت
             setTimeout(() => {
                 text.style.display = "none";
                 finalImage.style.display = "block";
