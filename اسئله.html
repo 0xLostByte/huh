@@ -1,88 +1,77 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-<meta charset="UTF-8">
-<title>أسئلتك يا عيوني</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial;
-        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-        height: 100vh;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        flex-direction: column;
-        text-align: center;
-        padding-top: 20px;
-        transform: scale(1.2); /* زوم خفيف للموبايل */
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسئلتك يا عيوني</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
 
-    .message-box {
-        background: rgba(255,255,255,0.25);
-        padding: 20px 30px;
-        border-radius: 20px;
-        backdrop-filter: blur(5px);
-        color: white;
-        font-size: 18px;
-        max-width: 90%; /* مناسب للشاشة */
-        margin-bottom: 25px;
-        line-height: 1.4;
-    }
+        .message-box {
+            background: rgba(255,255,255,0.25);
+            padding: 18px 30px;
+            border-radius: 18px;
+            backdrop-filter: blur(5px);
+            color: white;
+            font-size: 20px;
+            max-width: 90%;
+            margin-bottom: 30px;
+        }
 
-    .btn-row {
-        display: flex; 
-        justify-content: center;
-        gap: 15px;
-        position: relative;
-        flex-wrap: wrap; /* لو الشاشة ضيقة يروح للأسفل */
-    }
+        .btn-row {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            width: 100%;
+        }
 
-    .btn-container {
-        position: relative;
-        display: inline-block;
-    }
+        button {
+            flex: 1;
+            padding: 14px;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            background-color: #ff7a8a;
+            color: white;
+            cursor: pointer;
+        }
 
-    button {
-        padding: 12px 20px;
-        font-size: 16px;
-        border: none;
-        border-radius: 12px;
-        background-color: #ff7a8a;
-        color: white;
-        cursor: pointer;
-        position: relative;
-    }
+        button:hover {
+            background-color: #ff5b72;
+        }
 
-    button:hover {
-        background-color: #ff5b72;
-    }
+        #hint {
+            display: none;
+            margin-top: 12px;
+            font-size: 16px;
+            color: #fff;
+        }
 
-    #hint {
-        display: none;
-        margin-top: 10px;
-        color: #fff;
-        font-size: 16px;
-    }
+        /* سهم فوق زر أوك يل */
+        #arrow {
+            display: none;
+            font-size: 28px;
+            color: yellow;
+            margin-bottom: 6px;
+            animation: bounce 1s infinite;
+        }
 
-    #arrow {
-        display: none;
-        position: absolute;
-        top: -30px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 28px;
-        color: yellow;
-        animation: bounce 1s infinite;
-    }
-
-    @keyframes bounce {
-        0%, 100% { transform: translate(-50%, 0); }
-        50% { transform: translate(-50%, -8px); }
-    }
-</style>
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+    </style>
 </head>
 <body>
 
@@ -90,11 +79,10 @@
     شـوفي يا عيوني، بسألك شويه أسئله لازم تجاوبي عشان توصلي للهديه (تم؟)
 </div>
 
+<div id="arrow">⬇️</div>
+
 <div class="btn-row">
-    <div class="btn-container">
-        <button id="okBtn" onclick="goQuiz()">أوك يل</button>
-        <div id="arrow">⬇️</div>
-    </div>
+    <button id="okBtn" onclick="goQuiz()">أوك يل</button>
     <button id="haBtn" onclick="showHint()">ها</button>
 </div>
 
@@ -115,143 +103,11 @@
         hint.style.display = "block";
         arrow.style.display = "block";
 
-        if(haClicks === 2){
+        if (haClicks === 2) {
             hint.textContent = "بربك! قولي والله";
         }
 
-        if(haClicks === 3){
-            hint.textContent = "لا تخليني اشفشفك هسا🫦😔";
-            setTimeout(() => {
-                hint.textContent = "يل اضغطي";
-            }, 1000);
-        }
-    }
-</script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-<meta charset="UTF-8">
-<title>أسئلتك يا عيوني</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial;
-        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-        height: 100vh;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        flex-direction: column;
-        text-align: center;
-        padding-top: 20px;
-        transform: scale(1.2); /* زوم خفيف للموبايل */
-    }
-
-    .message-box {
-        background: rgba(255,255,255,0.25);
-        padding: 20px 30px;
-        border-radius: 20px;
-        backdrop-filter: blur(5px);
-        color: white;
-        font-size: 18px;
-        max-width: 90%; /* مناسب للشاشة */
-        margin-bottom: 25px;
-        line-height: 1.4;
-    }
-
-    .btn-row {
-        display: flex; 
-        justify-content: center;
-        gap: 15px;
-        position: relative;
-        flex-wrap: wrap; /* لو الشاشة ضيقة يروح للأسفل */
-    }
-
-    .btn-container {
-        position: relative;
-        display: inline-block;
-    }
-
-    button {
-        padding: 12px 20px;
-        font-size: 16px;
-        border: none;
-        border-radius: 12px;
-        background-color: #ff7a8a;
-        color: white;
-        cursor: pointer;
-        position: relative;
-    }
-
-    button:hover {
-        background-color: #ff5b72;
-    }
-
-    #hint {
-        display: none;
-        margin-top: 10px;
-        color: #fff;
-        font-size: 16px;
-    }
-
-    #arrow {
-        display: none;
-        position: absolute;
-        top: -30px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 28px;
-        color: yellow;
-        animation: bounce 1s infinite;
-    }
-
-    @keyframes bounce {
-        0%, 100% { transform: translate(-50%, 0); }
-        50% { transform: translate(-50%, -8px); }
-    }
-</style>
-</head>
-<body>
-
-<div class="message-box">
-    شـوفي يا عيوني، بسألك شويه أسئله لازم تجاوبي عشان توصلي للهديه (تم؟)
-</div>
-
-<div class="btn-row">
-    <div class="btn-container">
-        <button id="okBtn" onclick="goQuiz()">أوك يل</button>
-        <div id="arrow">⬇️</div>
-    </div>
-    <button id="haBtn" onclick="showHint()">ها</button>
-</div>
-
-<div id="hint">شفيه؟ حتي هنا تقولي (ها) اضغطي على (أوك يل)</div>
-
-<script>
-    let haClicks = 0;
-
-    function goQuiz() {
-        window.location.href = "سؤال واحد.html";
-    }
-
-    function showHint() {
-        haClicks++;
-        const hint = document.getElementById("hint");
-        const arrow = document.getElementById("arrow");
-
-        hint.style.display = "block";
-        arrow.style.display = "block";
-
-        if(haClicks === 2){
-            hint.textContent = "بربك! قولي والله";
-        }
-
-        if(haClicks === 3){
+        if (haClicks === 3) {
             hint.textContent = "لا تخليني اشفشفك هسا🫦😔";
             setTimeout(() => {
                 hint.textContent = "يل اضغطي";
