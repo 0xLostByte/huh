@@ -1,146 +1,277 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>أسئلتك يا عيوني</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 <style>
+    /* الإعدادات العامة */
     body {
         margin: 0;
         padding: 0;
-        font-family: Arial;
-        /* الخلفية الخارجية الآن لون ثابت أو أي شيء */
-        background-color: #f0f0f0; 
+        font-family: 'Cairo', sans-serif;
+        background-color: #f0f0f0; /* لون الخلفية خارج إطار الهاتف */
         height: 100vh;
         display: flex;
-        justify-content: center; 
+        justify-content: center;
         align-items: center;
         text-align: center;
+        overflow: hidden;
     }
 
+    /* حاوية الهاتف */
     .phone-container {
         width: 390px;
         height: 844px;
-        
-        /* نقل التدرج اللوني إلى هنا */
         background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-        
         border-radius: 40px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        overflow: hidden;
-        
+        box-shadow: 0 0 25px rgba(0,0,0,0.2);
+        overflow: hidden; /* مهم عشان العناصر ما تطلع برا */
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding-top: 30px; 
-    }
-    
-    .message-box {
-        /* رجعت الألوان لتتناسب مع الخلفية الوردية */
-        background: rgba(255,255,255,0.25); 
-        padding: 15px 25px;
-        border-radius: 20px;
-        backdrop-filter: blur(5px);
-        color: white; 
-        font-size: 18px;
-        max-width: 300px; 
-        margin-bottom: 30px;
-        line-height: 1.4; 
-    }
-
-    .btn-row {
-        display: flex; 
-        justify-content: center;
-        gap: 15px; 
+        padding-top: 60px; /* مساحة من فوق */
         position: relative;
     }
 
+    /* خلفية القلوب المتحركة داخل الهاتف */
+    .hearts-bg {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        overflow: hidden; z-index: 0; pointer-events: none;
+    }
+    .heart {
+        position: absolute; bottom: -50px;
+        background-color: rgba(255, 255, 255, 0.3);
+        width: 30px; height: 30px; margin: 0 10px;
+        transform: rotate(-45deg);
+        animation: float 6s linear infinite;
+    }
+    .heart:before, .heart:after {
+        content: ""; position: absolute;
+        background-color: rgba(255, 255, 255, 0.3);
+        width: 30px; height: 30px; border-radius: 50%;
+    }
+    .heart:before { top: -15px; left: 0; }
+    .heart:after { left: 15px; top: 0; }
+    @keyframes float {
+        0% { transform: translateY(0) rotate(-45deg); opacity: 1; }
+        100% { transform: translateY(-800px) rotate(-45deg); opacity: 0; }
+    }
+
+    /* صندوق الرسالة */
+    .message-box {
+        background: rgba(255, 255, 255, 0.25);
+        padding: 20px 25px;
+        border-radius: 25px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        max-width: 320px;
+        margin-bottom: 50px;
+        line-height: 1.5;
+        z-index: 10;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    /* منطقة الأزرار */
     .btn-container {
         position: relative;
-        display: inline-block;
+        width: 100%;
+        height: 300px; /* مساحة لحركة الزر */
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        z-index: 10;
     }
 
     button {
-        padding: 10px 20px;
-        font-size: 16px;
+        padding: 12px 30px;
+        font-size: 18px;
+        font-family: 'Cairo', sans-serif;
+        font-weight: bold;
         border: none;
-        border-radius: 12px;
-        background-color: #ff7a8a;
+        border-radius: 15px;
         color: white;
         cursor: pointer;
-        position: relative;
+        transition: transform 0.2s, background 0.3s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        height: 50px; /* ارتفاع ثابت */
     }
 
-    button:hover {
-        background-color: #ff5b72;
+    /* زر الموافقة */
+    #okBtn {
+        background: linear-gradient(45deg, #ff7a8a, #ff5b72);
+        z-index: 20;
+    }
+    #okBtn:hover { transform: scale(1.05); }
+
+    /* زر الرفض المتحرك */
+    #haBtn {
+        background: linear-gradient(45deg, #a18cd1, #fbc2eb);
+        position: absolute; /* عشان نقدر نحركه */
+        left: 55%; /* مكانه المبدئي جنب زر الموافقة */
+        z-index: 20;
+        transition: top 0.3s ease, left 0.3s ease; /* حركة ناعمة */
     }
 
+    /* التلميح */
     #hint {
-        display: none;
-        margin-top: 10px; 
-        color: #fff; /* لون أبيض مناسب */
-        font-size: 15px; 
+        margin-top: -200px; /* تعديل المكان */
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        min-height: 30px;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        z-index: 10;
+        padding: 0 20px;
     }
 
+    /* سهم التوجيه */
     #arrow {
         display: none;
-        position: absolute;
-        top: -50%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        font-size: 28px;
-        color: yellow; /* رجعت اللون الأصفر */
-        animation: bounce 1s infinite;
+        font-size: 30px;
+        color: #fff06d;
+        animation: bounceArrow 1s infinite;
+        margin-top: 10px;
+        z-index: 10;
+    }
+    @keyframes bounceArrow {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(10px); }
     }
 
-    @keyframes bounce {
-        0%, 100% { transform: translate(-50%, -50%); }
-        50% { transform: translate(-50%, -60%); }
+    /* انميشن الانفجار */
+    @keyframes explode {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.5); background-color: #ff4d4d; opacity: 0.8; }
+        100% { transform: scale(2); opacity: 0; }
     }
+    .exploded {
+        animation: explode 0.5s forwards;
+        pointer-events: none;
+    }
+
+    /* --- الملاحظة السفلية --- */
+    #footerNoteContainer {
+        position: absolute;
+        bottom: 20px; /* مرفوعة بشكل مناسب */
+        left: 0; 
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+        animation: bounceNote 2.5s infinite ease-in-out;
+    }
+    @keyframes bounceNote {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+    
+    #footerTitle {
+        font-size: 14px; color: #fff; font-weight: bold;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        margin-bottom: 5px;
+    }
+    
+    #footerNote {
+        font-size: 13px;
+        color: white;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 10px 15px;
+        border-radius: 15px;
+        backdrop-filter: blur(5px);
+        width: 85%;
+        max-width: 350px;
+        line-height: 1.5;
+    }
+    
+    #footerNote span { color: #ff9a9e; font-weight: bold; }
+
 </style>
 </head>
 <body>
 
-<div class="phone-container">
+<div class="phone-container" id="containerArea">
+    
+    <div class="hearts-bg">
+        <div class="heart" style="left: 10%; animation-duration: 7s;"></div>
+        <div class="heart" style="left: 30%; animation-duration: 5s;"></div>
+        <div class="heart" style="left: 70%; animation-duration: 6s;"></div>
+        <div class="heart" style="left: 50%; animation-duration: 9s;"></div>
+    </div>
+
     <div class="message-box">
         شـوفي يا عيوني، بسألك شويه أسئله لازم تجاوبي عشان توصلي للهديه (تم؟)
     </div>
 
-    <div class="btn-row">
-        <div class="btn-container">
+    <div class="btn-container">
+        <div>
             <button id="okBtn" onclick="goQuiz()">أوك يل</button>
-            <div id="arrow">⬇️</div>
+            <div id="arrow">⬆️ اضغطي هنا</div>
         </div>
-        <button id="haBtn" onclick="showHint()">ها</button>
+
+        <button id="haBtn" onclick="moveHaBtn()">ها</button>
     </div>
 
-    <div id="hint">شفيه؟ حتي هنا تقولي (ها) اضغطي على (أوك يل)</div>
+    <div id="hint"></div>
+
+    <div id="footerNoteContainer">
+        <div id="footerTitle">ملاحظة</div>
+        <div id="footerNote">
+            هذا الموقع مصمّم فقط لأجل <span>( هِبــه)</span> نور عيوني ❤️ وليس لأي شخص آخر و(شكرأ)
+        </div>
+    </div>
+
 </div>
 
 <script>
     let haClicks = 0;
+    const haBtn = document.getElementById("haBtn");
+    const hint = document.getElementById("hint");
+    const arrow = document.getElementById("arrow");
+    const container = document.getElementById("containerArea");
 
     function goQuiz() {
         window.location.href = "سؤال واحد.html";
     }
 
-    function showHint() {
+    function moveHaBtn() {
         haClicks++;
-        const hint = document.getElementById("hint");
-        const arrow = document.getElementById("arrow");
-
+        
+        // إظهار التلميح والسهم
         hint.style.display = "block";
         arrow.style.display = "block";
 
-        if(haClicks === 2){
-            hint.textContent = "بربك! قولي والله";
-        }
+        if (haClicks < 4) {
+            // تغيير النصوص
+            if(haClicks === 1) hint.textContent = "شفيه؟ حتي هنا تقولي (ها)؟ اضغطي (أوك يل) 😉";
+            if(haClicks === 2) hint.textContent = "بربك! قولي والله 😂";
+            if(haClicks === 3) hint.textContent = "لا تخليني اشفشفك هسا🫦😔.. آخر فرصة!";
 
-        if(haClicks === 3){
-            hint.textContent = "لا تخليني اشفشفك هسا🫦😔";
+            // حساب مكان عشوائي (داخل حدود الهاتف)
+            // نستخدم أرقام تقريبية لضمان بقاء الزر داخل الشاشة
+            const randomX = Math.random() * (300 - 50) + 20; // عرض عشوائي
+            const randomY = Math.random() * (500 - 200) + 200; // ارتفاع عشوائي (نتجنب المنطقة العلوية جداً)
+
+            haBtn.style.left = randomX + "px";
+            haBtn.style.top = randomY + "px";
+            
+        } else {
+            // المرة الرابعة: انفجار
+            hint.textContent = "بوووووم! 💥 انفجر الزر.. ما ضل غير (أوك يل) 😎";
+            haBtn.classList.add("exploded"); // تشغيل انميشن الانفجار
+
+            // إخفاء الزر بعد الانفجار
             setTimeout(() => {
-                hint.textContent = "يل اضغطي";
-            }, 1000);
+                haBtn.style.display = "none";
+            }, 450);
         }
     }
 </script>
