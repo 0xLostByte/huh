@@ -37,39 +37,41 @@ video {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgba(0,0,0,0.3); /* إضافة تعتيم خفيف فوق الفيديو */
+    background: rgba(0,0,0,0.5); /* تعتيم أقوى قليلاً */
+    backdrop-filter: blur(5px); /* تأثير الضبابية (Blur) هنا */
 }
 
 .hidden {
-    display: none !important; /* استخدام !important لضمان الإخفاء */
+    display: none !important;
 }
 
 #message {
-    font-size: 24px; /* خط أصغر قليلاً وأوضح للجوال */
-    margin-bottom: 20px;
-    text-shadow: 0 0 8px #000;
-    padding: 0 10px; /* هوامش للنص الطويل */
+    font-size: 28px; /* تكبير الخط ليكون أوضح */
+    margin-bottom: 25px;
+    text-shadow: 0 0 10px #000, 0 0 10px #000;
+    padding: 0 15px; /* هوامش أكبر للنص الطويل */
+    line-height: 1.4; /* مسافة بين السطور */
 }
 
 #countdown {
-    font-size: 48px; /* حجم أكبر للعد التنازلي */
-    color: #ff69b4; /* لون وردي جميل */
-    margin-top: 20px;
-    text-shadow: 0 0 5px #000;
+    font-size: 60px; /* حجم كبير جداً للعد التنازلي */
+    color: #ff69b4; 
+    margin-top: 25px;
+    text-shadow: 0 0 8px #000;
 }
 
 input, button {
-    padding: 10px 20px;
-    font-size: 16px; /* خط أصغر للأزرار والمدخلات */
-    border-radius: 10px;
+    padding: 12px 24px; /* حجم أكبر للمدخلات والأزرار */
+    font-size: 18px; /* خط أكبر */
+    border-radius: 12px;
     border: none;
     margin: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 button {
     cursor: pointer;
-    background-color: #ff7a8a; /* لون موحد للأزرار */
+    background-color: #ff7a8a;
     color: white;
 }
 </style>
@@ -103,25 +105,16 @@ const loveInput = document.getElementById("loveInput");
 const returnBtn = document.getElementById("returnBtn");
 const countdown = document.getElementById("countdown");
 
-// تأكد من أن الفيديو 2 يبدأ التغطية الصحيحة فوراً
-video2.addEventListener('loadedmetadata', (event) => {
-    // يمكن إضافة بعض الأكواد هنا للتحكم أكثر لو لزم الأمر
-});
-
-
-// بعد انتهاء الفيديو 2
 video2.onended = () => {
     video2.classList.add("hidden");
     video3.classList.remove("hidden");
     video3.play();
 }
 
-// بعد انتهاء الفيديو 3
 video3.onended = () => {
     video3.classList.add("hidden");
     overlay.classList.remove("hidden");
 
-    // سلسلة النصوص الأولية قبل العقاب
     const texts = [
         { text: "تحبي الفراخ هيهيههي", duration: 3000 },
         { text: "انضحك عليك صح ههيهيهي", duration: 3000 },
@@ -135,15 +128,13 @@ video3.onended = () => {
         if(index < texts.length){
             message.textContent = texts[index].text;
 
-            // عند ظهور "هذا عقاب لك" نبدأ العدّاد + input
             if(index === 3){
-                countdown.classList.remove("hidden"); // العدّاد يظهر فورًا
+                countdown.classList.remove("hidden");
                 message.textContent = texts[index].text;
-                loveInput.classList.add("hidden"); // مخفي أولًا
+                loveInput.classList.add("hidden");
                 let timeLeft = 15;
                 countdown.textContent = timeLeft;
 
-                // بعد 5 ثوانٍ → يظهر input + نص "اكتبي بحبك"
                 setTimeout(()=>{
                     loveInput.classList.remove("hidden");
                     message.textContent = "اكتبي بحبك لين ما يخلص الوقت";
@@ -154,7 +145,7 @@ video3.onended = () => {
                     countdown.textContent = timeLeft;
                     if(timeLeft <= 0){
                         clearInterval(interval);
-                        returnBtn.classList.remove("hidden"); // زر يظهر بعد انتهاء العدّاد
+                        returnBtn.classList.remove("hidden");
                         returnBtn.onclick = () => {
                             if(loveInput.value.trim() === "بحبك"){
                                 overlay.classList.add("hidden");
@@ -162,7 +153,6 @@ video3.onended = () => {
                                 returnBtn.classList.add("hidden");
                                 countdown.classList.add("hidden");
 
-                                // عرض النص الجديد قبل فيديو 3.mp4
                                 overlay.classList.remove("hidden");
                                 message.textContent = "وأنا بموت عليكي يا روحي❤️";
 
@@ -178,12 +168,12 @@ video3.onended = () => {
                                         setTimeout(()=>{
                                             message.textContent = "خلاص امزح ارجعي";
                                             setTimeout(()=>{
-                                                window.location.href = " سؤال واحد.html"; // الصفحة الرئيسية
+                                                window.location.href = " سؤال واحد.html";
                                             },3000);
                                         },3000);
                                     }
 
-                                },2000); // مدة ظهور النص قبل تشغيل الفيديو
+                                },2000);
                             } else {
                                 alert("وين بحبك؟");
                             }
@@ -197,8 +187,7 @@ video3.onended = () => {
         }
     }
 
-    // تأخير بدء النصوص حتى انتهاء الفيديو الثاني بالكامل في حالة وجود تأخير تحميل
-    // الكود الحالي يعتمد على video3.onended لبدء السلسلة
+    showNextText();
 }
 </script>
 
