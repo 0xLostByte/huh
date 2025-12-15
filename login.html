@@ -57,7 +57,10 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.5);
     z-index: 10;
-    margin-top: -50px;
+    
+    /* هنا التعديل: رفعنا الصندوق لفوق أكثر */
+    margin-top: -120px; 
+    
     animation: fadeIn 1s ease-out;
 }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -98,10 +101,13 @@ button:active { transform: scale(0.95); }
 
 canvas { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 998; width: 100%; height: 100%; }
 
-/* --- الملاحظة السفلية (مرفوعة ومضبوطة) --- */
+/* --- الملاحظة السفلية (تم رفعها للأعلى) --- */
 #footerNoteContainer {
     position: absolute;
-    bottom: 40px; 
+    
+    /* هنا التعديل: غيرنا الرقم لـ 130 بيكسل عشان تطلع لفوق كثير */
+    bottom: 130px; 
+    
     left: 0; 
     width: 100%;
     display: flex;
@@ -184,36 +190,29 @@ const bgMusic = document.getElementById("bgMusic");
 // دالة لمحاولة تشغيل الصوت بأي طريقة
 function forcePlayMusic() {
     bgMusic.play().then(() => {
-        // اشتغل بنجاح
         console.log("Audio playing");
     }).catch(error => {
-        // لو فشل، انتظر أي لمسة من المستخدم
         console.log("Audio blocked, waiting for touch");
     });
 }
 
 window.onload = function() {
-    // 1. استرجاع الوقت (لو جاية من صفحة قبلها)
     const savedTime = sessionStorage.getItem("audioTime");
     if(savedTime) {
         bgMusic.currentTime = savedTime;
     }
     
-    // 2. محاولة التشغيل فوراً
     forcePlayMusic();
 
-    // 3. (الخطة ب) إضافة مستمع لأي ضغطة على الشاشة لتشغيل الصوت فوراً
-    // هذا يضمن أن الصوت يشتغل بمجرد ما تلمس الشاشة لتكتب الاسم
     document.body.addEventListener('click', function() {
         bgMusic.play();
-    }, { once: true }); // مرة واحدة تكفي
+    }, { once: true }); 
     
     document.body.addEventListener('touchstart', function() {
         bgMusic.play();
     }, { once: true });
 };
 
-// حفظ الوقت باستمرار
 bgMusic.addEventListener("timeupdate", () => {
     sessionStorage.setItem("audioTime", bgMusic.currentTime);
 });
@@ -226,7 +225,6 @@ function login() {
     const stageText = document.getElementById("stageText");
     const footerNoteCont = document.getElementById("footerNoteContainer");
 
-    // محاولة تشغيل الصوت مرة أخيرة عند الضغط على زر دخول
     bgMusic.play();
 
     if(u === correctUser && p === correctPass){
@@ -258,7 +256,6 @@ function login() {
     }
 }
 
-// ستايل الاهتزاز
 const style = document.createElement('style');
 style.innerHTML = `
 @keyframes shake {
@@ -270,7 +267,6 @@ style.innerHTML = `
 }`;
 document.head.appendChild(style);
 
-// الكانفاس والكونفيتي
 let confettiInterval;
 function launchConfetti() {
     const canvas = document.getElementById('confettiCanvas');
