@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>عيد ميلاد الهبه 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* إعدادات الصفحة */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+
+/* خلفية القلوب */
+.hearts-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    overflow: hidden; z-index: 0; pointer-events: none;
+}
+.heart {
+    position: absolute; bottom: -50px;
+    background-color: rgba(255, 255, 255, 0.4);
+    width: 30px; height: 30px; margin: 0 10px;
+    transform: rotate(-45deg);
+    animation: float 6s linear infinite;
+}
+.heart:before, .heart:after {
+    content: ""; position: absolute;
+    background-color: rgba(255, 255, 255, 0.4);
+    width: 30px; height: 30px; border-radius: 50%;
+}
+.heart:before { top: -15px; left: 0; }
+.heart:after { left: 15px; top: 0; }
+@keyframes float {
+    0% { transform: translateY(0) rotate(-45deg); opacity: 1; }
+    100% { transform: translateY(-800px) rotate(-45deg); opacity: 0; }
+}
+
+/* صندوق الدخول */
+.login-box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 25px 20px;
+    width: 85%;
+    max-width: 350px;
+    border-radius: 25px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    z-index: 10;
+    margin-top: -50px;
+    animation: fadeIn 1s ease-out;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+h2 { color: #ff69b4; margin: 0 0 20px 0; font-size: 24px; }
+
+input {
+    width: 100%; padding: 12px; margin: 8px 0;
+    border-radius: 12px; border: 1px solid #ffccd5;
+    background: #fff; font-size: 15px; outline: none;
+    box-sizing: border-box; font-family: 'Cairo', sans-serif;
+}
+input:focus { border-color: #ff7a8a; box-shadow: 0 0 8px rgba(255, 122, 138, 0.3); }
+
+button {
+    width: 100%; padding: 12px;
+    background: linear-gradient(45deg, #ff7a8a, #ff5b72);
+    border: none; border-radius: 12px;
+    font-size: 16px; font-weight: bold; color: white;
+    cursor: pointer; margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(255, 91, 114, 0.4);
+    font-family: 'Cairo', sans-serif; transition: 0.3s;
+}
+button:active { transform: scale(0.95); }
+
+.error { color: #e74c3c; margin-top: 10px; display: none; font-weight: bold; font-size: 13px; }
+
+/* رسائل الترحيب */
+#stageText {
+    display: none; position: absolute;
+    font-size: 24px; font-weight: bold; color: #fff;
+    background: rgba(255, 122, 138, 0.95);
+    padding: 20px 30px; border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    opacity: 0; transition: opacity 0.5s; z-index: 999;
+    width: 80%;
+}
+
+canvas { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 998; width: 100%; height: 100%; }
+
+/* --- الملاحظة السفلية (مرفوعة ومضبوطة) --- */
+#footerNoteContainer {
+    position: absolute;
+    bottom: 40px; 
+    left: 0; 
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    animation: bounce 2.5s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+#footerTitle {
+    font-size: 14px; color: #fff; font-weight: bold;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    margin-bottom: 5px; letter-spacing: 1px;
+}
+
+#footerNote {
+    font-size: 13px; 
+    color: white;
+    background: rgba(0, 0, 0, 0.6); 
+    padding: 10px 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.2);
+    
+    width: 85%; 
+    max-width: 350px;
+    white-space: normal; 
+    line-height: 1.6; 
+    text-align: center; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+#footerNote span {
+    color: #ff9a9e; font-weight: bold; font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" src="girl.mp3" loop autoplay></audio>
+
+<div class="hearts-bg">
+    <div class="heart" style="left: 10%; animation-duration: 7s;"></div>
+    <div class="heart" style="left: 30%; animation-duration: 5s;"></div>
+    <div class="heart" style="left: 70%; animation-duration: 6s;"></div>
+    <div class="heart" style="left: 50%; animation-duration: 9s;"></div>
+</div>
+
+<div class="login-box" id="loginBox">
+    <h2>منوره يا روحي 💗</h2>
+    <input type="text" id="username" placeholder="اكتبي اسمك">
+    <input type="password" id="password" placeholder="الباسورد">
+    <button onclick="login()">دخول</button>
+    <p class="error" id="error-msg">الاسم أو الباسورد غلط 😢</p>
+</div>
+
+<div id="stageText"></div>
+<canvas id="confettiCanvas"></canvas>
+
+<div id="footerNoteContainer">
+    <div id="footerTitle">⚠️ ملاحظة هامة</div>
+    <div id="footerNote">
+        هذا الموقع مصمّم فقط لأجل <span>( هِبــه)</span> نور عيوني ❤️ وليس لأي شخص آخر و(شكرأ)
+    </div>
+</div>
+
+<script>
+const correctUser = "1";
+const correctPass = "1";
+
+// --- إعداد الصوت القوي ---
+const bgMusic = document.getElementById("bgMusic");
+
+// دالة لمحاولة تشغيل الصوت بأي طريقة
+function forcePlayMusic() {
+    bgMusic.play().then(() => {
+        // اشتغل بنجاح
+        console.log("Audio playing");
+    }).catch(error => {
+        // لو فشل، انتظر أي لمسة من المستخدم
+        console.log("Audio blocked, waiting for touch");
+    });
+}
+
+window.onload = function() {
+    // 1. استرجاع الوقت (لو جاية من صفحة قبلها)
+    const savedTime = sessionStorage.getItem("audioTime");
+    if(savedTime) {
+        bgMusic.currentTime = savedTime;
+    }
+    
+    // 2. محاولة التشغيل فوراً
+    forcePlayMusic();
+
+    // 3. (الخطة ب) إضافة مستمع لأي ضغطة على الشاشة لتشغيل الصوت فوراً
+    // هذا يضمن أن الصوت يشتغل بمجرد ما تلمس الشاشة لتكتب الاسم
+    document.body.addEventListener('click', function() {
+        bgMusic.play();
+    }, { once: true }); // مرة واحدة تكفي
+    
+    document.body.addEventListener('touchstart', function() {
+        bgMusic.play();
+    }, { once: true });
+};
+
+// حفظ الوقت باستمرار
+bgMusic.addEventListener("timeupdate", () => {
+    sessionStorage.setItem("audioTime", bgMusic.currentTime);
+});
+
+function login() {
+    const u = document.getElementById("username").value;
+    const p = document.getElementById("password").value;
+    const error = document.getElementById("error-msg");
+    const loginBox = document.getElementById("loginBox");
+    const stageText = document.getElementById("stageText");
+    const footerNoteCont = document.getElementById("footerNoteContainer");
+
+    // محاولة تشغيل الصوت مرة أخيرة عند الضغط على زر دخول
+    bgMusic.play();
+
+    if(u === correctUser && p === correctPass){
+        footerNoteCont.style.display = "none";
+        loginBox.style.display = "none";
+
+        stageText.textContent = "شاطرة يا حلوتي 😍";
+        stageText.style.display = "block";
+        setTimeout(() => { stageText.style.opacity = 1; }, 10);
+
+        launchConfetti();
+
+        setTimeout(() => {
+            stageText.style.opacity = 0;
+            clearConfetti();
+            setTimeout(() => {
+                stageText.textContent = "اهخخ نفسي اشفشفك بس مقدرر😔";
+                stageText.style.opacity = 1;
+                setTimeout(() => {
+                    window.location.href = "اسئله.html";
+                }, 2000);
+            }, 500);
+        }, 2000);
+
+    } else {
+        error.style.display = "block";
+        loginBox.style.animation = "shake 0.3s";
+        setTimeout(() => { loginBox.style.animation = ""; }, 300);
+    }
+}
+
+// ستايل الاهتزاز
+const style = document.createElement('style');
+style.innerHTML = `
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}`;
+document.head.appendChild(style);
+
+// الكانفاس والكونفيتي
+let confettiInterval;
+function launchConfetti() {
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const confetti = [];
+    const colors = ['#ff69b4','#ffc0cb','#ffffff'];
+    for(let i=0; i<100; i++){
+        confetti.push({
+            x: Math.random()*canvas.width,
+            y: canvas.height + Math.random()*200,
+            r: Math.random()*6 + 4,
+            d: Math.random()*20 + 10,
+            color: colors[Math.floor(Math.random()*colors.length)],
+            tilt: Math.random()*10 - 10,
+            tiltAngle: 0,
+            tiltAngleIncremental: Math.random()*0.07 + 0.05
+        });
+    }
+    let angle = 0;
+    function draw() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(let i=0; i<confetti.length; i++){
+            let c = confetti[i];
+            ctx.beginPath();
+            ctx.lineWidth = c.r/2;
+            ctx.strokeStyle = c.color;
+            ctx.moveTo(c.x + c.tilt + c.r/4, c.y);
+            ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r/2);
+            ctx.stroke();
+        }
+        update();
+    }
+    function update() {
+        angle += 0.01;
+        for(let i=0;i<confetti.length;i++){
+            let c = confetti[i];
+            c.tiltAngle += c.tiltAngleIncremental;
+            c.y -= (Math.cos(angle + c.d) + 3 + c.r/2)/2;
+            c.tilt = Math.sin(c.tiltAngle) * 15;
+            if(c.y < -10){
+                c.x = Math.random()*canvas.width;
+                c.y = canvas.height + 10;
+            }
+        }
+    }
+    confettiInterval = setInterval(draw, 20);
+}
+function clearConfetti() {
+    clearInterval(confettiInterval);
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+</script>
+
+</body>
+</html>
