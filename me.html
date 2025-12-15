@@ -181,7 +181,7 @@
 <div class="ad-overlay" id="adLayer">
     <div id="adMessage"></div> 
     <h3 style="position:absolute; top:20px; left:20px; color:white; z-index:55; font-size:20px; font-weight:bold;">AD!</h3>
-    <video id="adVideo" src="ad1.mp4" playsinline muted></video>
+    <video id="adVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/ad1_pu40fk.mp4" playsinline muted></video>
     <div class="skip-btn" id="skipBtn" onclick="handleSkipClick()">Skip Ad</div>
 </div>
 
@@ -462,7 +462,9 @@
         
         showAdMessage("اوه اعلان"); // استخدام الدالة الجديدة
         
-        adVideo.src = "ad1.mp4"; 
+        // هنا تم استخدام الرابط الجديد في جافاسكربت في حالة أردنا إعادة تعيينه، 
+        // ولكن بما أننا غيرناه في HTML، فهذا السطر احتياطي لو احتجت تغير المصدر برمجياً
+        adVideo.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/ad1_pu40fk.mp4"; 
         adVideo.muted = false;
         
         adVideo.onended = function() {
