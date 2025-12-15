@@ -138,7 +138,7 @@
         font-weight: bold;
         text-shadow: 2px 2px 8px black;
         z-index: 70;
-        display: none; /* مخفي افتراضياً */
+        display: none; 
     }
     
     #loay-chat { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); padding: 15px 25px; border-radius: 25px; font-size: 18px; color: #00ffea; z-index: 100; display: none; width: 85%; text-align: center; border: 1px solid #00ffea; }
@@ -225,7 +225,7 @@
     let adStage = 1;
     let currentMistakes = 0; 
     let skipCountdownInterval;
-    let adMessageTimeout; // متغير لتتبع وقت اختفاء النص
+    let adMessageTimeout; 
 
     window.onload = function() {
         mainVideo.style.display = "block";
@@ -443,15 +443,14 @@
         });
     }
 
-    // === دالة جديدة لإظهار النص وإخفائه بعد 3 ثواني ===
     function showAdMessage(text) {
-        clearTimeout(adMessageTimeout); // مسح أي مؤقت سابق عشان ما يتداخل
+        clearTimeout(adMessageTimeout); 
         adMessage.innerText = text;
         adMessage.style.display = "block";
         
         adMessageTimeout = setTimeout(() => {
             adMessage.style.display = "none";
-        }, 3000); // يختفي بعد 3000 ملي ثانية (3 ثواني)
+        }, 3000); 
     }
 
     function triggerAdSequence() {
@@ -460,10 +459,9 @@
         quizBox.style.display = "none";
         adLayer.style.display = "flex";
         
-        showAdMessage("اوه اعلان"); // استخدام الدالة الجديدة
+        showAdMessage("اوه اعلان"); 
         
-        // هنا تم استخدام الرابط الجديد في جافاسكربت في حالة أردنا إعادة تعيينه، 
-        // ولكن بما أننا غيرناه في HTML، فهذا السطر احتياطي لو احتجت تغير المصدر برمجياً
+        // استخدام رابط ad1 من كلاودينري
         adVideo.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/ad1_pu40fk.mp4"; 
         adVideo.muted = false;
         
@@ -479,16 +477,17 @@
         if (adStage === 2) return; 
 
         adStage = 2;
-        adVideo.src = "ad2.mp4"; 
+        // استخدام رابط ad2 الجديد من كلاودينري
+        adVideo.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/ad2_y3kcd3.mp4"; 
         adVideo.loop = true; 
         adVideo.play();
         
         adVideo.onended = null;
 
-        showAdMessage("bruh كمان مره"); // استخدام الدالة الجديدة
+        showAdMessage("bruh كمان مره"); 
         
         setTimeout(() => {
-             showAdMessage("ما اعرف ابرمج بحاول اصلح المشكله"); // استخدام الدالة الجديدة
+             showAdMessage("ما اعرف ابرمج بحاول اصلح المشكله"); 
         }, 2000);
         
         startSkipCountdown();
@@ -531,8 +530,7 @@
                 }, 1500);
             }
         } else if (adStage === 2) {
-            // === الحل لمشكلة استمرار الصوت ===
-            adVideo.pause(); // إيقاف الفيديو تماماً
+            adVideo.pause(); // إيقاف الصوت والفيديو
             adVideo.currentTime = 0; 
             
             adLayer.style.display = "none"; 
