@@ -101,7 +101,7 @@
     </div>
 </div>
 
-<audio id="song8" autoplay loop></audio>
+<audio id="bgAudio" autoplay loop></audio>
 
 <script>
 // دالة زر الفراخ
@@ -123,16 +123,22 @@ function openMe(){
     window.location.href = "me.html";
 }
 
-// تشغيل الأغنية واستكمال الوقت
-const song = document.getElementById("song8");
-song.src = "8.mp3";
-const lastTime = localStorage.getItem('song8Time');
+// --- كود تشغيل الأغنية واستكمالها (معدل) ---
+const song = document.getElementById("bgAudio");
+song.src = "girl.mp3"; // هنا وضعنا اسم الأغنية الجديدة
+
+// نستخدم مفتاح خاص للأغنية دي عشان يحفظ مكانها بالتحديد
+const songKey = 'girlSongTime'; 
+
+const lastTime = localStorage.getItem(songKey);
 if(lastTime){
     song.currentTime = lastTime;
 }
+
 song.addEventListener('timeupdate', () => {
-    localStorage.setItem('song8Time', song.currentTime);
+    localStorage.setItem(songKey, song.currentTime);
 });
+// ------------------------------------------
 
 window.onload = () => {
     const btnFry = document.getElementById("btnFry");
