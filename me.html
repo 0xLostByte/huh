@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>تحدي لؤي</title>
+<title>تحدي التاسع النهائي</title>
 <style>
-    /* تنسيق الصفحة */
+    /* تنسيق الصفحة الأساسي */
     body {
         margin: 0; padding: 0; height: 100vh;
         background: black;
@@ -13,233 +13,445 @@
         overflow: hidden; color: white;
         text-align: center; display: flex;
         justify-content: center; align-items: center;
-        transition: background 1s ease;
+        transition: background 0.5s ease;
+        position: relative; /* مهم للقلوب */
     }
 
-    /* زر التشغيل الإجباري */
+    /* =========================================
+       تنسيقات مرحلة المقدمة الجديدة (بيبي بلو + قلوب + بلور)
+    ========================================= */
+    /* كلاس يضاف للـ body وقت المقدمة فقط */
+    body.baby-blue-intro-mode {
+        background-color: #E0F7FA !important; /* بيبي بلو */
+    }
+
+    /* حاوية القلوب الخلفية في المقدمة */
+    .intro-hearts-bg {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none; z-index: 1900; /* خلف النص مباشرة */
+        overflow: hidden;
+    }
+    .intro-heart-small {
+        position: absolute; bottom: -50px;
+        width: 15px; height: 15px; /* قلوب صغيرة */
+        background: rgba(255, 255, 255, 0.8);
+        transform: rotate(45deg);
+        animation: floatUpSmall 8s linear infinite;
+    }
+    .intro-heart-small::before, .intro-heart-small::after {
+        content: ""; position: absolute; width: 15px; height: 15px;
+        background: rgba(255, 255, 255, 0.8); border-radius: 50%;
+    }
+    .intro-heart-small::before { top: -7.5px; left: 0; }
+    .intro-heart-small::after { left: -7.5px; top: 0; }
+    @keyframes floatUpSmall {
+        0% { transform: translateY(0) rotate(45deg) scale(0.5); opacity: 0; }
+        20% { opacity: 0.9; }
+        100% { transform: translateY(-110vh) rotate(45deg) scale(1); opacity: 0; }
+    }
+
+    /* تعديل شاشة المقدمة الرئيسية */
+    #introOverlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: transparent; /* جعلناها شفافة لظهور الخلفية */
+        z-index: 2000; display: none;
+        flex-direction: column; justify-content: center; align-items: center;
+    }
+
+    /* المربع البلور الذي يحتوي النصوص */
+    .intro-glass-box {
+        background: rgba(255, 255, 255, 0.25); /* خلفية زجاجية */
+        backdrop-filter: blur(15px); /* تأثير البلور */
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        padding: 40px;
+        width: 85%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* تعديل لون النصوص داخل المربع لتكون واضحة على الخلفية الفاتحة */
+    .intro-glass-box #introText {
+        color: #333 !important; /* لون داكن للنص */
+        text-shadow: none !important;
+        font-size: 26px;
+    }
+    .intro-glass-box #introTimer {
+        color: #ff4d6d !important; /* لون وردي للعداد */
+        text-shadow: none !important;
+    }
+    /* =========================================
+       نهاية تنسيقات المقدمة الجديدة
+    ========================================= */
+
+
+    #introText {
+        font-size: 28px; font-weight: bold; color: white; text-align: center;
+        line-height: 1.8; max-width: 100%; white-space: pre-line;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    #introTimer {
+        font-size: 50px; font-weight: bold; color: #ff0055; margin-bottom: 30px;
+        display: none; text-shadow: 0 0 10px red;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* كلاسات تأثير القلتش */
+    .glitch-bg { animation: bg-flash 0.1s infinite; }
+    @keyframes bg-flash {
+        0% { background: red; } 25% { background: blue; }
+        50% { background: black; } 75% { background: white; }
+        100% { background: #1e3c72; }
+    }
+
+    /* --- تنسيق وضع غوجو --- */
+    .gojo-mode {
+        background-image: url('gogo.jpg') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        animation: purple-pulse 3s infinite alternate;
+    }
+    @keyframes purple-pulse {
+        0% { box-shadow: inset 0 0 50px #000; }
+        100% { box-shadow: inset 0 0 150px #8e44ad; }
+    }
+
+    /* تنسيق الصندوق الخاص بوضع غوجو */
+    .gojo-box-style {
+        background: rgba(10, 10, 15, 0.95) !important; 
+        border: 2px solid #9b59b6 !important; 
+        box-shadow: 0 0 30px rgba(155, 89, 182, 0.5) !important;
+        color: white !important;
+    }
+    .gojo-box-style .question { color: #fff !important; text-shadow: 0 0 5px #9b59b6; }
+    .gojo-box-style .timer { color: #ff0055 !important; }
+
+    /* النصوص العلوية */
+    #topOverlay {
+        position: fixed; top: 15%; left: 50%;
+        transform: translateX(-50%);
+        font-size: 30px; font-weight: 900; color: white;
+        text-shadow: 3px 3px 0 #000, 0 0 20px #8e44ad;
+        z-index: 400; display: none; text-align: center; width: 90%;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* تأثير الألوان */
+    #hollowEffect {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 350; display: none; pointer-events: none;
+        mix-blend-mode: hard-light; background-color: transparent;
+        transition: background-color 2s ease-in-out;
+    }
+
+    /* زر التشغيل */
     #start-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.8); z-index: 1000;
-        display: none;
-        flex-direction: column; justify-content: center; align-items: center;
-        cursor: pointer;
+        background: rgba(0,0,0,0.8); z-index: 1000; display: flex;
+        flex-direction: column; justify-content: center; align-items: center; cursor: pointer;
     }
     .start-btn {
         padding: 20px 40px; font-size: 24px; font-weight: bold;
-        background: #ff4d6d; color: white; border: none;
-        border-radius: 50px; cursor: pointer;
-        box-shadow: 0 0 20px rgba(255, 77, 109, 0.6);
-        animation: pulse 1.5s infinite;
+        background: #ff4d6d; color: white; border: none; border-radius: 50px; cursor: pointer;
+        box-shadow: 0 0 20px rgba(255, 77, 109, 0.6); animation: pulse 1.5s infinite;
     }
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-    /* مشغل الفيديو الرئيسي */
-    #mainVideo, #darkVideo { 
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-        object-fit: cover; z-index: 10; display: none; 
-    }
-    #darkVideo { z-index: 300; } /* فيديو النهاية */
-    
-    /* الحوار */
-    #dialogueOverlay { 
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-        background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); 
-        z-index: 20; display: none; flex-direction: column; 
-        justify-content: center; align-items: center; padding: 20px; 
-    }
-    .dialogue-text { font-size: 30px; font-weight: bold; color: #fff; text-shadow: 0 0 10px #ff69b4; opacity: 0; transition: opacity 0.5s; }
-
-    /* النصوص في وسط الشاشة (للسيناريو الجديد) */
-    #centerOverlay {
-        position: fixed; top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 35px; font-weight: bold; color: white;
-        text-shadow: 2px 2px 10px red, -2px -2px 10px blue;
-        z-index: 400; display: none;
-        text-align: center;
-        width: 90%;
-        line-height: 1.5;
-    }
+    /* ميديا */
+    #mainVideo, #darkVideo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 10; display: none; }
+    #darkVideo { z-index: 300; } 
+    #flashImage { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 290; display: none; }
 
     /* صندوق الأسئلة */
     .glass-box { 
-        position: relative; z-index: 30; 
-        background: rgba(255, 255, 255, 0.15); 
+        position: relative; z-index: 30; background: rgba(255, 255, 255, 0.15); 
         backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
-        border-radius: 20px; padding: 20px; 
-        width: 90%; max-width: 400px; 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-        border: 1px solid rgba(255,255,255,0.3); 
-        display: none; 
-        transition: transform 0.3s; 
-        max-height: 90vh;
-        overflow-y: auto;
+        border-radius: 20px; padding: 20px; width: 90%; max-width: 400px; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3); 
+        display: none; max-height: 90vh; overflow-y: auto; transition: all 0.5s ease;
     }
 
-    /* نافذة الفيديو المربع */
+    /* عداد الأسئلة فوق الصندوق */
+    .q-counter {
+        font-size: 22px; color: white; font-weight: bold; margin-bottom: 15px;
+        text-shadow: 0 0 5px black; font-family: sans-serif;
+    }
+
+    /* بوب اب الخطأ */
     #wrongPopup {
-        position: relative; 
-        width: 100%; height: 200px; 
-        background: black; border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        margin-bottom: 20px; display: none; overflow: hidden;
+        position: relative; width: 100%; height: 200px; background: black; border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-bottom: 20px; display: none; overflow: hidden;
     }
     #wrongVideo { width: 100%; height: 100%; object-fit: cover; }
-    
     #wrongOverlayText {
-        position: absolute; bottom: 20px; left: 50%; 
-        transform: translateX(-50%); width: 90%;
-        color: white; font-size: 16px; font-weight: bold;
-        background: rgba(0, 0, 0, 0.6); 
-        padding: 8px 12px; border-radius: 20px;
-        text-shadow: 1px 1px 3px black; z-index: 5; pointer-events: none;
+        position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%;
+        color: white; font-size: 16px; font-weight: bold; background: rgba(0, 0, 0, 0.6); 
+        padding: 8px 12px; border-radius: 20px; pointer-events: none; z-index: 5;
     }
 
     .timer { font-size: 40px; font-weight: bold; color: #ffeb3b; margin-bottom: 15px; }
-    .question { font-size: 24px; margin-bottom: 25px; font-weight: bold; line-height: 1.4; dir: ltr; }
-    .options-locked { pointer-events: none; opacity: 0.8; }
-    .option-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: rgba(255,255,255,0.9); color: #333; border: none; border-radius: 12px; font-size: 18px; cursor: pointer; transition: 0.2s; direction: ltr; }
+    .question { font-size: 22px; margin-bottom: 20px; font-weight: bold; line-height: 1.4; dir: rtl; }
+    .option-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(255,255,255,0.9); color: #333; border: none; border-radius: 12px; font-size: 16px; cursor: pointer; transition: 0.2s; direction: rtl; }
     .option-btn:active { transform: scale(0.95); }
+    
     .correct-highlight { background-color: #2ecc71 !important; color: white !important; box-shadow: 0 0 15px #2ecc71; transform: scale(1.05); }
     .wrong-highlight { background-color: #e74c3c !important; color: white !important; }
+    .options-locked { pointer-events: none; opacity: 0.8; }
 
     #praiseText {
-        color: white; font-size: 28px; font-weight: bold;
-        text-shadow: 0 0 15px #fff, 0 0 20px #ff4d6d;
-        margin-bottom: 15px; display: none;
-        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        color: white; font-size: 28px; font-weight: bold; text-shadow: 0 0 15px #fff, 0 0 20px #ff4d6d;
+        margin-bottom: 15px; display: none; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
     /* الإعلانات */
     .ad-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 50; display: none; flex-direction: column; justify-content: center; align-items: center; }
-    .ad-overlay video { width: 100%; height: auto; object-fit: contain; }
-    
+    .ad-overlay video { width: 100%; height: auto; object-fit: contain; max-height: 80vh; }
     .skip-btn { 
-        position: absolute; bottom: 30px; right: 20px; 
-        background: #5c4b18; color: #ccc; 
-        padding: 12px 25px; border: 2px solid #3d3210; 
-        border-radius: 0px; cursor: pointer; display: none; 
-        z-index: 60; font-size: 16px; font-family: 'Courier New', Courier, monospace;
+        position: absolute; bottom: 50px; right: 20px; background-color: #f1c40f; color: black; 
+        padding: 15px 30px; border: none; font-weight: bold; border-radius: 5px; cursor: pointer; z-index: 60; 
+        font-size: 18px; font-family: Arial, sans-serif; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: none; 
     }
-    
+    .skip-btn:disabled { background-color: #7f8c8d; color: #bdc3c7; cursor: not-allowed; }
     #adMessage {
-        position: absolute; top: 15%; width: 100%;
-        text-align: center; color: white; font-size: 28px;
-        font-weight: bold; text-shadow: 2px 2px 8px black;
-        z-index: 70; display: none; 
+        position: absolute; top: 20%; width: 100%; text-align: center; color: white; font-size: 28px;
+        font-weight: bold; text-shadow: 2px 2px 8px black; z-index: 70; display: none; 
+        font-family: 'Courier New', Courier, monospace;
     }
     
-    #loay-chat { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); padding: 15px 25px; border-radius: 25px; font-size: 18px; color: #00ffea; z-index: 100; display: none; width: 85%; text-align: center; border: 1px solid #00ffea; }
-
-    /* === ستايل نوافذ الفيروس === */
-    .virus-window {
-        position: absolute;
-        width: 300px; 
-        height: 200px;
-        /* بدون إطار أحمر */
-        box-shadow: 0 0 15px rgba(0,0,0,0.5);
-        z-index: 200;
-        animation: popUpAnim 0.1s ease-out;
-        background: black;
-        overflow: hidden;
+    #centerOverlay {
+        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        font-size: 35px; font-weight: bold; color: white; text-shadow: 2px 2px 10px red, -2px -2px 10px blue;
+        z-index: 400; display: none; text-align: center; width: 90%; line-height: 1.5;
+        font-family: 'Courier New', Courier, monospace;
     }
-    .virus-window video {
-        width: 100%; height: 100%; object-fit: cover;
-    }
-    @keyframes popUpAnim { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
+    /* الفايروس */
+    .virus-window { position: absolute; width: 300px; height: 200px; box-shadow: 0 0 15px rgba(0,0,0,0.5); z-index: 200; background: black; overflow: hidden; }
+    .virus-window img { width: 100%; height: 100%; object-fit: cover; }
+    #virusContainer { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:190; display:none; }
     #confettiCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; }
+
+    /* --- شاشة النتائج النهائية --- */
+    #finalResultOverlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.95); z-index: 500; display: none;
+        flex-direction: column; justify-content: center; align-items: center;
+        color: white; text-align: center; overflow-y: auto; padding: 20px 0;
+    }
+    
+    /* العداد الدائري */
+    .circular-chart-container { width: 160px; height: 160px; margin-bottom: 20px; }
+    .circular-chart { display: block; margin: 0 auto; max-width: 100%; max-height: 100%; }
+    .circle-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 2.5; }
+    .circle { fill: none; stroke-width: 2.5; stroke-linecap: round; transition: stroke-dasharray 1s ease-out; }
+    .percentage { fill: #fff; font-family: 'Segoe UI', sans-serif; font-weight: bold; font-size: 0.5em; text-anchor: middle; }
+    .score-green-stroke { stroke: #2ecc71; }
+    .score-yellow-stroke { stroke: #f1c40f; }
+    .score-red-stroke { stroke: #e74c3c; }
+
+    .result-msg { font-size: 22px; margin-bottom: 20px; max-width: 85%; line-height: 1.5; white-space: pre-line; }
+    
+    .subjects-list { text-align: right; width: 85%; max-width: 400px; margin-bottom: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; padding: 10px; }
+    .subject-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #444; font-size: 16px; }
+    
+    .final-video-container { width: 90%; max-width: 500px; height: 280px; margin-top: 10px; position: relative; border: 2px solid white; border-radius: 10px; overflow: hidden; }
+    #finalVideo { width: 100%; height: 100%; object-fit: cover; }
+    #videoOverlayText { position: absolute; top: 10px; width: 100%; text-align: center; font-size: 18px; font-weight: bold; color: white; text-shadow: 2px 2px 4px black; z-index: 10; }
+
+    /* عداد الرعب التنازلي */
+    #horrorCountdown {
+        font-size: 30px; font-weight: bold; color: white; margin-bottom: 15px; 
+        font-family: 'Courier New', Courier, monospace; text-shadow: 0 0 10px red;
+        display: none; 
+    }
+
+    /* حاوية الفيديوهات المرعبة (Analog) */
+    #analogContainer {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: black; z-index: 2000; display: none;
+        flex-direction: column; justify-content: center; align-items: center;
+    }
+    #analogVideo { width: 100%; height: 100%; object-fit: cover; }
+    #logImage { position: absolute; width: 100%; height: 100%; object-fit: contain; display: none; z-index: 2005; background: black; }
 </style>
 </head>
 <body>
 
-<audio id="yayAudio" src="yay.mp3"></audio>
-<audio id="partyAudio" src="party.mp3"></audio>
-<audio id="wrongAudio" src="wrong1.mp3"></audio>
+<audio id="yayAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406781/yay_sbhm4c.mp3"></audio>
+<audio id="yayCatAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406781/yay_cat_jqd673.mp3"></audio> 
+<audio id="metalAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406781/metal_ufsfqz.mp3"></audio>
+<audio id="wrongAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406783/wrong1_kecate.mp3"></audio>
+<audio id="gojoAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406781/gojo_qibypb.mp3"></audio>
+<audio id="vhsAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406781/VHS_vdxoes.mp3"></audio> 
 
 <canvas id="confettiCanvas"></canvas>
+
+<div id="introOverlay">
+    <div class="intro-glass-box">
+        <div id="introTimer">15</div>
+        <div id="introText"></div>
+    </div>
+</div>
 
 <div id="start-overlay">
     <button class="start-btn" onclick="playForcedManually()">تعبي ايدك الحلوه و اضغطي</button>
 </div>
 
 <video id="mainVideo" playsinline></video>
-<video id="darkVideo" src="dark1.mp4" playsinline></video>
-
-<div id="dialogueOverlay">
-    <div class="dialogue-text" id="dialogueText"></div>
-</div>
+<img id="flashImage" src="scary.jpg" alt="Flash Image">
+<video id="darkVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/dark1_v2kbmk.mp4" playsinline></video>
 
 <div id="centerOverlay"></div>
-
+<div id="topOverlay"></div>
+<div id="hollowEffect"></div>
 <div id="virusContainer"></div>
+
+<div id="finalResultOverlay">
+    <div id="horrorCountdown"></div>
+    <div class="circular-chart-container">
+        <svg class="circular-chart" viewBox="0 0 36 36">
+            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path id="scoreCircle" class="circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <text x="18" y="20.35" class="percentage" id="scoreText">0/14</text>
+        </svg>
+    </div>
+    <div id="resultMsg" class="result-msg"></div>
+    <div class="subjects-list" id="subjectsList"></div>
+    <div class="final-video-container">
+        <div id="videoOverlayText"></div>
+        <video id="finalVideo" playsinline></video>
+    </div>
+</div>
+
+<div id="analogContainer">
+    <div class="ad-marker" style="position:absolute; top:20px; left:20px; background:rgba(0,0,0,0.5); padding:5px 10px; color:white; z-index:2010;">Ad &bull; 0:30</div>
+    <video id="analogVideo" src="" playsinline></video>
+    <img id="logImage" src="LOG.png">
+    <button class="skip-btn" id="analogSkipBtn" style="z-index:2020;" onclick="handleAnalogSkip()">Skip Ad</button>
+</div>
 
 <div class="glass-box" id="quizBox">
     <div id="wrongPopup">
-        <video id="wrongVideo" src="wrong.mp4" playsinline></video>
+        <video id="wrongVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/wrong_xy2fsr.mp4" playsinline></video>
         <div id="wrongOverlayText"></div>
     </div>
+    
+    <div class="q-counter" id="qCounter"></div>
+    
     <div id="praiseText"></div> 
     <div class="timer" id="timer">60</div>
-    <div class="question" id="qText" dir="ltr"></div>
+    <div class="question" id="qText" dir="rtl"></div>
     <div id="options"></div>
 </div>
 
 <div class="ad-overlay" id="adLayer">
     <div id="adMessage"></div> 
-    <h3 style="position:absolute; top:20px; left:20px; color:white; z-index:55; font-size:20px; font-weight:bold;">AD!</h3>
-    <video id="adVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/ad1_pu40fk.mp4" playsinline muted></video>
-    <div class="skip-btn" id="skipBtn" onclick="handleSkipClick()">Skip Ad</div>
+    <div style="position:absolute; top:20px; left:20px; background:rgba(0,0,0,0.5); padding:5px 10px; color:white; font-weight:bold;">Ad &bull; 0:30</div>
+    <video id="adVideo" src="" playsinline></video>
+    <button class="skip-btn" id="skipBtn" onclick="handleSkipClick()">Skip Ad</button>
 </div>
-
-<div id="loay-chat"></div>
 
 <script>
     const status = sessionStorage.getItem("meStatus");
     const startOverlay = document.getElementById("start-overlay");
     const mainVideo = document.getElementById("mainVideo");
     const darkVideo = document.getElementById("darkVideo");
-    const dialogueOverlay = document.getElementById("dialogueOverlay");
-    const dialogueText = document.getElementById("dialogueText");
-    const centerOverlay = document.getElementById("centerOverlay");
+    const flashImage = document.getElementById("flashImage"); 
     const quizBox = document.getElementById("quizBox");
     const adLayer = document.getElementById("adLayer");
     const skipBtn = document.getElementById("skipBtn");
-    const loayChat = document.getElementById("loay-chat");
     const adVideo = document.getElementById("adVideo");
-    const adMessage = document.getElementById("adMessage");
     const virusContainer = document.getElementById("virusContainer");
-    const yayAudio = document.getElementById("yayAudio");
-    const partyAudio = document.getElementById("partyAudio");
+    
+    const introOverlay = document.getElementById("introOverlay");
+    const introText = document.getElementById("introText");
+    const introTimer = document.getElementById("introTimer");
+
+    const topOverlay = document.getElementById("topOverlay");
+    const hollowEffect = document.getElementById("hollowEffect");
+    
     const wrongAudio = document.getElementById("wrongAudio");
+    const yayAudio = document.getElementById("yayAudio");
+    const yayCatAudio = document.getElementById("yayCatAudio");
+    const metalAudio = document.getElementById("metalAudio");
+    const gojoAudio = document.getElementById("gojoAudio");
+    const vhsAudio = document.getElementById("vhsAudio");
+    
     const praiseText = document.getElementById("praiseText");
     const wrongPopup = document.getElementById("wrongPopup");
     const wrongVideo = document.getElementById("wrongVideo");
     const wrongOverlayText = document.getElementById("wrongOverlayText");
     const optionsDiv = document.getElementById("options");
+    const qCounter = document.getElementById("qCounter");
 
-    // === الأسئلة ===
-    const questions = [
-        { q: "5 + 6 = ?", opts: ["10", "11", "12"], ans: 1, time: 60 },
-        { q: "10 + 2 × 5 = ?", opts: ["60", "20", "25"], ans: 1, time: 40 },
-        { q: "50 - 5 × 5 + 5 = ?", opts: ["0", "230", "30"], ans: 2, time: 30 },
-        { q: "ما هو الشيء الذي يكتب ولا يقرأ؟", opts: ["القلم", "الساعة", "الكتاب"], ans: 0, time: 20 },
-        { q: "بسرعة! 50 ÷ 2 + 5؟", opts: ["30", "25", "35"], ans: 0, time: 10 }
-    ];
+    // عناصر النتائج
+    const finalResultOverlay = document.getElementById("finalResultOverlay");
+    const scoreCircle = document.getElementById("scoreCircle"); 
+    const scoreText = document.getElementById("scoreText");        
+    const resultMsg = document.getElementById("resultMsg");
+    const subjectsListDiv = document.getElementById("subjectsList");
+    const finalVideo = document.getElementById("finalVideo");
+    const videoOverlayText = document.getElementById("videoOverlayText");
+    const horrorCountdown = document.getElementById("horrorCountdown");
 
+    // عناصر الرعب Analog
+    const analogContainer = document.getElementById("analogContainer");
+    const analogVideoPlayer = document.getElementById("analogVideo");
+    const logImage = document.getElementById("logImage");
+    const analogSkipBtn = document.getElementById("analogSkipBtn");
+
+    const virusImageSrc = "exe.png"; 
     let qIndex = 0;
     let timerInterval;
+    let adTimerInterval; 
     let skipAttempts = 0;
     let currentMistakes = 0; 
+    let ad1Shown = false; 
+    let glitchSoundInterval; 
     const delay = (ms) => new Promise(res => setTimeout(res, ms));
+
+    let subjectScores = {
+        "رياضيات": { correct: 0, total: 2 },
+        "حاسوب": { correct: 0, total: 2 },
+        "لغة عربية": { correct: 0, total: 2 },
+        "فيزياء": { correct: 0, total: 2 },
+        "علوم أرض": { correct: 0, total: 2 },
+        "أحياء": { correct: 0, total: 2 },
+        "كيمياء": { correct: 0, total: 2 }
+    };
+
+    const questions = [
+        { q: "حل المعادلة: 2س - 4 = 6", opts: ["5", "2", "3"], ans: 0, time: 60, type: 'math', subject: "رياضيات" },
+        { q: "تحليل الفرق بين مربعين س² - 25 هو:", opts: ["(س-5)(س-5)", "(س-5)(س+5)", "(س+5)(س+5)"], ans: 1, time: 60, type: 'math', subject: "رياضيات" },
+        { q: "وحدة المعالجة المركزية يرمز لها بـ:", opts: ["CPU", "RAM", "ROM"], ans: 0, time: 30, type: 'science', subject: "حاسوب" },
+        { q: "لغة تستخدم لتصميم صفحات الويب:", opts: ["Python", "C++", "HTML"], ans: 2, time: 30, type: 'science', subject: "حاسوب" },
+        { q: "كان وأخواتها تدخل على الجملة الاسمية فـ:", opts: ["ترفع المبتدأ وتنصب الخبر", "تنصب المبتدأ وترفع الخبر", "تجر المبتدأ والخبر"], ans: 0, time: 40, type: 'science', subject: "لغة عربية" },
+        { q: "شاعر أردني لقب بـ عرار:", opts: ["مصطفى وهبي التل", "حيدر محمود", "محمود درويش"], ans: 0, time: 30, type: 'science', subject: "لغة عربية" },
+        { q: "لكل فعل رد فعل مساوٍ له في المقدار ومعاكس له في الاتجاه، قانون:", opts: ["نيوتن الأول", "نيوتن الثاني", "نيوتن الثالث"], ans: 2, time: 40, type: 'science', subject: "فيزياء" },
+        { q: "وحدة قياس الشغل هي:", opts: ["نيوتن", "جول", "واط"], ans: 1, time: 40, type: 'science', subject: "فيزياء" },
+        { q: "الصخور التي تنتج من تبريد الماكما تسمى:", opts: ["رسوبية", "نارية", "متحولة"], ans: 1, time: 30, type: 'science', subject: "علوم أرض" },
+        { q: "أكثر العناصر شيوعاً في القشرة الأرضية:", opts: ["الحديد", "الأكسجين", "السيليكون"], ans: 1, time: 30, type: 'science', subject: "علوم أرض" },
+        { q: "الوحدة الأساسية لبناء جسم الكائن الحي:", opts: ["النسيج", "الخلية", "العضو"], ans: 1, time: 30, type: 'science', subject: "أحياء" },
+        { q: "يتم هضم البروتينات في:", opts: ["الفم", "المعدة", "الأمعاء الغليظة"], ans: 1, time: 30, type: 'science', subject: "أحياء" },
+        { q: "رمز عنصر البوتاسيوم:", opts: ["P", "K", "Pt"], ans: 1, time: 20, type: 'science', subject: "كيمياء" },
+        { q: "تفاعل الحمض مع القاعدة ينتج:", opts: ["ملح وماء", "حمض مركز", "قاعدة مركزة"], ans: 0, time: 40, type: 'science', subject: "كيمياء" }
+    ];
 
     window.onload = function() {
         mainVideo.style.display = "block";
-        resizeCanvas();
+        resizeCanvas(); 
         if (status === 'forced') {
             startOverlay.style.display = "flex";
-            mainVideo.src = "forced.mp4";
+            // فيديو forced برابط Cloudinary
+            mainVideo.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/forced_zzqcdg.mp4";
         } else {
             startOverlay.style.display = "none";
             startLoveScenario();
@@ -253,52 +465,99 @@
         mainVideo.play();
         mainVideo.onended = () => {
             mainVideo.style.display = "none";
-            showDialogueSequence([
-                { text: "ما توقعت انو اكون اخر واحد😔", time: 3000 },
-                { text: "في اسئله لازم تجاوبي عليها هيهي", time: 3000 },
-                { text: "good luck", time: 2000 }
-            ]);
+            playForcedIntroSequence();
         };
     }
 
     function startLoveScenario() {
-        mainVideo.src = "homer.mp4";
+        // فيديو homer برابط Cloudinary
+        mainVideo.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/homer_turvym.mp4";
         mainVideo.muted = true;
-        var p = mainVideo.play();
-        if(p !== undefined){
-            p.then(_=>{ setTimeout(()=>{ mainVideo.muted = false; }, 1000); }).catch(e=>{ console.log("Autoplay blocked"); });
-        }
+        let p = mainVideo.play();
+        if(p !== undefined) p.then(_=>{ setTimeout(()=>{ mainVideo.muted = false; }, 1000); }).catch(e=>{});
         mainVideo.onended = () => {
-            mainVideo.src = "kiss.mp4";
+            // فيديو kiss برابط Cloudinary
+            mainVideo.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/kiss_ia8psb.mp4";
             mainVideo.muted = false;
             mainVideo.play();
             mainVideo.onended = () => {
                 mainVideo.style.display = "none";
-                showDialogueSequence([
-                    { text: "نورتي ي عيوني كمان مره", time: 3000 },
-                    { text: "شوفي بيكون في اسئله لازم تجاوبي عليها واحبك", time: 3000 },
-                    { text: "وصح انتبهي تجاوبي غلط", time: 5000 }, 
-                    { text: "good luck", time: 2000 }
-                ]);
+                playNormalIntroSequence();
             };
         };
     }
 
-    function showDialogueSequence(messages) {
-        dialogueOverlay.style.display = "flex";
-        let i = 0;
-        function showNext() {
-            if (i < messages.length) {
-                dialogueText.style.opacity = 0;
-                dialogueText.innerText = messages[i].text;
-                setTimeout(() => { dialogueText.style.opacity = 1; }, 100);
-                setTimeout(() => { i++; showNext(); }, messages[i].time);
-            } else {
-                dialogueOverlay.style.display = "none";
-                startQuiz();
-            }
+    // === دالة المقدمة الطبيعية ===
+    async function playNormalIntroSequence() {
+        document.body.classList.add('baby-blue-intro-mode');
+        
+        const heartsContainer = document.createElement('div');
+        heartsContainer.className = 'intro-hearts-bg';
+        document.body.appendChild(heartsContainer);
+        for (let i = 0; i < 30; i++) {
+             const heart = document.createElement('div');
+             heart.className = 'intro-heart-small';
+             heart.style.left = Math.random() * 100 + '%';
+             heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+             heart.style.animationDelay = Math.random() * 5 + 's';
+             heartsContainer.appendChild(heart);
         }
-        showNext();
+
+        introOverlay.style.display = "flex";
+        
+        introText.innerText = "منورة يا عمري ❤️";
+        await delay(3000);
+        
+        introText.innerText = "شكراً يا روحي إنك اخترتيني أنا..";
+        await delay(3000);
+        
+        introText.innerText = "وبما إنك اخترتيني، جهزت لك مفاجأة..";
+        await delay(3000);
+        
+        introText.innerHTML = `
+            شوفي يا قلبي..<br><br>
+            فكرة الموقع هي تحدي بسيط..<br><br>
+            راح تجاوبي على 14 سؤال..<br>
+            لازم تركزين، لأن في عداد بيحسب نتيجتك، وكل نهاية بتختلف حسب شطارتك!
+        `;
+        
+        introTimer.style.display = "block";
+        let countdown = 15;
+        introTimer.innerText = countdown;
+        
+        for (let i = 0; i < 15; i++) {
+            await delay(1000);
+            countdown--;
+            introTimer.innerText = countdown;
+        }
+        
+        introTimer.style.display = "none";
+        introText.innerText = "GOOD LUCK!";
+        await delay(2000);
+        
+        introOverlay.style.display = "none";
+        document.body.classList.remove('baby-blue-intro-mode');
+        heartsContainer.remove();
+
+        startQuiz();
+    }
+
+    // === دالة المقدمة الإجبارية ===
+    async function playForcedIntroSequence() {
+        introOverlay.style.background = "black";
+        introOverlay.style.display = "flex";
+        
+        introText.innerText = "ما توقعت انو اكون اخر واحد";
+        await delay(3000);
+        
+        introText.innerText = "يلا في أسئلة تجاوبي عليها";
+        await delay(3000);
+        
+        introText.innerText = "GOOD LUCK";
+        await delay(3000);
+        
+        introOverlay.style.display = "none";
+        startQuiz();
     }
 
     function startQuiz() {
@@ -309,25 +568,28 @@
 
     function loadQuestion() {
         optionsDiv.classList.remove("options-locked");
+        praiseText.style.display = "none"; 
+        wrongPopup.style.display = "none"; 
         currentMistakes = 0; 
-        praiseText.style.display = "none";
         
         const oldBtns = document.querySelectorAll('.option-btn');
         oldBtns.forEach(btn => {
             btn.classList.remove('correct-highlight', 'wrong-highlight');
+            btn.style.display = 'block'; 
         });
 
-        if (qIndex === 5) { 
-            triggerAdSequence(); 
-            return; 
+        if (qIndex === 5 && !ad1Shown) {
+            triggerAd1(); 
+            return;
         }
 
         if (qIndex >= questions.length) {
-            alert("خلصنا المرحلة الأولى"); 
-            return; 
-        } 
+            showFinalResults();
+            return;
+        }
 
         const q = questions[qIndex];
+        qCounter.innerText = `${qIndex + 1} / ${questions.length}`; 
         document.getElementById("qText").innerText = q.q;
         optionsDiv.innerHTML = "";
         
@@ -341,7 +603,7 @@
             if(timeLeft <= 0) { 
                 clearInterval(timerInterval); 
                 currentMistakes++; 
-                playPunishment(-1); 
+                playPunishment(-1, q.ans); 
             }
         }, 1000);
 
@@ -357,23 +619,30 @@
     function checkAnswer(selected, correct) {
         clearInterval(timerInterval);
         optionsDiv.classList.add("options-locked");
-
+        
         if (selected === correct) { 
+            const sub = questions[qIndex].subject;
+            if (currentMistakes === 0) {
+                subjectScores[sub].correct += 1;
+            } else if (currentMistakes === 1) {
+                subjectScores[sub].correct += 0.5;
+            }
+
             yayAudio.currentTime = 0; yayAudio.play();
-            partyAudio.currentTime = 0; partyAudio.play();
-            
-            if (currentMistakes > 0) {
-                praiseText.innerText = "نايس لكن نبي احسن!";
-            } else {
+            if (currentMistakes === 0) {
+                yayCatAudio.currentTime = 0; yayCatAudio.play();
                 praiseText.innerText = "شطورتييي";
+            } else {
+                metalAudio.currentTime = 0; metalAudio.play();
+                praiseText.innerText = "نايس لكن نبي احسن!";
             }
             praiseText.style.display = "block";
-            fireConfetti();
+            fireConfetti(); 
             const allBtns = document.querySelectorAll('.option-btn');
             allBtns[selected].classList.add('correct-highlight');
-            setTimeout(() => { qIndex++; loadQuestion(); }, 3000);
+            setTimeout(() => { qIndex++; loadQuestion(); }, 2000);
         } else { 
-            currentMistakes++;
+            currentMistakes++; 
             playPunishment(selected, correct); 
         }
     }
@@ -381,194 +650,271 @@
     function playPunishment(selectedIndex, correctIndex) {
         clearInterval(timerInterval);
         optionsDiv.classList.add("options-locked");
-        wrongAudio.currentTime = 0; wrongAudio.play();
+        wrongAudio.currentTime = 0; wrongAudio.play(); 
+        
         const allBtns = document.querySelectorAll('.option-btn');
-        let msg = "";
-        if (currentMistakes === 1) {
-            msg = (qIndex <= 1) ? "شفيك ترا سهله؟" : "افا ما توقعت انك ما تعرف";
-        } else {
-            msg = "حزنت عليك بساعدك";
-            if (correctIndex !== undefined) allBtns[correctIndex].classList.add('correct-highlight');
-            else allBtns[questions[qIndex].ans].classList.add('correct-highlight');
+        const currentQ = questions[qIndex]; 
+
+        if (selectedIndex !== -1 && selectedIndex !== undefined) {
+             allBtns[selectedIndex].style.display = 'none';
         }
+
+        // تم استبدال روابط الفيديو داخل الدالة هنا
+        if (currentQ.type === 'math') wrongVideo.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/wrong_xy2fsr.mp4"; 
+        else wrongVideo.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/cat_wrong_pwjn1s.mp4"; 
+        wrongVideo.load(); 
+
+        let msg = "";
+        if (currentMistakes >= 2) {
+            msg = "خلاص راحت عليك! هذي الصح";
+            allBtns[correctIndex].classList.add('correct-highlight');
+            allBtns.forEach((btn, idx) => {
+                if (idx !== correctIndex) btn.style.display = 'none';
+            });
+        } else {
+            msg = "ركزي باقيلك محاولة!";
+        }
+        
         wrongOverlayText.innerText = msg;
-        if (selectedIndex !== -1 && selectedIndex !== undefined) allBtns[selectedIndex].classList.add('wrong-highlight');
         wrongPopup.style.display = "block"; 
-        wrongVideo.currentTime = 0; wrongVideo.play();
+        wrongVideo.currentTime = 0; 
+        wrongVideo.play();
+        
         wrongVideo.onended = () => {
             wrongPopup.style.display = "none";
-            loadQuestionLogicOnly(); 
+            if (currentMistakes >= 2) {
+                setTimeout(() => { qIndex++; loadQuestion(); }, 1500); 
+            } else {
+                 optionsDiv.classList.remove("options-locked");
+                 let timeLeft = parseInt(document.getElementById("timer").innerText);
+                 timerInterval = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById("timer").innerText = timeLeft;
+                    if(timeLeft <= 0) { 
+                        clearInterval(timerInterval); 
+                        currentMistakes++; 
+                        playPunishment(-1, questions[qIndex].ans); 
+                    }
+                }, 1000);
+            }
         };
     }
 
-    function loadQuestionLogicOnly() {
-        optionsDiv.classList.remove("options-locked");
-        const q = questions[qIndex];
-        let timeLeft = q.time;
-        document.getElementById("timer").innerText = timeLeft;
-        clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            document.getElementById("timer").innerText = timeLeft;
-            if(timeLeft <= 0) { 
-                clearInterval(timerInterval); currentMistakes++; playPunishment(-1); 
-            }
-        }, 1000);
-        const allBtns = document.querySelectorAll('.option-btn');
-        allBtns.forEach(btn => btn.classList.remove('wrong-highlight'));
-    }
-
-    function showAdMessage(text, duration) {
-        adMessage.innerText = text;
-        adMessage.style.display = "block";
-        if (duration) {
-            setTimeout(() => { if(adMessage.innerText === text) adMessage.style.display = "none"; }, duration);
-        }
-    }
-
-    function showCenterMessage(text) {
-        centerOverlay.innerText = text;
-        centerOverlay.style.display = "block";
-    }
-    
-    function hideCenterMessage() {
-        centerOverlay.style.display = "none";
-    }
-
-    function triggerAdSequence() {
+    function triggerAd1() {
         clearInterval(timerInterval);
         quizBox.style.display = "none";
         adLayer.style.display = "flex";
-        
-        adVideo.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/ad1_pu40fk.mp4"; 
+        // فيديو ad2 برابط Cloudinary
+        adVideo.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/ad2_nlhjkc.mp4"; 
         adVideo.muted = false;
         adVideo.play();
         
         skipBtn.style.display = "block";
-        skipBtn.innerText = "Skip Ad >>";
-        skipBtn.style.pointerEvents = "auto";
+        skipBtn.disabled = true;
+        let counter = 5;
+        skipBtn.innerText = `Skip in ${counter}`;
+        adTimerInterval = setInterval(() => {
+            counter--;
+            if (counter > 0) skipBtn.innerText = `Skip in ${counter}`;
+            else { 
+                clearInterval(adTimerInterval); 
+                skipBtn.innerText = "Skip Ad"; 
+                skipBtn.disabled = false; 
+            }
+        }, 1000);
+        
+        ad1Shown = true;
     }
 
     async function handleSkipClick() {
-        const btn = document.getElementById("skipBtn");
-        skipAttempts++;
+        adVideo.pause();
+        adLayer.style.display = "none";
+        startGojoCurse();
+    }
 
-        if (skipAttempts === 1) {
-            btn.style.pointerEvents = "none"; 
-            
-            showAdMessage("كمان مره قلتشات");
-            await delay(4000); // زدنا الوقت للقراءة
-            
-            showAdMessage("بروح احول زراعي احسن");
-            await delay(4000); // زدنا الوقت
-            
-            showAdMessage("ويت بحاول اصلح");
-            await delay(4000); // زدنا الوقت
-            
-            adMessage.style.display = "none";
-            await delay(2000);
-            
-            showAdMessage("جربي هيك يمكن ظبط");
-            btn.style.pointerEvents = "auto"; 
-            
-        } else if (skipAttempts === 2) {
-            // === بداية الفوضى ===
-            adMessage.style.display = "none";
-            btn.style.display = "none"; 
-            
-            // تم إزالة wrongAudio هنا
+    async function startGojoCurse() {
+        quizBox.style.display = "none"; 
+        loadQuestion(); 
+        clearInterval(timerInterval); 
+        optionsDiv.classList.add("options-locked"); 
+        
+        showTopText("هلووو");
+        await delay(1000); 
+        
+        showTopText("لعنة غوجو ضربت الموقع هيهيهي");
+        gojoAudio.currentTime = 0;
+        gojoAudio.play();
+        
+        hollowEffect.style.display = "block";
+        setTimeout(() => { hollowEffect.style.backgroundColor = "rgba(255, 0, 0, 0.7)"; }, 2000);
+        setTimeout(() => { hollowEffect.style.backgroundColor = "rgba(0, 0, 255, 0.7)"; }, 4500);
+        setTimeout(() => { hollowEffect.style.backgroundColor = "rgba(180, 0, 255, 0.8)"; }, 6500);
 
-            // 1. تشغيل الفيروس (بطيء ثم يتسارع)
-            startVirusChaos();
+        setTimeout(() => {
+            hollowEffect.style.display = "none"; 
+            topOverlay.style.display = "none";    
+            document.body.classList.add("gojo-mode"); 
+            quizBox.classList.add("gojo-box-style"); 
+            wrongAudio.currentTime = 0;
+            wrongAudio.play();
+        }, 8000);
 
-            // 2. الانتظار 17 ثانية كاملة لتعبي الشاشة
-            await delay(17000);
+        setTimeout(() => {
+            metalAudio.currentTime = 0;
+            metalAudio.play();
+        }, 10000); 
 
-            // 3. التجميد التام (Freeze)
-            freezeVirusChaos(); // يوقف النوافذ الجديدة + يوقف فيديوهات النوافذ
-            adVideo.pause();    // يوقف الفيديو الأصلي في الخلفية
-            
-            // 4. النصوص تظهر ببطء
-            showCenterMessage("احا شو فيه");
-            await delay(5000); // وقت كافي للقراءة
+        setTimeout(() => {
+            quizBox.style.display = "block"; 
+            optionsDiv.classList.remove("options-locked");
+            let q = questions[qIndex];
+            let timeLeft = q.time;
+            timerInterval = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById("timer").innerText = timeLeft;
+                    if(timeLeft <= 0) { 
+                        clearInterval(timerInterval); 
+                        currentMistakes++; 
+                        playPunishment(-1, q.ans); 
+                    }
+            }, 1000);
+        }, 16000); 
+    }
 
-            showCenterMessage("ويت بحاول اوقفه");
-            await delay(5000);
+    function showFinalResults() {
+        quizBox.style.display = "none";
+        finalResultOverlay.style.display = "flex";
+        
+        finalVideo.muted = false; 
+        
+        let totalScore = 0;
+        let subjectsHTML = "";
+        let badSubjects = []; 
 
-            showCenterMessage("هففف تعبت ماني عارف كيف اعمل");
-            await delay(5000);
-            
-            showCenterMessage("هيني تهكرت\nوالموقع تهكر");
-            await delay(5000);
-            
-            showCenterMessage("خليني احاول كمان مره اصلح");
-            await delay(4000);
-            
-            hideCenterMessage();
-            
-            // 5. فيديو النهاية (Dark1)
-            adLayer.style.display = "none";
-            virusContainer.style.display = "none"; 
-            darkVideo.style.display = "block";
-            darkVideo.muted = false;
-            darkVideo.play();
-            
-            darkVideo.onended = () => {
-                window.location.href = "space.html";
-            };
+        for (const [subject, data] of Object.entries(subjectScores)) {
+            totalScore += data.correct;
+            subjectsHTML += `<div class="subject-item"><span>${subject}</span><span>${data.correct} / 2</span></div>`;
+            if (data.correct === 0) badSubjects.push(subject);
         }
-    }
 
-    let virusTimeout;
-    function startVirusChaos() {
-        let speed = 2500; // بداية بطيئة جداً (2.5 ثانية)
+        subjectsListDiv.innerHTML = subjectsHTML;
         
-        function loop() {
-            createVirusWindow();
+        const percentage = (totalScore / 14) * 100;
+        scoreCircle.setAttribute("stroke-dasharray", `${percentage}, 100`);
+        scoreText.textContent = `${totalScore}/14`;
+
+        scoreCircle.classList.remove("score-green-stroke", "score-yellow-stroke", "score-red-stroke");
+
+        if (totalScore >= 11) {
+            scoreCircle.classList.add("score-green-stroke");
+            let msg = "شطورتي ابدعتي";
+            if (badSubjects.length > 0) {
+                msg += "\nركزي بس علي هذول المواد: " + badSubjects.join("، ");
+            }
+            resultMsg.innerText = msg;
             
-            // تسريع تدريجي
-            if(speed > 200) speed -= 150; 
-            
-            virusTimeout = setTimeout(loop, speed);
+            videoOverlayText.innerText = "مبروك ربحتي GOJO ENJOY !";
+            // فيديو الهدية برابط Cloudinary
+            finalVideo.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/%D8%A7%D9%84%D9%87%D8%AF%D9%8A%D9%87_hfxguc.mp4";
+            finalVideo.muted = false; finalVideo.loop = true; finalVideo.play();
+            finalVideo.onended = null; 
+
+        } else if (totalScore >= 7) {
+            scoreCircle.classList.add("score-yellow-stroke");
+            let msg = "كويس ي روحي لكن لازم تظبطي في المواد: ";
+            if (badSubjects.length > 0) msg += badSubjects.join("، ");
+            else msg += "اللي غلطتي فيها";
+            resultMsg.innerText = msg;
+            // فيديوهات (ادرسي كويس) و (مصدوم) بروابط Cloudinary
+            playResultSequence("https://res.cloudinary.com/dpvvxtuny/video/upload/%D8%A7%D8%AF%D8%B1%D8%B3%D9%8A_%D9%83%D9%88%D9%8A%D8%B3_vjqwc0.mp4", "روحي ادرسي", "https://res.cloudinary.com/dpvvxtuny/video/upload/%D9%85%D8%B5%D8%AF%D9%88%D9%85_sl1loj.mp4", "رده فعلك");
+
+        } else {
+            scoreCircle.classList.add("score-red-stroke");
+            resultMsg.innerText = "تروحي المدرسة تكتبي اسمك وترجعي";
+            // فيديوهات (ادرسي كويس) و (والله كذب) بروابط Cloudinary
+            playResultSequence("https://res.cloudinary.com/dpvvxtuny/video/upload/%D8%A7%D8%AF%D8%B1%D8%B3%D9%8A_%D9%83%D9%88%D9%8A%D8%B3_vjqwc0.mp4", "روحي ادرسي", "https://res.cloudinary.com/dpvvxtuny/video/upload/%D9%88%D8%A7%D9%84%D9%84%D9%87_%D9%83%D8%B0%D8%A8_h0gnj0.mp4", "رده فعلك");
         }
-        loop();
+
+        fireConfetti();
+
+        startHorrorSequenceTimer();
     }
 
-    function freezeVirusChaos() {
-        clearTimeout(virusTimeout); // ما عاد يطلع نوافذ جديدة
-        
-        // تجميد كل الفيديوهات الموجودة في الشاشة حالياً
-        const allVideos = document.querySelectorAll('.virus-window video');
-        allVideos.forEach(vid => vid.pause());
+    function playResultSequence(v1, t1, v2, t2) {
+        videoOverlayText.innerText = t1;
+        finalVideo.src = v1;
+        finalVideo.muted = false; finalVideo.loop = false; finalVideo.play();
+        finalVideo.onended = () => {
+            videoOverlayText.innerText = t2;
+            finalVideo.src = v2; finalVideo.play(); finalVideo.loop = true; finalVideo.onended = null; 
+        };
     }
 
-    function createVirusWindow() {
-        const div = document.createElement('div');
-        div.className = 'virus-window';
+    function startHorrorSequenceTimer() {
+        horrorCountdown.style.display = "block";
+        let count = 30; 
+        horrorCountdown.innerText = `الانتقال: ${count}`;
         
-        const video = document.createElement('video');
-        const mainAd = document.getElementById("adVideo");
-        video.src = mainAd.src; 
-        video.autoplay = true;
-        video.loop = true;
-        video.muted = false; 
-        
-        div.appendChild(video);
-        
-        // عشوائية في كل الشاشة
-        const x = Math.random() * (window.innerWidth - 300); 
-        const y = Math.random() * (window.innerHeight - 200);
-        
-        div.style.left = x + "px";
-        div.style.top = y + "px";
-        
-        virusContainer.appendChild(div);
+        const intv = setInterval(() => {
+            count--;
+            horrorCountdown.innerText = `الانتقال: ${count}`;
+            if(count <= 0) {
+                clearInterval(intv);
+                triggerAnalogAd(); 
+            }
+        }, 1000);
     }
 
-    function showChat(text) {
-        if(text === "") { loayChat.style.display = "none"; return; }
-        loayChat.style.display = "block";
-        loayChat.innerText = "لؤي: " + text;
+    function triggerAnalogAd() {
+        finalResultOverlay.style.display = "none";
+        
+        finalVideo.pause();
+        finalVideo.muted = true;
+        finalVideo.currentTime = 0; 
+
+        analogContainer.style.display = "flex";
+        
+        // فيديو ad1 (موجود مسبقاً برابط مباشر)
+        analogVideoPlayer.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/ad1_pu40fk.mp4";
+        analogVideoPlayer.style.display = "block";
+        analogVideoPlayer.muted = false;
+        analogVideoPlayer.play();
+        
+        analogSkipBtn.style.display = "block";
+    }
+
+    window.handleAnalogSkip = function() {
+        analogVideoPlayer.pause();
+        analogSkipBtn.style.display = "none"; 
+        
+        // فيديو ANALOG2 برابط Cloudinary
+        analogVideoPlayer.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/ANALOG2_jfg6zm.mp4";
+        analogVideoPlayer.play();
+
+        vhsAudio.currentTime = 0;
+        vhsAudio.play();
+        
+        analogVideoPlayer.onended = () => {
+            analogVideoPlayer.style.display = "none";
+            logImage.style.display = "block";
+            
+            setTimeout(() => {
+                logImage.style.display = "none";
+                analogVideoPlayer.style.display = "block";
+                // فيديو ANALOG3 برابط Cloudinary
+                analogVideoPlayer.src = "https://res.cloudinary.com/dpvvxtuny/video/upload/ANALOG3_txlzbr.mp4";
+                analogVideoPlayer.play();
+                
+                analogVideoPlayer.onended = () => {
+                    window.location.href = "NONEKISS.html";
+                };
+            }, 1000); 
+        };
+    };
+
+    function showTopText(txt) {
+        topOverlay.innerText = txt;
+        topOverlay.style.display = "block";
     }
 
     const canvas = document.getElementById("confettiCanvas");
