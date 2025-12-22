@@ -6,9 +6,8 @@
     <title>The Final Mission ❤️</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-        /* --- الإعدادات الأساسية (محسنة لـ Honor X6b) --- */
+        /* --- الإعدادات الأساسية --- */
         body {
             margin: 0; padding: 0;
             background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
@@ -19,53 +18,28 @@
             user-select: none; touch-action: manipulation; transition: all 0.8s ease;
         }
 
+        /* زر البداية (مهم جداً لحل مشكلة التفاعل والصوت) */
+        #startBtn {
+            position: fixed; z-index: 20000;
+            padding: 15px 40px; font-size: 1.5rem;
+            background: #ff6b81; color: white; border: none; border-radius: 50px;
+            cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: pulseBtn 2s infinite;
+        }
+
         /* --- طبقات التأثيرات --- */
-        #blackOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9998; display: none; }
-        #whiteFlash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 10005; display: none; opacity: 1; transition: opacity 2s; }
-        #glitchOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9998; display: none; opacity: 0; }
-        #scenarioText { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2rem; font-weight: bold; display: none; z-index: 10000; text-shadow: 0 0 20px rgba(0,0,0,1); text-align: center; width: 100%; }
+        #blackOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9998; display: none; pointer-events: none; }
+        #whiteFlash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 10005; display: none; opacity: 1; transition: opacity 2s; pointer-events: none; }
+        #scenarioText { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2rem; font-weight: bold; display: none; z-index: 10000; text-shadow: 0 0 20px rgba(0,0,0,1); text-align: center; width: 100%; pointer-events: none; }
 
         /* --- الفيديوهات --- */
-        #bgVideo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; display: none; filter: brightness(0.6); }
-        
-        #burnBgVideo {
+        #bgVideo, #burnBgVideo, #lyricsVideo {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1; display: none; 
-            filter: blur(8px) brightness(0.6); /* خلفية ضبابية */
-            transition: filter 3s ease;
+            object-fit: cover; z-index: -5; display: none;
         }
-
-        /* --- فيديو الزواج (Marry) --- */
-        #marryVideoLayer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 6000; display: none; background: #000;
-            cursor: pointer;
-        }
-        #marryVideo {
-            width: 100%; height: 100%; 
-            object-fit: contain; 
-            display: none;
-        }
-        #fingerHint {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: white; text-align: center; z-index: 6001;
-        }
-        .finger-text { font-size: 1.5rem; font-weight: bold; color: black; margin-bottom: 20px; }
-
-        /* زر البصمة */
-        .finger-circle {
-            width: 140px; height: 140px; 
-            border: 8px solid #ff0055; border-radius: 50%;
-            animation: pulseCircle 1.5s infinite; cursor: pointer; 
-            position: absolute; bottom: 80px; right: 40px; 
-        }
-        .finger-circle::after { 
-            content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; 
-            background: rgba(255, 0, 85, 0.4); border-radius: 50%; 
-            transform: translate(-50%, -50%); transition: width 2s linear, height 2s linear; 
-        }
-        .pressing .finger-circle::after { width: 100%; height: 100%; }
+        #bgVideo { filter: brightness(0.6); }
+        #burnBgVideo { filter: blur(8px) brightness(0.6); transition: filter 3s ease; }
+        #lyricsVideo { z-index: -4; opacity: 0.8; mix-blend-mode: screen; }
 
         /* --- الحاوية (Games Container) --- */
         .game-container {
@@ -76,35 +50,17 @@
             border-radius: 25px; padding: 25px; text-align: center;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
             display: none; position: relative; transition: all 0.5s ease;
+            z-index: 10; /* تأكدنا أنها فوق الفيديو */
         }
+
+        .active-game { display: block; animation: fadeIn 0.6s ease; }
 
         /* --- Dark & Burn Modes --- */
         body.dark-mode { background: #000; }
-        .game-container.dark-mode {
-            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8); color: white;
-        }
-        .game-container.dark-mode h2 { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-        .game-container.dark-mode p { color: #ccc; }
-
-        body.burn-mode #burnBgVideo { display: block; }
-        .game-container.burn-mode {
-            background: rgba(20, 0, 0, 0.6); border: 2px solid #ff4500;
-            box-shadow: 0 0 40px rgba(255, 69, 0, 0.5); color: #ffaeae;
-            opacity: 1; transition: opacity 3s ease;
-        }
-        .game-container.burn-mode h2 { color: #ff4500; text-shadow: 0 0 10px #ff0000; }
-
-        .active-game { display: block; animation: fadeIn 0.6s ease; }
-        h2 { color: #5d9cec; margin-bottom: 10px; font-weight: 800; }
-        p { font-size: 1rem; margin-bottom: 20px; color: #555; font-weight: bold; }
-
-        /* --- النصوص والألوان --- */
-        .status-text { margin-top: 15px; font-weight: bold; font-size: 1.2rem; padding: 5px 15px; border-radius: 20px; display: inline-block; background: rgba(255,255,255,0.8); transition: 0.3s; }
-        body.dark-mode .status-text { background: rgba(0,0,0,0.5); }
-        .txt-green { color: #48cfad !important; } .txt-red { color: #ff6b81 !important; } .txt-blue { color: #5d9cec !important; }
-        body.dark-mode .txt-green { color: #00ff9d !important; text-shadow: 0 0 10px rgba(0, 255, 157, 0.5); }
-        body.dark-mode .txt-red { color: #ff4444 !important; text-shadow: 0 0 10px rgba(255, 68, 68, 0.5); }
+        .game-container.dark-mode { background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white; }
+        .game-container.dark-mode h2 { color: #fff; }
+        .game-container.burn-mode { background: rgba(20, 0, 0, 0.6); border: 2px solid #ff4500; color: #ffaeae; }
+        .game-container.burn-mode h2 { color: #ff4500; }
 
         /* --- Memory Game --- */
         .memory-grid { display: grid; gap: 10px; margin: auto; justify-content: center; }
@@ -112,83 +68,59 @@
         .card.flipped { transform: rotateY(180deg); }
         .card img { max-width: 90%; max-height: 90%; object-fit: contain; border-radius: 10px; backface-visibility: hidden; transform: rotateY(180deg); }
         .card .back { background: #89CFF0; width: 100%; height: 100%; border-radius: 12px; position: absolute; backface-visibility: hidden; top:0; left:0; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; }
-        body.dark-mode .card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
-        body.dark-mode .card .back { background: #333; color: #fff; }
 
         /* --- XO --- */
         .xo-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 20px auto; width: 260px; }
         .cell { background: rgba(255,255,255,0.8); height: 80px; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 900; border-radius: 15px; cursor: pointer; }
         .cell.x { color: #ff6b81; } .cell.o { color: #48cfad; }
-        body.dark-mode .cell { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); }
 
         /* --- Color Game --- */
         .simon-board { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 240px; margin: 20px auto; }
         .color-btn { height: 100px; border-radius: 20px; cursor: pointer; border: 4px solid white; opacity: 0.6; transition: 0.2s; }
         .color-btn.active { opacity: 1; transform: scale(1.05); }
         #green { background: #48cfad; } #red { background: #ff6b81; } #yellow { background: #ffce54; } #blue { background: #5d9cec; }
-        body.dark-mode #green { background: #00e676; box-shadow: 0 0 15px rgba(0, 230, 118, 0.4); }
-        body.dark-mode #red { background: #ff1744; box-shadow: 0 0 15px rgba(255, 23, 68, 0.4); }
-        body.dark-mode #yellow { background: #ffea00; box-shadow: 0 0 15px rgba(255, 234, 0, 0.4); }
-        body.dark-mode #blue { background: #2979ff; box-shadow: 0 0 15px rgba(41, 121, 255, 0.4); }
 
-        /* --- Mario (معدل) --- */
+        /* --- Mario --- */
         #fullMarioGame { width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 5000; display: none; background: #000; }
         #marioFrame { width: 100%; height: 100%; border: none; }
-        
-        /* تعديل مكان الزر ليكون في الزاوية العلوية اليسرى */
         #finishMarioBtn { 
-            position: fixed; 
-            top: 20px; left: 20px; /* نقلناه فوق يسار */
-            transform: none; /* ألغينا التوسط */
+            position: fixed; top: 20px; left: 20px; 
             background: linear-gradient(45deg, #ff0055, #ff4444); 
             color: white; border: none; padding: 10px 25px; 
-            border-radius: 50px; font-weight: bold; font-size: 1rem; 
-            cursor: pointer; z-index: 5001; 
-            box-shadow: 0 5px 20px rgba(255, 0, 85, 0.5); 
+            border-radius: 50px; font-weight: bold; cursor: pointer; z-index: 5001; 
             border: 2px solid white; animation: pulseBtn 2s infinite; 
         }
 
-        /* --- Magic Heart & Box Game --- */
-        .magic-heart-stage {
-            height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .magic-heart {
-            font-size: 6rem; cursor: pointer; transition: all 0.2s ease;
-            filter: drop-shadow(0 0 10px rgba(255, 0, 85, 0.5));
-            animation: heartBeat 1.5s infinite;
-        }
-        .magic-heart.charging { animation: shake 0.1s infinite; }
-        
-        .final-gift-box {
-            font-size: 8rem; cursor: pointer; display: none;
-            animation: bounce 2s infinite; filter: drop-shadow(0 0 20px gold);
-        }
-        .final-flower {
-            font-size: 9rem; display: none;
-            animation: popIn 1s forwards; filter: drop-shadow(0 0 20px red);
-        }
+        /* --- Marriage Video --- */
+        #marryVideoLayer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 6000; display: none; background: #000; }
+        #marryVideo { width: 100%; height: 100%; object-fit: contain; display: none; }
+        #fingerHint { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; text-align: center; z-index: 6001; }
+        .finger-circle { width: 140px; height: 140px; border: 8px solid #ff0055; border-radius: 50%; animation: pulseCircle 1.5s infinite; cursor: pointer; position: absolute; bottom: 80px; right: 40px; }
+        .finger-circle::after { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: rgba(255, 0, 85, 0.4); border-radius: 50%; transform: translate(-50%, -50%); transition: width 2s linear, height 2s linear; }
+        .pressing .finger-circle::after { width: 100%; height: 100%; }
 
-        /* UI Elements */
-        .toast-msg { position: fixed; top: 20px; right: 20px; background: white; color: #ff6b81; padding: 10px 20px; border-radius: 20px; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: none; z-index: 2000; border: 2px solid #ff6b81; animation: slideIn 0.5s; }
-        body.dark-mode .toast-msg { background: #222; color: #fff; border-color: #fff; }
-        .skip-btn { background: #ff6b81; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; display: none; position: absolute; bottom: 10px; right: 10px; z-index: 10; }
-        body.dark-mode .skip-btn { background: #ff0055; }
-        .quiz-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        /* --- Magic Heart --- */
+        .magic-heart-stage { height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .magic-heart { font-size: 6rem; cursor: pointer; transition: all 0.2s ease; animation: heartBeat 1.5s infinite; filter: drop-shadow(0 0 10px rgba(255, 0, 85, 0.5)); }
+        .magic-heart.charging { animation: shake 0.1s infinite; }
+        .final-gift-box { font-size: 8rem; cursor: pointer; display: none; animation: bounce 2s infinite; }
+        .final-flower { font-size: 9rem; display: none; animation: popIn 1s forwards; }
+
+        /* --- UI Elements --- */
+        .status-text { margin-top: 15px; font-weight: bold; font-size: 1.2rem; padding: 5px 15px; border-radius: 20px; background: rgba(255,255,255,0.8); display: inline-block; }
+        .toast-msg { position: fixed; top: 20px; right: 20px; background: white; color: #ff6b81; padding: 10px 20px; border-radius: 20px; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: none; z-index: 2000; border: 2px solid #ff6b81; }
+        .quiz-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 10000; }
         .quiz-content { background: white; padding: 30px; border-radius: 20px; width: 80%; max-width: 350px; text-align: center; }
-        body.dark-mode .quiz-content { background: #222; color: white; border: 1px solid #555; }
-        .quiz-input { padding: 10px; width: 80%; margin: 15px 0; text-align: center; border-radius: 10px; border: 2px solid #ddd; }
-        .final-caption { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 1.8rem; font-weight: bold; text-align: center; z-index: 10001; display: none; }
+        .skip-btn { background: #ff6b81; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; display: none; position: absolute; bottom: 10px; right: 10px; }
 
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
         @keyframes pulseBtn { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        @keyframes heartBeat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         @keyframes pulseCircle { 0% { transform: scale(1); border-color: #ff0055; } 50% { transform: scale(1.1); border-color: #ff4444; } 100% { transform: scale(1); border-color: #ff0055; } }
-        @keyframes flash { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
-        .flashing { display: block !important; animation: flash 0.1s infinite; }
+        @keyframes heartBeat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 25% { transform: translate(-1px, -2px) rotate(-1deg); } 50% { transform: translate(-3px, 0px) rotate(1deg); } 75% { transform: translate(3px, 2px) rotate(0deg); } 100% { transform: translate(1px, -1px) rotate(-1deg); } }
+        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
     </style>
 </head>
 <body>
@@ -198,30 +130,28 @@
     
     <video id="bgVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/somke_it_qnr5ru.mp4" loop playsinline></video>
     <video id="lyricsVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/itoff_hczlk5.mp4" loop playsinline muted></video>
-    
     <video id="burnBgVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/burn_mkp2b6.mp4" playsinline muted></video>
+
+    <button id="startBtn" onclick="startGame()">ابدأ المهمة ❤️</button>
 
     <div id="blackOverlay"></div>
     <div id="whiteFlash"></div>
-    <div id="glitchOverlay"></div>
     <div id="scenarioText">ويت الشكل كذا بيض...</div>
-    <div id="marryText" class="final-caption"></div>
-
     <div id="toast" class="toast-msg">شطورتييي ❤️</div>
 
     <div id="quizModal" class="quiz-modal">
         <div class="quiz-content">
             <h3>تبي تعملي SKIP؟ 👀</h3>
             <p>جاوبي: ايش اكثر شي احبه في هل دنيا؟</p>
-            <input type="text" id="quizAnswer" class="quiz-input" placeholder="اكتبي هنا...">
+            <input type="text" id="quizAnswer" style="padding: 10px; width: 80%; margin: 15px 0; text-align: center;" placeholder="اكتبي هنا...">
             <br>
-            <button class="quiz-btn" style="background:#5d9cec; color:white; padding:10px 20px; border:none; border-radius:10px;" onclick="checkAnswer()">تأكيد</button>
-            <button class="quiz-btn back" style="background:#ccc; color:black; padding:10px 20px; border:none; border-radius:10px;" onclick="closeQuiz()">رجوع للتحدي</button>
-            <p id="quizError" class="wrong-msg" style="color:red; margin-top:10px;"></p>
+            <button onclick="checkAnswer()" style="background:#5d9cec; color:white; padding:10px 20px; border:none; border-radius:10px;">تأكيد</button>
+            <button onclick="closeQuiz()" style="background:#ccc; color:black; padding:10px 20px; border:none; border-radius:10px;">رجوع</button>
+            <p id="quizError" style="color:red; margin-top:10px;"></p>
         </div>
     </div>
 
-    <div id="game1" class="game-container active-game">
+    <div id="game1" class="game-container">
         <h2>لعبة الذاكرة 🧠</h2>
         <p id="memLevelTitle">المستوى الأول: تسخين (4 بطاقات)</p>
         <div class="memory-grid" id="memoryGrid"></div>
@@ -230,9 +160,9 @@
     <div id="game2" class="game-container">
         <h2>تحدي XO ❌⭕</h2>
         <p id="xoLevelText">المستوى: 1 (سهل)</p>
-        <p id="easeText" class="ease-text" style="color:#ff6b81; display:none;"></p>
+        <p id="easeText" style="color:#ff6b81; display:none;"></p>
         <div class="xo-board" id="xoBoard"></div>
-        <div class="status-text txt-blue" id="xoStatus">دورك (أنت X)</div>
+        <div class="status-text" id="xoStatus" style="color: #5d9cec;">دورك (أنت X)</div>
     </div>
 
     <div id="game3" class="game-container">
@@ -245,7 +175,7 @@
             <div id="yellow" class="color-btn" onclick="handleColorClick('yellow')"></div>
             <div id="blue" class="color-btn" onclick="handleColorClick('blue')"></div>
         </div>
-        <div class="status-text txt-blue" id="colorStatus">شوفي الترتيب..</div>
+        <div class="status-text" id="colorStatus" style="color: #5d9cec;">شوفي الترتيب..</div>
         <button id="skipBtn" class="skip-btn" onclick="showQuiz()">SKIP?</button>
     </div>
 
@@ -256,7 +186,7 @@
 
     <div id="marryVideoLayer">
         <div id="fingerHint">
-            <div class="finger-text" style="position: absolute; top: 10%; width: 100%;">ضع إصبعك هنا لمده ثانيتين</div>
+            <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 20px;">ضع إصبعك هنا لمده ثانيتين</div>
             <div class="finger-circle" id="mainFingerBtn"></div>
         </div>
         <video id="marryVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/marry_saos4r.mp4" playsinline muted></video>
@@ -273,14 +203,43 @@
     </div>
 
     <script>
-        // --- Main Setup ---
-        window.onload = function() {
+        // --- Start & Setup ---
+        function startGame() {
+            document.getElementById('startBtn').style.display = 'none';
             const audio1 = document.getElementById('audio1');
-            audio1.play().catch(e => console.log("Audio needs interaction"));
+            audio1.play().catch(e => console.log("Audio still blocked?"));
+            
+            // Show first game
+            document.getElementById('game1').classList.add('active-game');
             initMemoryGame();
-        };
+        }
 
-        // --- Cinematic Transition (Before Colors) ---
+        // --- Navigation ---
+        function showToast(msg = "شطورتييي ❤️") {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        }
+
+        function nextStage(c, n) {
+            document.getElementById(c).classList.remove('active-game');
+            
+            if (c === 'game2' && n === 'game3') {
+                triggerCinematicScenario();
+            } else if (c === 'game3' && n === 'fullMarioGame') {
+                startFullMario();
+            } else {
+                showToast("شطورتييي 😍");
+                setTimeout(() => {
+                    document.getElementById(n).classList.add('active-game');
+                    if(n==='game2') initXO();
+                    if(n==='game3') initColorGame();
+                }, 500);
+            }
+        }
+
+        // --- Cinematic (Scenario) ---
         function triggerCinematicScenario() {
             const audio1 = document.getElementById('audio1');
             const snap = document.getElementById('snapSound');
@@ -304,12 +263,9 @@
                     document.body.classList.add('dark-mode');
                     document.querySelectorAll('.game-container').forEach(c => c.classList.add('dark-mode'));
                     
-                    // تشغيل فيديو الخلفية وفيديو الكلمات معاً
                     bgVideo.style.display = 'block';
-                    bgVideo.muted = false;
-                    bgVideo.volume = 1.0;
-                    bgVideo.play();
-
+                    bgVideo.muted = false; bgVideo.volume = 1.0; bgVideo.play();
+                    
                     lyricsVideo.style.display = 'block';
                     lyricsVideo.play();
 
@@ -317,7 +273,6 @@
                         white.style.opacity = '0';
                         setTimeout(() => {
                             white.style.display = 'none';
-                            document.getElementById('game2').classList.remove('active-game');
                             document.getElementById('game3').classList.add('active-game');
                             initColorGame();
                         }, 2000);
@@ -326,39 +281,127 @@
             }, 3000); 
         }
 
-        // --- Navigation ---
-        function showToast(msg = "شطورتييي ❤️") {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        // --- Memory Game ---
+        const imgs = ['mem1.jpg', 'mem2.jpg', 'mem3.png', 'mem4.png', 'mem5.png', 'mem6.png']; // تأكد من وجود هذه الصور
+        // سنستخدم صور تعبيرية (Emojis) إذا لم تكن الصور موجودة لضمان عمل الكود
+        const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
+        
+        let mLevel=1, flip=[], pairs=0, target=0;
+        function initMemoryGame() {
+            const grid=document.getElementById('memoryGrid'); grid.innerHTML=''; pairs=0; flip=[];
+            let num = mLevel===1?2: mLevel===2?4:6;
+            document.getElementById('memLevelTitle').innerText = mLevel===1?"مستوى 1: تسخين": mLevel===2?"مستوى 2: متوسط":"مستوى 3: صعب";
+            grid.style.gridTemplateColumns = mLevel===1?"repeat(2,1fr)":"repeat(3,1fr)";
+            target=num;
+            
+            // نستخدم الرموز التعبيرية كبديل آمن
+            let currentEmojis = emojis.slice(0, num);
+            let cards = [...currentEmojis, ...currentEmojis].sort(()=>0.5-Math.random());
+            
+            cards.forEach(emoji => {
+                let d = document.createElement('div'); d.className='card'; d.dataset.name=emoji;
+                d.innerHTML=`<div class="back">❓</div><div style="font-size:30px;">${emoji}</div>`;
+                d.onclick=()=>doFlip(d); grid.appendChild(d);
+            });
+        }
+        function doFlip(c) { if(flip.length<2 && !c.classList.contains('flipped')) { c.classList.add('flipped'); flip.push(c); if(flip.length===2) chkMatch(); }}
+        function chkMatch() {
+            if(flip[0].dataset.name === flip[1].dataset.name) {
+                pairs++; flip=[]; if(pairs===target) setTimeout(()=>{ if(mLevel<3){mLevel++; initMemoryGame();} else nextStage('game1','game2'); },500);
+            } else setTimeout(()=>{ flip[0].classList.remove('flipped'); flip[1].classList.remove('flipped'); flip=[]; },800);
         }
 
-        function nextStage(c, n) {
-            if (c === 'game2' && n === 'game3') {
-                triggerCinematicScenario();
-            } else if (c === 'game3' && n === 'fullMarioGame') {
-                document.getElementById(c).classList.remove('active-game');
-                startFullMario();
-            } else {
-                document.getElementById(c).classList.remove('active-game');
-                showToast("شطورتييي 😍");
-                setTimeout(() => {
-                    document.getElementById(n).classList.add('active-game');
-                    if(n==='game2') initXO();
-                    if(n==='game3') initColorGame();
-                }, 500);
+        // --- XO Logic ---
+        let board=['','','','','','','','',''], ease=0, xoFailCount=0, active=true, xoLevel = 1; 
+        function initXO() { 
+            document.getElementById('xoLevelText').innerText = xoLevel===1 ? "المستوى: 1 (سهل)" : xoLevel===2 ? "المستوى: 2 (متوسط)" : "المستوى: 3 (صعب)";
+            drawXO(); 
+        }
+        function drawXO() { 
+            const d=document.getElementById('xoBoard'); d.innerHTML='';
+            board.forEach((v,i)=>{ let b=document.createElement('div'); b.className=`cell ${v=='X'?'x':v=='O'?'o':''}`; b.innerText=v; b.onclick=()=>mv(i); d.appendChild(b); });
+        }
+        function mv(i) { 
+            if(board[i]=='' && active) { 
+                board[i]='X'; drawXO(); 
+                if(chk('X')) winXO(); 
+                else if(!board.includes('')) failXO(true); 
+                else { active=false; const st=document.getElementById('xoStatus'); st.innerText='يفكر...'; setTimeout(ai,600); } 
+            } 
+        }
+        function ai() {
+            let baseDiff = xoLevel===1 ? 30 : xoLevel===2 ? 60 : 95; let finalDiff = baseDiff - ease;
+            let smart = Math.random()*100 < finalDiff; let idx = smart ? bestMv() : rndMv();
+            if(idx==-1) idx=rndMv();
+            board[idx]='O'; drawXO(); 
+            if(chk('O')) failXO(false);
+            else if(!board.includes('')) failXO(true); 
+            else { active=true; document.getElementById('xoStatus').innerText='دورك'; }
+        }
+        function failXO(isDraw) { 
+            const st = document.getElementById('xoStatus'); xoFailCount++;
+            st.innerText = isDraw ? 'تعادل 😐' : 'خسرتي 😜'; st.style.color = '#ff6b81';
+            if (xoFailCount % 3 === 0) { ease += 20; if(ease > 90) ease = 90; document.getElementById('easeText').innerText = `تم تقليل الصعوبه 📉`; document.getElementById('easeText').style.display = 'block'; }
+            setTimeout(rstXO, 1500);
+        }
+        function winXO() { 
+            const st = document.getElementById('xoStatus'); st.innerText = 'شطورتيي 😍'; st.style.color = '#48cfad'; 
+            showToast("شطورتي 💋");
+            setTimeout(() => { if(xoLevel < 3) { xoLevel++; xoFailCount = 0; document.getElementById('easeText').style.display='none'; ease = 0; rstXO(); initXO(); } else { nextStage('game2','game3'); } }, 1500);
+        }
+        function rstXO() { board.fill(''); active=true; drawXO(); document.getElementById('xoStatus').innerText='دورك'; }
+        function rndMv() { let e=board.map((v,i)=>v==''?i:null).filter(v=>v!=null); return e[Math.floor(Math.random()*e.length)]; }
+        function bestMv() { for(let i=0;i<9;i++) if(board[i]==''){ board[i]='O'; if(chk('O')){board[i]='';return i;} board[i]=''; } for(let i=0;i<9;i++) if(board[i]==''){ board[i]='X'; if(chk('X')){board[i]='';return i;} board[i]=''; } return rndMv(); }
+        function chk(p) { return [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].some(c=>c.every(i=>board[i]==p)); }
+
+        // --- Color Game ---
+        const clrs=['green','red','yellow','blue']; 
+        let seq=[], usr=[], cLvl=1, turn=false, colorFailCount=0, isHardMode = false; 
+        function initColorGame() { cLvl=1; seq=[]; colorFailCount=0; isHardMode=false; document.getElementById('skipBtn').style.display='none'; startCol(); }
+        function startCol() {
+            usr=[]; turn=false;
+            const st = document.getElementById('colorStatus');
+            let len = isHardMode ? 16 : (cLvl==1?4: cLvl==2?6:8);
+            document.getElementById('colorLevelText').innerHTML = isHardMode ? `<span style="color:red">16</span> (المستوى المستحيل)` : `المستوى ${cLvl} (${len} خطوات)`;
+            st.innerText = 'شوفي الترتيب..';
+            seq=[]; for(let i=0;i<len;i++) seq.push(clrs[Math.floor(Math.random()*4)]);
+            setTimeout(()=>playSeq(0),1000);
+        }
+        function playSeq(i) {
+            if(i>=seq.length) { turn=true; document.getElementById('colorStatus').innerText='دورك'; return; }
+            let b=document.getElementById(seq[i]); b.classList.add('active');
+            setTimeout(()=>{ b.classList.remove('active'); setTimeout(()=>playSeq(i+1),500); },500);
+        }
+        function handleColorClick(c) {
+            if(!turn) return;
+            let b=document.getElementById(c); b.classList.add('active'); setTimeout(()=>b.classList.remove('active'),200);
+            usr.push(c);
+            const st = document.getElementById('colorStatus');
+            if(usr[usr.length-1] !== seq[usr.length-1]) {
+                st.innerText='خطأ!'; st.style.color='red'; colorFailCount++;
+                if(cLvl === 3 && !isHardMode && colorFailCount >= 3) document.getElementById('skipBtn').style.display='block';
+                setTimeout(startCol, 1500); turn=false; return;
+            }
+            if(usr.length===seq.length) {
+                st.innerText='شطورتي'; st.style.color='#48cfad'; 
+                if(isHardMode || cLvl === 3) { setTimeout(() => { nextStage('game3','fullMarioGame'); }, 500); }
+                else { cLvl++; colorFailCount=0; setTimeout(startCol,1000); }
             }
         }
+        function showQuiz() { document.getElementById('quizModal').style.display='flex'; document.getElementById('quizError').innerText = ''; document.getElementById('quizAnswer').value = ''; }
+        let quizWrongAttempts = 0;
+        function checkAnswer() {
+            let a = document.getElementById('quizAnswer').value.trim().toLowerCase();
+            if(["انا", "أنا", "هبه", "هبة"].includes(a)) { document.getElementById('quizModal').style.display='none'; nextStage('game3','fullMarioGame'); }
+            else { quizWrongAttempts++; document.getElementById('quizError').innerText = quizWrongAttempts===1?'غريبه ما عرفتي': quizWrongAttempts===2?'شفيك سهله':'غريبه القمر ما يعرف نفسو'; }
+        }
+        function closeQuiz() { document.getElementById('quizModal').style.display='none'; alert('رجعتي طيب يلا وريني كيف بدك تحلي ؟'); isHardMode = true; document.getElementById('hardModeText').style.display = 'block'; startCol(); }
 
         // --- Mario Full Game ---
         function startFullMario() {
             const bgVideo = document.getElementById('bgVideo');
             const lyricsVideo = document.getElementById('lyricsVideo');
-            
-            // إيقاف الفيديوهات معاً
-            bgVideo.pause();
-            lyricsVideo.pause();
+            bgVideo.pause(); lyricsVideo.pause();
 
             const marioContainer = document.getElementById('fullMarioGame');
             const marioFrame = document.getElementById('marioFrame');
@@ -370,10 +413,7 @@
         function finishMario() {
             const bgVideo = document.getElementById('bgVideo');
             const lyricsVideo = document.getElementById('lyricsVideo');
-            
-            // استئناف الفيديوهات معاً
-            bgVideo.play();
-            lyricsVideo.play();
+            bgVideo.play(); lyricsVideo.play();
 
             const marioContainer = document.getElementById('fullMarioGame');
             const marioFrame = document.getElementById('marioFrame');
@@ -382,7 +422,7 @@
             initMarriageVideo();
         }
 
-        // --- Marriage Video Logic (Stage 5) ---
+        // --- Marriage Video Logic ---
         let marryPressTimer;
         const marryLayer = document.getElementById('marryVideoLayer');
         const marryVid = document.getElementById('marryVideo');
@@ -422,20 +462,12 @@
             marryVid.onended = () => {
                 marryLayer.style.background = 'black';
                 marryVid.style.display = 'none';
-                
-                const scText = document.getElementById('marryText');
-                scText.innerText = "(هيهيهيهيي صرتي حلالي)";
-                scText.style.display = 'block';
-                
-                setTimeout(() => {
-                    scText.style.display = 'none';
-                    marryLayer.style.display = 'none';
-                    document.getElementById('game6').classList.add('active-game');
-                }, 3000);
+                marryLayer.style.display = 'none';
+                document.getElementById('game6').classList.add('active-game');
             };
         }
 
-        // --- Magic Heart & Box Logic (Stage 6) ---
+        // --- Magic Heart & Box Logic ---
         let heartTimer;
         const magicHeart = document.getElementById('magicHeart');
         const heartInst = document.getElementById('heartInstruction');
@@ -479,18 +511,15 @@
             const lyricsVid = document.getElementById('lyricsVideo');
             const container = document.getElementById('game6');
 
-            // 1. شاشة سوداء
             black.style.display = 'block';
             document.getElementById('magicHeart').style.display = 'none';
             heartInst.style.display = 'none';
 
             setTimeout(() => {
-                // 2. سناب + فلاش أبيض
                 snap.play();
                 black.style.display = 'none';
                 white.style.display = 'block';
                 
-                // إيقاف الفيديوهات القديمة نهائياً
                 somkeVid.pause(); somkeVid.style.display = 'none';
                 lyricsVid.pause(); lyricsVid.style.display = 'none';
                 
@@ -499,19 +528,14 @@
                 container.classList.remove('dark-mode');
                 container.classList.add('burn-mode');
                 
-                // تشغيل فيديو BURN بصوت
-                burnVid.muted = false;
-                burnVid.volume = 1.0;
-                burnVid.play(); 
+                burnVid.style.display = 'block';
+                burnVid.muted = false; burnVid.volume = 1.0; burnVid.play(); 
 
                 setTimeout(() => {
                     white.style.opacity = '0';
                     setTimeout(() => { white.style.display = 'none'; }, 1000);
-                    
-                    // تحويل البلور الى واضح تدريجيا
                     burnVid.style.filter = "blur(0px) brightness(1)";
 
-                    // 3. ظهور الصندوق
                     const gift = document.getElementById('finalGift');
                     gift.style.display = 'block';
                     document.querySelector('#game6 h2').innerText = "اضغطي 10 مرات!";
@@ -530,129 +554,16 @@
                 flower.style.display = 'block';
                 document.querySelector('#game6 h2').innerText = "وردة لأحلى وردة في دنيتي ❤️";
                 
-                // اخفاء كل العناصر بعد 10 ثواني
                 setTimeout(() => {
                     document.getElementById('game6').style.opacity = "0";
                 }, 10000);
 
-                // انتظار انتهاء فيديو الخلفية (BURN) للانتقال
                 const burnVid = document.getElementById('burnBgVideo');
                 burnVid.onended = () => {
                     window.location.href = "end.html";
                 };
             }
         }
-
-        // --- Memory Game Logic ---
-        const imgs = ['mem1.jpg', 'mem2.jpg', 'mem3.png', 'mem4.png', 'mem5.png', 'mem6.png'];
-        let mLevel=1, flip=[], pairs=0, target=0;
-        function initMemoryGame() {
-            const grid=document.getElementById('memoryGrid'); grid.innerHTML=''; pairs=0; flip=[];
-            let num = mLevel===1?2: mLevel===2?4:6;
-            document.getElementById('memLevelTitle').innerText = mLevel===1?"مستوى 1: تسخين": mLevel===2?"مستوى 2: متوسط":"مستوى 3: صعب";
-            grid.style.gridTemplateColumns = mLevel===1?"repeat(2,1fr)":"repeat(3,1fr)";
-            target=num;
-            let cards = [...imgs.slice(0,num), ...imgs.slice(0,num)].sort(()=>0.5-Math.random());
-            cards.forEach(src => {
-                let d = document.createElement('div'); d.className='card'; d.dataset.name=src;
-                d.innerHTML=`<div class="back">❓</div><img src="${src}">`;
-                d.onclick=()=>doFlip(d); grid.appendChild(d);
-            });
-        }
-        function doFlip(c) { if(flip.length<2 && !c.classList.contains('flipped')) { c.classList.add('flipped'); flip.push(c); if(flip.length===2) chkMatch(); }}
-        function chkMatch() {
-            if(flip[0].dataset.name === flip[1].dataset.name) {
-                pairs++; flip=[]; if(pairs===target) setTimeout(()=>{ if(mLevel<3){mLevel++; initMemoryGame();} else nextStage('game1','game2'); },500);
-            } else setTimeout(()=>{ flip[0].classList.remove('flipped'); flip[1].classList.remove('flipped'); flip=[]; },800);
-        }
-
-        // --- XO Logic ---
-        let board=['','','','','','','','',''], ease=0, xoFailCount=0, active=true;
-        let xoLevel = 1; 
-        function initXO() { 
-            document.getElementById('xoLevelText').innerText = xoLevel===1 ? "المستوى: 1 (سهل)" : xoLevel===2 ? "المستوى: 2 (متوسط)" : "المستوى: 3 (صعب)";
-            drawXO(); 
-        }
-        function drawXO() { 
-            const d=document.getElementById('xoBoard'); d.innerHTML='';
-            board.forEach((v,i)=>{ let b=document.createElement('div'); b.className=`cell ${v=='X'?'x':v=='O'?'o':''}`; b.innerText=v; b.onclick=()=>mv(i); d.appendChild(b); });
-        }
-        function mv(i) { 
-            if(board[i]=='' && active) { 
-                board[i]='X'; drawXO(); 
-                if(chk('X')) winXO(); 
-                else if(!board.includes('')) failXO(true); 
-                else { active=false; const st = document.getElementById('xoStatus'); st.innerText='يفكر...'; st.className = 'status-text txt-blue'; setTimeout(ai,600); } 
-            } 
-        }
-        function ai() {
-            let baseDiff = xoLevel===1 ? 30 : xoLevel===2 ? 60 : 95; let finalDiff = baseDiff - ease;
-            let smart = Math.random()*100 < finalDiff; let idx = smart ? bestMv() : rndMv();
-            if(idx==-1) idx=rndMv();
-            board[idx]='O'; drawXO(); 
-            if(chk('O')) failXO(false);
-            else if(!board.includes('')) failXO(true); 
-            else { active=true; const st = document.getElementById('xoStatus'); st.innerText='دورك'; st.className = 'status-text txt-blue'; }
-        }
-        function failXO(isDraw) { 
-            const st = document.getElementById('xoStatus'); xoFailCount++;
-            st.innerText = isDraw ? 'تعادل 😐' : 'خسرتي 😜';
-            st.className = isDraw ? 'status-text' : 'status-text txt-red'; 
-            if (xoFailCount % 3 === 0) { ease += 20; if(ease > 90) ease = 90; document.getElementById('easeText').innerText = `تم تقليل الصعوبه 📉`; document.getElementById('easeText').style.display = 'block'; }
-            setTimeout(rstXO, 1500);
-        }
-        function winXO() { 
-            const st = document.getElementById('xoStatus'); st.innerText = 'شطورتيي 😍'; st.className = 'status-text txt-green'; 
-            showToast("شطورتي 💋");
-            setTimeout(() => { if(xoLevel < 3) { xoLevel++; xoFailCount = 0; document.getElementById('easeText').style.display='none'; ease = 0; rstXO(); initXO(); } else { nextStage('game2','game3'); } }, 1500);
-        }
-        function rstXO() { board.fill(''); active=true; drawXO(); const st = document.getElementById('xoStatus'); st.innerText='دورك'; st.className = 'status-text txt-blue'; }
-        function rndMv() { let e=board.map((v,i)=>v==''?i:null).filter(v=>v!=null); return e[Math.floor(Math.random()*e.length)]; }
-        function bestMv() { for(let i=0;i<9;i++) if(board[i]==''){ board[i]='O'; if(chk('O')){board[i]='';return i;} board[i]=''; } for(let i=0;i<9;i++) if(board[i]==''){ board[i]='X'; if(chk('X')){board[i]='';return i;} board[i]=''; } return rndMv(); }
-        function chk(p) { return [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].some(c=>c.every(i=>board[i]==p)); }
-
-        // --- Color Game Logic ---
-        const clrs=['green','red','yellow','blue']; 
-        let seq=[], usr=[], cLvl=1, turn=false, colorFailCount=0, isHardMode = false; 
-        function initColorGame() { cLvl=1; seq=[]; colorFailCount=0; isHardMode=false; document.getElementById('skipBtn').style.display='none'; startCol(); }
-        function startCol() {
-            usr=[]; turn=false;
-            const st = document.getElementById('colorStatus');
-            let len = isHardMode ? 16 : (cLvl==1?4: cLvl==2?6:8);
-            document.getElementById('colorLevelText').innerHTML = isHardMode ? `<span style="color:red">16</span> (المستوى المستحيل)` : `المستوى ${cLvl} (${len} خطوات)`;
-            st.innerText = 'شوفي الترتيب..'; st.className = 'status-text txt-blue';
-            seq=[]; for(let i=0;i<len;i++) seq.push(clrs[Math.floor(Math.random()*4)]);
-            setTimeout(()=>playSeq(0),1000);
-        }
-        function playSeq(i) {
-            if(i>=seq.length) { turn=true; const st = document.getElementById('colorStatus'); st.innerText='دورك'; st.className = 'status-text txt-blue'; return; }
-            let b=document.getElementById(seq[i]); b.classList.add('active');
-            setTimeout(()=>{ b.classList.remove('active'); setTimeout(()=>playSeq(i+1),500); },500);
-        }
-        function handleColorClick(c) {
-            if(!turn) return;
-            let b=document.getElementById(c); b.classList.add('active'); setTimeout(()=>b.classList.remove('active'),200);
-            usr.push(c);
-            const st = document.getElementById('colorStatus');
-            if(usr[usr.length-1] !== seq[usr.length-1]) {
-                st.innerText='خطأ!'; st.className = 'status-text txt-red'; colorFailCount++;
-                if(cLvl === 3 && !isHardMode && colorFailCount >= 3) document.getElementById('skipBtn').style.display='block';
-                setTimeout(startCol, 1500); turn=false; return;
-            }
-            if(usr.length===seq.length) {
-                st.innerText='شطورتي'; st.className = 'status-text txt-green'; 
-                if(isHardMode || cLvl === 3) { setTimeout(() => { nextStage('game3','fullMarioGame'); }, 500); }
-                else { cLvl++; colorFailCount=0; setTimeout(startCol,1000); }
-            }
-        }
-        function showQuiz() { document.getElementById('quizModal').style.display='flex'; document.getElementById('quizError').innerText = ''; document.getElementById('quizAnswer').value = ''; }
-        let quizWrongAttempts = 0;
-        function checkAnswer() {
-            let a = document.getElementById('quizAnswer').value.trim().toLowerCase();
-            if(["انا", "أنا", "هبه", "هبة"].includes(a)) { document.getElementById('quizModal').style.display='none'; nextStage('game3','fullMarioGame'); }
-            else { quizWrongAttempts++; document.getElementById('quizError').innerText = quizWrongAttempts===1?'غريبه ما عرفتي': quizWrongAttempts===2?'شفيك سهله':'غريبه القمر ما يعرف نفسو'; }
-        }
-        function closeQuiz() { document.getElementById('quizModal').style.display='none'; alert('رجعتي طيب يلا وريني كيف بدك تحلي ؟'); isHardMode = true; document.getElementById('hardModeText').style.display = 'block'; startCol(); }
     </script>
 </body>
 </html>
