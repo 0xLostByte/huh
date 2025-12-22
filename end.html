@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The End ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background: black;
+            color: white; font-family: 'Cairo', sans-serif;
+            width: 100vw; height: 100vh;
+            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* --- الفيديوهات الخلفية --- */
+        .bg-video {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: 1; transition: opacity 1s;
+        }
+        #bgVideo1 { opacity: 1; } 
+        #bgVideo2 { opacity: 0; z-index: 2; }
+
+        /* --- طبقات التأثيرات --- */
+        #blackScreen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 100; 
+            display: block;
+        }
+        #whiteFlash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 101; display: none; opacity: 1;
+            transition: opacity 2s ease-out;
+        }
+
+        /* --- الجزء الأول --- */
+        #part1Container {
+            position: relative; z-index: 10;
+            width: 85%; max-width: 500px;
+            height: 85vh;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 20px;
+            overflow-y: auto;
+            text-align: center;
+            transition: opacity 1s;
+            opacity: 0;
+        }
+
+        /* تنسيق صورة الأفاتار الجديدة */
+        .avatar-img {
+            width: 100px; height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #d4af37; /* إطار ذهبي */
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            margin: 0 auto 15px auto;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        h1 { color: #d4af37; font-size: 22px; margin-bottom: 10px; text-shadow: 0 2px 5px black; }
+        p { font-size: 16px; line-height: 1.8; margin-bottom: 15px; color: #fff; text-shadow: 0 1px 2px black; }
+        .highlight { color: #ffeb3b; font-weight: bold; }
+        .signature { color: #a29bfe; font-size: 14px; margin-top: 10px; font-weight: bold; }
+
+        .small-video-container {
+            margin-top: 30px; margin-bottom: 20px;
+            padding: 10px; background: rgba(0,0,0,0.4);
+            border-radius: 15px;
+            position: relative;
+        }
+        .caption-top { font-size: 18px; color: #ff9ff3; font-weight: bold; margin-bottom: 5px; }
+        .caption-bottom { font-size: 14px; color: #ddd; margin-top: 5px; }
+        #smallVideo {
+            width: 100%; max-width: 250px;
+            border-radius: 10px; border: 2px solid white;
+        }
+        .touch-hint { font-size: 10px; color: rgba(255,255,255,0.7); margin-bottom: 5px; }
+
+        /* --- الجزء الثاني --- */
+        #part2Container {
+            position: relative; z-index: 20;
+            width: 90%; max-width: 450px;
+            height: 90vh;
+            display: none; opacity: 0;
+            flex-direction: column; align-items: center; justify-content: flex-start;
+            overflow-y: auto;
+            transition: opacity 1s;
+            padding-top: 20px;
+        }
+
+        /* تنسيق العنوان المحسن */
+        #giftTitle {
+            font-size: 24px; color: transparent;
+            background: linear-gradient(45deg, #fff, #ff0055, #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+            margin-bottom: 25px; 
+            text-align: center;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            padding-bottom: 10px;
+            width: 100%;
+        }
+
+        .gift-options {
+            display: flex; flex-direction: column; gap: 12px; width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .gift-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white; padding: 12px;
+            border-radius: 15px; font-size: 16px; font-weight: bold;
+            cursor: pointer; transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .gift-btn:hover, .gift-btn:active {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05); border-color: #ff6b81;
+        }
+
+        /* تنسيق الزر المؤقت */
+        #lockedBtn {
+            background: rgba(50, 0, 0, 0.8);
+            border-color: #555;
+            color: #aaa;
+            font-size: 14px;
+            width: 60%;
+            align-self: center; /* توسيط الزر الصغير */
+        }
+        #lockedBtn.unlocked {
+            background: linear-gradient(45deg, #d4af37, #f1c40f);
+            color: black;
+            border-color: gold;
+            animation: pulse 1s infinite;
+        }
+
+        .footer-message {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+        .footer-text-main { font-size: 14px; font-weight: bold; color: #fff; line-height: 1.6; margin-bottom: 10px; }
+        .footer-text-sub { font-size: 11px; color: #ccc; margin-bottom: 15px; }
+        #sleepingCatVideo {
+            width: 100%; max-width: 200px;
+            border-radius: 15px;
+            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        #resultModal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 300;
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 20px;
+        }
+        .result-box {
+            background: #fff; color: #333;
+            padding: 30px; border-radius: 20px; width: 85%; max-width: 350px;
+            box-shadow: 0 0 30px rgba(255, 107, 129, 0.8);
+            animation: popIn 0.5s;
+        }
+        .result-code {
+            font-size: 30px; font-weight: 900; color: #ff0055;
+            margin: 10px 0; letter-spacing: 2px;
+            border: 2px dashed #ff0055; padding: 10px;
+        }
+        .result-text { font-size: 18px; font-weight: bold; margin-bottom: 10px; line-height: 1.5; }
+        .close-btn {
+            margin-top: 20px; background: #333; color: white; border: none;
+            padding: 10px 25px; border-radius: 10px; cursor: pointer;
+        }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0px); } }
+        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
+    </style>
+</head>
+<body onclick="tryAutoStart()">
+
+    <audio id="snapSound" preload="auto" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406788/FINGERSNAP_kr2iw3.mp3"></audio>
+    <audio id="goldenMusic" preload="auto" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406788/golden_snfxbq.mp3"></audio>
+
+    <video id="bgVideo1" class="bg-video" loop muted playsinline>
+        <source src="https://res.cloudinary.com/dpvvxtuny/video/upload/what1_boil3f.mp4" type="video/mp4">
+    </video>
+
+    <video id="bgVideo2" class="bg-video" loop playsinline>
+        <source src="https://res.cloudinary.com/dpvvxtuny/video/upload/Erika_-_I_Don_t_Know_%EF%BD%93%EF%BD%8C%EF%BD%8F%EF%BD%97%EF%BD%85%EF%BD%84_%EF%BD%81%EF%BD%8E%EF%BD%84_%EF%BD%92%EF%BD%85%EF%BD%96%EF%BD%85%EF%BD%92%EF%BD%82_%E4%B8%AD%E3%82%B8%E8%8A%8B_dzttji.mp4" type="video/mp4">
+    </video>
+
+    <div id="blackScreen"></div>
+    <div id="whiteFlash"></div>
+    
+    <div id="part1Container">
+        <img src="https://res.cloudinary.com/dpvvxtuny/image/upload/v1766431193/download_wg1nre.jpg" class="avatar-img" alt="Avatar">
+        
+        <h1>كل عام وانتي بخير ي نور عيوني</h1>
+        <p>
+            كل عام وانتي أميرتي،<br>
+            كل عام وانتي روحي وسبب سعادتي،<br>
+            الله لا يحرمني منك،<br>
+            ويعجّل كل أيّامك فرح وسعادة يا رب.
+        </p>
+        <p>
+            كل عام وانتي تذوبيني بجمالك الفاتن،<br>
+            وكل عام وأنا أدوخ في عيونك،<br>
+            وفي ضحكتك، وفي سوالفك اللي تخليني أضحك من قلبي.
+        </p>
+        <p>
+            دعائي دايم إن الله يحفظك لي<br>
+            ويجمعني فيك بالحلال،<br>
+            وتكوني أم عيالي يوم من الأيام…<br>
+            <span class="highlight">قولي آمين 🤍</span>
+        </p>
+        <div class="signature">حقوقي lolmxfu</div>
+        <br>
+        <p class="highlight">
+            كل عام وانتي بخير يا نور عمري،<br>
+            وكل عام وأنا أحبك أكثر. 🤍✨
+        </p>
+
+        <div class="small-video-container">
+            <div class="caption-top">ابي كيكه جعان!!!</div>
+            <div class="touch-hint">(المسيني عشان الصوت)</div>
+            <video id="smallVideo" autoplay muted playsinline loop onclick="toggleSmallVideoSound(event, this)">
+                <source src="https://res.cloudinary.com/dpvvxtuny/video/upload/rename_obak2s.mp4" type="video/mp4">
+            </video>
+            <div class="caption-bottom">هاذي حالتي حاليا</div>
+        </div>
+    </div>
+
+    <div id="part2Container">
+        <div id="giftTitle">حسبتي إني نسيت الهدية؟ 😏❤️</div>
+        
+        <div class="gift-options">
+            <button class="gift-btn" onclick="showResult('A1', event)">طلبات 5 + 500 روب</button>
+            <button class="gift-btn" onclick="showResult('C1', event)">طلبات 10</button>
+            <button class="gift-btn" onclick="showResult('D1', event)">1000 روب</button>
+            
+            <button id="lockedBtn" class="gift-btn" onclick="checkTimeLock(event)">NONE 🔒</button>
+            
+            <button class="gift-btn" onclick="showResult('NONE', event)">شئ اخر</button>
+        </div>
+
+        <div class="footer-message">
+            <div class="footer-text-main">
+                اتمني يكون الموقع عجبك تقريبا 13 يوم شغل علي الموقع <br>
+                المهم اتنمي انه يعجبك وبحبك ❤️
+            </div>
+            <div class="footer-text-sub">
+                (اعرفي لو المتوحد ما رد ف هو هيك حاليا)
+            </div>
+            <video id="sleepingCatVideo" playsinline onclick="event.stopPropagation()">
+                <source src="https://res.cloudinary.com/dpvvxtuny/video/upload/Drooling_cat_sleeping_meme_ivopwm.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <div id="resultModal">
+        <div class="result-box">
+            <div class="result-text" id="resText"></div>
+            <div class="result-code" id="resCode"></div>
+            <button class="close-btn" onclick="closeResult(event)">تمام ❤️</button>
+        </div>
+    </div>
+
+    <script>
+        const blackScreen = document.getElementById('blackScreen');
+        const whiteFlash = document.getElementById('whiteFlash');
+        const bgVideo1 = document.getElementById('bgVideo1');
+        const bgVideo2 = document.getElementById('bgVideo2');
+        const contentBox = document.getElementById('part1Container');
+        const part2Box = document.getElementById('part2Container');
+        
+        const snapSound = document.getElementById('snapSound');
+        const goldenMusic = document.getElementById('goldenMusic');
+        
+        const resultModal = document.getElementById('resultModal');
+        const resText = document.getElementById('resText');
+        const resCode = document.getElementById('resCode');
+        const sleepingCatVideo = document.getElementById('sleepingCatVideo');
+        
+        const lockedBtn = document.getElementById('lockedBtn');
+
+        let hasStarted = false;
+
+        // --- إعداد المؤقت (يومين) ---
+        // سيتم تخزين وقت أول زيارة في المتصفح
+        function initTimer() {
+            const twoDaysMS = 48 * 60 * 60 * 1000; // 48 ساعة بالمللي ثانية
+            let firstVisit = localStorage.getItem('siteFirstVisit_v1'); // مفتاح خاص بالموقع
+
+            if (!firstVisit) {
+                // إذا أول مرة يفتح الموقع، نسجل الوقت الحالي
+                firstVisit = Date.now();
+                localStorage.setItem('siteFirstVisit_v1', firstVisit);
+            }
+
+            // التحقق عند التحميل لتغيير شكل الزر إذا انتهى الوقت
+            const now = Date.now();
+            if (now - firstVisit > twoDaysMS) {
+                unlockButton();
+            }
+        }
+
+        // دالة فحص الوقت عند الضغط
+        function checkTimeLock(e) {
+            if(e) e.stopPropagation();
+
+            const twoDaysMS = 48 * 60 * 60 * 1000; 
+            let firstVisit = localStorage.getItem('siteFirstVisit_v1');
+            const now = Date.now();
+
+            if (now - firstVisit > twoDaysMS) {
+                // انتهى الوقت - افتح الهدية
+                showResult('SECRET_GIFT', null); 
+            } else {
+                // لم ينته الوقت - احسب المتبقي
+                const remainingMS = twoDaysMS - (now - firstVisit);
+                const remainingHours = Math.floor(remainingMS / (1000 * 60 * 60));
+                
+                alert(`⛔ عذرًا! هذه الهدية مقفلة.\nتعالي بعد يومين.\n\nباقي من الوقت: ${remainingHours} ساعة تقريبًا.`);
+            }
+        }
+
+        function unlockButton() {
+            lockedBtn.innerHTML = "NONE ✨ (مفتوح)";
+            lockedBtn.classList.add('unlocked');
+        }
+
+        window.onload = function() {
+            initTimer(); // تشغيل المؤقت
+            setTimeout(tryAutoStart, 1000);
+        };
+
+        function tryAutoStart() {
+            if(hasStarted) return; 
+
+            snapSound.play().then(() => {
+                runSequence();
+            }).catch(error => {
+                console.log("Autoplay blocked, forcing visuals");
+                runSequence();
+            });
+        }
+
+        function runSequence() {
+            if(hasStarted) return;
+            hasStarted = true;
+
+            whiteFlash.style.display = 'block';
+            whiteFlash.style.opacity = '1';
+
+            blackScreen.style.display = 'none';
+
+            goldenMusic.play().catch(e => console.log("Music blocked"));
+            bgVideo1.play();
+
+            setTimeout(() => {
+                whiteFlash.style.opacity = '0';
+                setTimeout(() => { whiteFlash.style.display = 'none'; }, 2000);
+            }, 100);
+
+            setTimeout(() => {
+                contentBox.style.opacity = 1;
+            }, 500);
+
+            setTimeout(startSecondPart, 60000);
+        }
+
+        function toggleSmallVideoSound(e, vid) {
+            e.stopPropagation();
+            if (vid.muted) {
+                vid.muted = false;
+                vid.volume = 1.0;
+            } else {
+                vid.muted = true;
+            }
+        }
+
+        function startSecondPart() {
+            blackScreen.style.display = 'block';
+            contentBox.style.display = 'none';
+            goldenMusic.pause();
+            bgVideo1.pause();
+            bgVideo1.style.opacity = 0;
+
+            // التحقق مرة أخرى من الوقت عند الانتقال للصفحة الثانية
+            const twoDaysMS = 48 * 60 * 60 * 1000; 
+            let firstVisit = localStorage.getItem('siteFirstVisit_v1');
+            if (Date.now() - firstVisit > twoDaysMS) {
+                unlockButton();
+            }
+
+            setTimeout(() => {
+                snapSound.currentTime = 0;
+                snapSound.play().catch(e=>{});
+                
+                blackScreen.style.display = 'none';
+                whiteFlash.style.display = 'block';
+                whiteFlash.style.opacity = '1';
+                
+                bgVideo2.style.opacity = 1;
+                bgVideo2.muted = false;
+                bgVideo2.volume = 1.0;
+                bgVideo2.play();
+
+                setTimeout(() => {
+                    whiteFlash.style.opacity = 0;
+                    setTimeout(() => { whiteFlash.style.display = 'none'; }, 2000);
+                    
+                    part2Box.style.display = 'flex';
+                    setTimeout(() => { part2Box.style.opacity = 1; }, 100);
+
+                    sleepingCatVideo.muted = false;
+                    sleepingCatVideo.play().catch(e => console.log("Cat video blocked"));
+
+                    sleepingCatVideo.addEventListener('ended', function() {
+                        this.muted = true; 
+                        this.loop = true;  
+                        this.play();       
+                    }, { once: true });
+
+                }, 100);
+
+            }, 2000);
+        }
+
+        function showResult(type, e) {
+            if(e) e.stopPropagation();
+            resultModal.style.display = 'flex';
+            
+            if (type === 'NONE') {
+                resText.innerText = "عيوني أمريني روحي للمتوحد وقولي له\nوبحبك يل ❤️";
+                resCode.style.display = 'none';
+            } 
+            else if (type === 'SECRET_GIFT') {
+                // رسالة الزر المقفل بعد مرور يومين
+                resText.innerText = "وأخيراً مر اليومين! 🎉\nهديتك الخاصة هي:";
+                resCode.style.display = 'block';
+                resCode.innerText = "تذكرة سفر لمكان تحبيه ✈️"; // تقدر تغير الهدية هنا
+            }
+            else {
+                resText.innerText = "من عيوني\nارسلي للمتوحد الي في الانستا ذا الكود:";
+                resCode.style.display = 'block';
+                resCode.innerText = type;
+            }
+        }
+
+        function closeResult(e) {
+            if(e) e.stopPropagation();
+            resultModal.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
