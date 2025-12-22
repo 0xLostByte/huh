@@ -24,7 +24,8 @@
         box-shadow: 0 0 25px rgba(0,0,0,0.2);
         overflow: hidden;
         display: flex; flex-direction: column;
-        align-items: center; padding-top: 60px;
+        align-items: center; 
+        padding-top: 60px;
         position: relative;
     }
 
@@ -48,7 +49,7 @@
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
-    /* منطقة الأزرار */
+    /* منطقه الأزرار */
     .buttons-wrapper {
         position: relative;
         width: 100%;
@@ -80,10 +81,10 @@
     /* التلميح */
     #hint {
         position: absolute;
-        top: 450px;
+        top: 320px; 
         width: 90%;
         color: #fff; 
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
         text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         z-index: 15;
@@ -134,9 +135,9 @@
 </head>
 <body>
 
-<audio id="bgMusic" src="girl.mp3" loop autoplay></audio>
+<audio id="bgMusic" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406788/girl_okaxsy.mp3" loop autoplay></audio>
 
-<audio id="explosionSound" src="tnt.mp3" preload="auto"></audio>
+<audio id="explosionSound" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406786/tnt_mp6iuk.mp3" preload="auto"></audio>
 
 <div class="phone-container" id="containerArea">
     
@@ -174,28 +175,20 @@
     const explosionContainer = document.getElementById("explosion-container");
     const bgMusic = document.getElementById("bgMusic");
 
-    // --- منطق استكمال الموسيقى ---
     window.onload = function() {
-        // استرجاع الوقت المحفوظ
         const savedTime = sessionStorage.getItem("audioTime");
         if(savedTime) {
             bgMusic.currentTime = savedTime;
         }
-        // محاولة التشغيل
         bgMusic.play().catch(e => console.log("Auto-play prevented"));
     };
 
-    // حفظ الوقت باستمرار (كل ثانية أثناء التشغيل)
     bgMusic.addEventListener("timeupdate", () => {
         sessionStorage.setItem("audioTime", bgMusic.currentTime);
     });
 
-    // دالة الانتقال للصفحة التالية
     function goQuiz() {
-        // حفظ الوقت الحالي بدقة قبل الانتقال مباشرة
         sessionStorage.setItem("audioTime", bgMusic.currentTime);
-        
-        // الانتقال لصفحة السؤال الأول
         window.location.href = "سؤال واحد.html";
     }
 
@@ -208,20 +201,23 @@
         }
 
         if (haClicks < 4) {
-            const randomX = Math.random() * (280 - 20) + 20; 
+            const btnW = 100;
+            const maxW = 390; 
+
+            const randomX = Math.random() * (maxW - btnW - 40) + 20; 
             const randomY = Math.random() * (600 - 350) + 350; 
+
             haBtn.style.left = randomX + "px";
             haBtn.style.top = randomY + "px";
 
-            if(haClicks === 1) hint.textContent = "شفيه؟ حتي هنا تقولي (ها)؟ اضغطي (أوك يل) 😉";
-            if(haClicks === 2) hint.textContent = "بربك! قولي والله 😂";
+            if(haClicks === 1) hint.textContent = "شفيه؟ حتي هنا تقولي (ها)؟ اضغطي (أوك يل) ";
+            if(haClicks === 2) hint.textContent = "بربك! قولي والله ";
             if(haClicks === 3) {
                 hint.textContent = "لا تخليني اشفشفك هسا 🫦😔";
                 setTimeout(() => { hint.textContent = "يل اضغطي"; }, 1000);
             }
             
         } else {
-            // المرة الرابعة (الانفجار)
             explosionSound.play().catch(e => console.log("Sound needs interaction"));
 
             const rect = haBtn.getBoundingClientRect();
@@ -235,7 +231,7 @@
             boom.style.top = y + "px";
             explosionContainer.appendChild(boom);
 
-            hint.textContent = "ارتحتي هيك يلا هي الزر زهق وانفجر 😂";
+            hint.textContent = "ارتحتي هيك يلا هي الزر زهق وانفجر ";
             haBtn.style.opacity = "0";
 
             setTimeout(() => {

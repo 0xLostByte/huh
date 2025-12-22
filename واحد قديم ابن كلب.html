@@ -2,7 +2,6 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<!-- تأكيد أن مقياس العرض هو مقياس الجهاز 1:1 لهاتف Honor X6b -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>واحد قديم ابن كلب</title>
 <style>
@@ -18,31 +17,37 @@ html, body {
     position: relative;
 }
 
+/* طبقة الواجهة (النصوص) */
 .ui-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2;
+    z-index: 10; /* أعلى شيء */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none; /* عشان نقدر نضغط على اللي تحته لو احتجنا */
 }
 
+/* النصوص */
 #text {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 34px; /* كبييييير جداً */
-    width: 90%;
-    z-index: 3;
-    text-shadow: 0 0 12px #000, 0 0 12px #000;
-    padding: 15px;
-    background: rgba(0,0,0,0.4);
-    border-radius: 12px;
-    line-height: 1.4;
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 0 0 15px black;
+    background: rgba(0,0,0,0.5);
+    padding: 20px;
+    border-radius: 15px;
+    line-height: 1.5;
+    max-width: 90%;
+    display: none; 
+    pointer-events: auto;
 }
 
-video {
+/* الفيديوهات الأساسية (4 و 5) */
+.story-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -50,134 +55,141 @@ video {
     top: 0;
     left: 0;
     display: none;
+    z-index: 5; /* فوق الخلفية */
 }
 
-#timer {
-    position: absolute;
-    top: 40px; /* رفعه أكثر */
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 44px; /* كبيييير جداً */
-    color: #ff4d6d;
-    display: none;
-    z-index: 3;
-    text-shadow: 0 0 10px #000;
-}
-
-#noteText {
-    position: absolute;
-    top: 120px; /* رفعه أكثر */
-    left: 50%;
-    transform: translateX(-50%);
-    display: none;
-    background: rgba(0,0,0,0.7);
-    padding: 20px 30px;
-    border-radius: 20px;
-    font-size: 28px; /* كبيييير جداً */
-    font-weight: bold;
-    z-index: 3;
-    backdrop-filter: blur(6px);
-    width: 80%;
-}
-
-#inputBox {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 3;
-    background: rgba(0,0,0,0.85); /* خلفية أغمق */
-    padding: 30px; /* حجم الصندوق أكبر */
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    width: 85%;
-}
-
-#inputBox div {
-    font-size: 24px; /* تكبير خط التعليمات */
-    margin-bottom: 15px;
-}
-
-input {
-    padding: 18px; /* حجم أكبر لخانة الإدخال */
-    font-size: 20px; /* خط أكبر في الإدخال */
-    width: 100%;
-    text-align: center;
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-button {
-    margin-top: 20px;
-    padding: 16px 40px; /* حجم أكبر للزر */
-    font-size: 22px; /* خط أكبر للزر */
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    background-color: #ff4d6d;
-    color: white;
-}
-
-#finalImage {
-    display: none;
+/* فيديو الفضاء الخلفية */
+#spaceVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 5;
+    z-index: 1; /* خلفية */
+    display: none; 
+    opacity: 0.8;
 }
+
+/* العداد */
+#timer {
+    position: absolute;
+    top: 30px;
+    font-size: 50px;
+    font-weight: bold;
+    color: #ff4d6d;
+    text-shadow: 0 0 15px rgba(255, 77, 109, 0.8);
+    display: none;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* صندوق الإدخال */
+#inputBox {
+    display: none;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 40px 25px;
+    border-radius: 25px;
+    width: 85%;
+    max-width: 400px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    z-index: 10;
+    pointer-events: auto;
+}
+
+#inputTitle {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+#counterDisplay {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #ff8fa3;
+}
+
+input {
+    padding: 15px;
+    font-size: 22px;
+    width: 100%;
+    text-align: center;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.3);
+    background: rgba(0,0,0,0.3);
+    color: white;
+    outline: none;
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+
+input:focus {
+    border-color: #ff4d6d;
+    box-shadow: 0 0 15px rgba(255, 77, 109, 0.4);
+}
+
+#feedbackMsg {
+    margin-top: 15px;
+    height: 25px;
+    font-size: 18px;
+    color: #2ecc71;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
 </style>
 </head>
 
 <body>
 
-<video id="video4" src="4.mp4" playsinline></video>
-<video id="video5" src="5.mp4" playsinline></video>
+<video id="spaceVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/space_kvpttb.mp4" loop muted playsinline></video>
+
+<video id="video4" class="story-video" src="https://res.cloudinary.com/dpvvxtuny/video/upload/4_k22yqi.mp4" playsinline></video>
+
+<video id="video5" class="story-video" src="https://res.cloudinary.com/dpvvxtuny/video/upload/67_1_1_oc6jxr.mp4" playsinline></video>
 
 <div class="ui-container">
     <div id="text"></div>
     <div id="timer"></div>
-    <div id="noteText"></div>
 
     <div id="inputBox">
-        <div>اكتبي بحبك عشر مرات عشان ترضيني</div>
-        <div>المتبقي: <span id="count">10</span></div>
-        <input type="text" id="loveInput">
-        <br>
-        <button id="doneBtn" onclick="finish()" style="display:none;">تم</button>
+        <div id="inputTitle">اكتبي "بحبك" 10 مرات عشان ترضيني 😤</div>
+        <div id="counterDisplay">المتبقي: <span id="count">10</span></div>
+        <input type="text" id="loveInput" placeholder="اكتبي هنا...">
+        <div id="feedbackMsg">شطورة! كملي ❤️</div>
     </div>
 </div>
 
-<img id="finalImage" src="7.jpg" alt="الصورة الأخيرة">
-<audio id="audio" src="6.mp3"></audio>
+<audio id="audio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406788/6_dtgnok.mp3"></audio>
 
 <script>
 const text = document.getElementById("text");
-const noteText = document.getElementById("noteText");
 const video4 = document.getElementById("video4");
 const video5 = document.getElementById("video5");
+const spaceVideo = document.getElementById("spaceVideo");
 const timerEl = document.getElementById("timer");
 const inputBox = document.getElementById("inputBox");
 const loveInput = document.getElementById("loveInput");
 const countEl = document.getElementById("count");
-const doneBtn = document.getElementById("doneBtn");
-const finalImage = document.getElementById("finalImage");
+const feedbackMsg = document.getElementById("feedbackMsg");
 const audio = document.getElementById("audio");
 
 let remaining = 10;
-let totalTime = 600; // 10 دقائق
+let totalTime = 600; 
 
+// البداية
+text.style.display = "block";
 text.innerHTML = "ويت؟؟؟";
 setTimeout(() => {
     text.innerHTML = "هو أصلاً زلمة عشان تختاريه؟ 🤨";
 }, 2000);
 
 setTimeout(() => {
-    text.innerHTML = "";
+    text.style.display = "none";
     playVideo4();
 }, 5000);
 
@@ -191,13 +203,14 @@ function playVideo4() {
 }
 
 function punishmentIntro() {
+    text.style.display = "block";
     text.innerHTML = "راح أوريكي العقاب الصح هسا";
     setTimeout(() => {
         text.innerHTML = "يلا تفرجي على فيديو 10 دقايق كرنج وتافه";
     }, 3000);
 
     setTimeout(() => {
-        text.innerHTML = "";
+        text.style.display = "none";
         playVideo5();
     }, 6000);
 }
@@ -215,14 +228,14 @@ function playVideo5() {
     }, 1000);
 
     setTimeout(() => {
-        noteText.innerHTML = "أحس كذا حرام… أنا بحبك ";
-        noteText.style.display = "block";
+        text.style.display = "block";
+        text.innerHTML = "أحس كذا حرام… أنا بحبك ";
         setTimeout(() => {
-            noteText.innerHTML = "بخفف العقاب شوي";
+            text.innerHTML = "بخفف العقاب شوي";
         }, 3000);
 
         setTimeout(() => {
-            noteText.style.display = "none";
+            text.style.display = "none";
             showInput();
         }, 6000);
     }, 10000);
@@ -236,27 +249,42 @@ function updateTimer() {
 
 function showInput() {
     inputBox.style.display = "block";
+    loveInput.focus();
 }
 
 loveInput.addEventListener("input", () => {
-    const matches = loveInput.value.match(/بحبك/g);
-    const count = matches ? matches.length : 0;
-    remaining = Math.max(10 - count, 0);
-    countEl.textContent = remaining;
+    const val = loveInput.value.trim();
+    
+    if (val === "بحبك") {
+        remaining--;
+        countEl.textContent = remaining;
+        loveInput.value = "";
+        
+        feedbackMsg.style.opacity = 1;
+        setTimeout(() => { feedbackMsg.style.opacity = 0; }, 800);
 
-    if (remaining === 0) {
-        doneBtn.style.display = "inline-block";
+        if (remaining <= 0) {
+            finish();
+        }
     }
 });
 
 function finish() {
+    // إخفاء عناصر اللعبة السابقة
     inputBox.style.display = "none";
     timerEl.style.display = "none";
     video4.pause(); video4.style.display = "none";
     video5.pause(); video5.style.display = "none";
 
+    // === تشغيل فيديو الفضاء (الإصلاح) ===
+    spaceVideo.style.display = "block";
+    spaceVideo.muted = true; // ضروري للتشغيل التلقائي كخلفية
+    spaceVideo.play();
+    
+    // إظهار النصوص
     text.style.display = "block";
     text.innerHTML = "رجعنا للفضاء الأسود 🌌";
+    
     setTimeout(() => {
         text.innerHTML = "سامحتك يا حلوتي 🤍";
     }, 3000);
@@ -268,10 +296,9 @@ function finish() {
 
             setTimeout(() => {
                 text.style.display = "none";
-                finalImage.style.display = "block";
+                // تشغيل الصوت 6.mp3
                 audio.play();
                 audio.onended = () => {
-                    finalImage.style.display = "none";
                     window.location.href = "سؤال واحد.html";
                 };
             }, 3000);

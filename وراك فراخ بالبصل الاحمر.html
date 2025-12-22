@@ -17,149 +17,194 @@
         text-align: center;
     }
 
-    /* تنسيق الفيديو ليكون خلفية كاملة */
-    video {
+    /* فيديو الخلفية (mess) - يظهر بعد الفيديوهات الافتتاحية */
+    #messVideo {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: 0; 
+        object-fit: cover;
+        opacity: 0.8; 
+    }
+
+    /* فيديوهات المقدمة (2 و 3) والمقلب النهائي (MUHA) */
+    .fullscreen-video {
         width: 100%;
         height: 100%;
         object-fit: cover;
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 1;
+        z-index: 10;
+        background: black;
     }
 
-    /* طبقة التعتيم والتفاعل */
+    /* طبقة التعتيم */
     .overlay {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 2;
+        z-index: 5;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background: rgba(0, 0, 0, 0.4);
+        background: rgba(0, 0, 0, 0.5); 
         backdrop-filter: blur(5px);
         transition: all 0.5s ease;
     }
 
-    /* حاوية الرسائل والأزرار بتصميم زجاجي */
+    /* حاوية المحتوى */
     .glass-panel {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        border-radius: 20px;
-        padding: 30px 20px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 25px;
+        padding: 40px 25px;
         width: 85%;
-        max-width: 350px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        max-width: 380px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 20px;
     }
 
-    .hidden {
-        display: none !important;
-    }
+    .hidden { display: none !important; }
 
     #message {
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 700;
         line-height: 1.6;
         text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
 
     #countdown {
-        font-size: 60px;
+        font-size: 70px;
         font-weight: bold;
         color: #ff4d6d;
-        text-shadow: 0 0 20px rgba(255, 77, 109, 0.6);
+        text-shadow: 0 0 25px rgba(255, 77, 109, 0.8);
         margin: 10px 0;
     }
 
     /* شريط التقدم */
     .progress-container {
         width: 100%;
-        height: 20px;
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
+        height: 25px;
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
         overflow: hidden;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         position: relative;
+        border: 1px solid rgba(255,255,255,0.2);
     }
 
     .progress-bar {
         height: 100%;
         width: 0%;
-        background: linear-gradient(90deg, #ff4d6d, #ff8fa3);
+        background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fad0c4, #ff9a9e);
+        background-size: 200% 200%;
+        animation: gradientBG 2s ease infinite;
         transition: width 0.1s linear;
-        border-radius: 10px;
+        border-radius: 15px;
+    }
+    
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
 
-    /* زر الضغط (القلب) */
+    /* زر القلب */
     #pumpBtn {
-        background: linear-gradient(45deg, #ff0055, #ff4d6d);
+        background: linear-gradient(135deg, #ff0055, #ff4d6d);
         border: none;
         color: white;
-        padding: 15px 30px;
-        font-size: 20px;
+        padding: 18px 40px;
+        font-size: 22px;
         border-radius: 50px;
         cursor: pointer;
-        box-shadow: 0 5px 15px rgba(255, 0, 85, 0.4);
+        box-shadow: 0 8px 20px rgba(255, 0, 85, 0.5);
         font-family: 'Cairo', sans-serif;
         font-weight: bold;
         transform: scale(1);
         transition: transform 0.1s;
         -webkit-tap-highlight-color: transparent;
+        width: 100%;
     }
 
-    #pumpBtn:active {
-        transform: scale(0.90);
-    }
+    #pumpBtn:active { transform: scale(0.90); }
 
+    /* زر الرجوع (المقفل والمفتوح) */
     #returnBtn {
-        background: linear-gradient(45deg, #2ecc71, #27ae60);
+        background: linear-gradient(45deg, #7f8c8d, #95a5a6); /* رمادي (مقفل) */
         border: none;
-        color: white;
+        color: #eee;
         padding: 15px 40px;
         font-size: 18px;
         border-radius: 12px;
-        cursor: pointer;
+        cursor: not-allowed;
         font-family: 'Cairo', sans-serif;
         font-weight: bold;
-        box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
-        margin-top: 20px;
+        box-shadow: none;
+        margin-top: 10px;
+        width: 100%;
+        transition: all 0.3s ease;
+        opacity: 0.7;
     }
 
-    /* تأثير نبض للزر */
+    /* كلاس التفعيل */
+    #returnBtn.active {
+        background: linear-gradient(45deg, #2ecc71, #27ae60); /* أخضر (مفتوح) */
+        cursor: pointer;
+        color: white;
+        box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        opacity: 1;
+    }
+
+    /* نص الانتظار */
+    #waitMessage {
+        font-size: 16px;
+        color: #ffeb3b;
+        margin-bottom: 5px;
+        font-weight: bold;
+        animation: pulse 1.5s infinite;
+    }
+
     @keyframes pulse {
         0% { transform: scale(1); }
         50% { transform: scale(1.05); }
         100% { transform: scale(1); }
     }
-    .pulsing {
-        animation: pulse 1.5s infinite;
-    }
+    .pulsing { animation: pulse 1.5s infinite; }
 </style>
 </head>
 <body>
 
-<audio id="evAudio" src="ev.mp3"></audio>
-<audio id="ev1Audio" src="ev1.mp3"></audio>
-<audio id="beyAudio" src="bey.mp3"></audio>
-
-<video id="video2" autoplay playsinline>
-    <source src="2.mp4" type="video/mp4">
-    متصفحك لا يدعم الفيديو.
+<video id="messVideo" class="hidden" loop playsinline>
+    <source src="https://res.cloudinary.com/dpvvxtuny/video/upload/mess_au1qqu.mp4" type="video/mp4">
 </video>
 
-<video id="video3" class="hidden" playsinline>
-    <source src="3.mp4" type="video/mp4">
-    متصفحك لا يدعم الفيديو.
+<audio id="ev1Audio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406778/ev1_fgnkzm.mp3"></audio>
+<audio id="beyAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406778/bey_qnveza.mp3"></audio>
+
+<video id="video2" class="fullscreen-video" autoplay playsinline>
+    <source src="https://res.cloudinary.com/dpvvxtuny/video/upload/2_gcylvl.mp4" type="video/mp4">
+</video>
+
+<video id="video3" class="fullscreen-video hidden" playsinline>
+    <source src="https://res.cloudinary.com/dpvvxtuny/video/upload/3_k5etpl.mp4" type="video/mp4">
+</video>
+
+<video id="muhaVideo" class="fullscreen-video hidden" playsinline>
+    <source src="https://res.cloudinary.com/dpvvxtuny/video/upload/MUHA_wszbuu.mp4" type="video/mp4">
 </video>
 
 <div class="overlay hidden" id="overlay">
@@ -172,48 +217,57 @@
             <div class="progress-container">
                 <div id="progressBar" class="progress-bar"></div>
             </div>
-            <button id="pumpBtn" class="pulsing">❤️ اضغطي هنا بسرعة ❤️</button>
+            <button id="pumpBtn" class="pulsing"❤️ اضغطي هنا بسرعة ❤️</button>
         </div>
 
-        <button id="returnBtn" class="hidden">الرجوع للصفحة الرئيسية</button>
+        <div id="returnArea" class="hidden" style="width: 100%;">
+            <div id="waitMessage">استمتعي بالأغنية لحد ما يخلص الوقت 😉</div>
+            <button id="returnBtn" disabled>الرجوع (20)</button>
+        </div>
     </div>
 </div>
 
 <script>
+    const messVideo = document.getElementById("messVideo");
     const video2 = document.getElementById("video2");
     const video3 = document.getElementById("video3");
+    const muhaVideo = document.getElementById("muhaVideo");
     const overlay = document.getElementById("overlay");
+    
     const message = document.getElementById("message");
     const countdown = document.getElementById("countdown");
-    
     const gameArea = document.getElementById("gameArea");
     const progressBar = document.getElementById("progressBar");
     const pumpBtn = document.getElementById("pumpBtn");
+    
+    const returnArea = document.getElementById("returnArea");
     const returnBtn = document.getElementById("returnBtn");
+    const waitMessage = document.getElementById("waitMessage");
 
-    // تعريف متغيرات الصوت في الجافاسكريبت للتحكم بها
-    const evAudio = document.getElementById("evAudio");
     const ev1Audio = document.getElementById("ev1Audio");
     const beyAudio = document.getElementById("beyAudio");
 
     let clicks = 0;
-    const requiredClicks = 25; // عدد الضغطات المطلوبة
+    const requiredClicks = 25; 
     let gameActive = false;
 
-    // تشغيل الفيديو الثالث عند انتهاء الثاني
+    // 1. عند انتهاء فيديو 2 -> تشغيل فيديو 3
     video2.onended = () => {
         video2.classList.add("hidden");
         video3.classList.remove("hidden");
         video3.play();
     }
 
-    // عند انتهاء الفيديو الثالث (المرة الأولى)
+    // 2. عند انتهاء فيديو 3 -> تشغيل الخلفية (mess)
     video3.onended = () => {
         video3.classList.add("hidden");
+        
+        // إظهار الخلفية وتشغيلها (صوت وصورة)
+        messVideo.classList.remove("hidden");
+        messVideo.muted = false; 
+        messVideo.play();
+        
         overlay.classList.remove("hidden");
-
-        // تشغيل صوت ev هنا عند انتهاء الفيديو وظهور الكلام
-        evAudio.play();
 
         const texts = [
             { text: "بتحبي الفراخ هيهيههي 😂", duration: 3000 },
@@ -223,7 +277,6 @@
         ];
 
         let index = 0;
-
         function showNextText() {
             if(index < texts.length){
                 message.textContent = texts[index].text;
@@ -233,7 +286,6 @@
                 startGame();
             }
         }
-
         showNextText();
     }
 
@@ -267,7 +319,6 @@
                 clearInterval(interval);
                 return;
             }
-
             timeLeft--;
             countdown.textContent = timeLeft;
 
@@ -296,57 +347,68 @@
         countdown.classList.add("hidden");
         gameArea.classList.add("hidden");
         
-        message.innerHTML = "كفووو! 😍<br>أنا بموت عليكي يا روحي ❤️";
-        returnBtn.classList.remove("hidden");
+        message.innerHTML = "شطورتيي 😍<br>بحبك ي حلوتي ❤️";
         
-        // عند الضغط على زر الرجوع (بداية المقلب الثاني)
-        returnBtn.onclick = () => {
+        // إظهار منطقة الرجوع مع العداد
+        returnArea.classList.remove("hidden");
+        
+        // --- كود العداد 20 ثانية للزر ---
+        let lockTime = 20;
+        returnBtn.innerText = `الرجوع (${lockTime})`;
+        
+        const lockInterval = setInterval(() => {
+            lockTime--;
+            returnBtn.innerText = `الرجوع (${lockTime})`;
             
-            // إيقاف صوت ev فوراً عند ضغط الزر
-            evAudio.pause();
-            evAudio.currentTime = 0; // إرجاع الصوت للبداية (اختياري)
+            if(lockTime <= 0) {
+                clearInterval(lockInterval);
+                // تفعيل الزر
+                returnBtn.innerText = "الرجوع للصفحة الرئيسية";
+                returnBtn.disabled = false;
+                returnBtn.classList.add("active");
+                waitMessage.style.display = "none"; 
+            }
+        }, 1000);
+        
+        // عند ضغط زر الرجوع (بعد التفعيل)
+        returnBtn.onclick = () => {
+            // إيقاف فيديو الخلفية (mess)
+            messVideo.pause();
 
-            // 1. إخفاء الزر وإظهار نص المقلب
-            returnBtn.classList.add("hidden");
+            returnArea.classList.add("hidden"); 
             message.textContent = "هيهيهييي انضحك عليكي كمان مره 😝";
             
-            // 2. الانتظار قليلاً ثم تشغيل الفيديو مرة أخرى
             setTimeout(() => {
-                overlay.classList.add("hidden"); // إخفاء الطبقة الشفافة
-                video3.classList.remove("hidden"); // إظهار الفيديو
-                video3.currentTime = 0; // إعادة الفيديو من البداية
-                video3.play();
+                overlay.classList.add("hidden"); 
+                
+                // تشغيل فيديو MUHA
+                muhaVideo.classList.remove("hidden"); 
+                muhaVideo.currentTime = 0; 
+                muhaVideo.play();
 
-                // 3. عند انتهاء الفيديو (المرة الثانية)
-                video3.onended = () => {
-                    video3.classList.add("hidden");
-                    overlay.classList.remove("hidden"); // إعادة الطبقة الشفافة
+                muhaVideo.onended = () => {
+                    muhaVideo.classList.add("hidden");
+                    overlay.classList.remove("hidden"); 
                     
-                    // 4. النص الأخير
                     message.textContent = "خلاص امزح ارجعي 🏃‍♂️";
                     
-                    // السيناريو الجديد للصوت والنهاية
+                    // التسلسل النهائي: ev1 ثم bey
                     setTimeout(() => {
-                        // تشغيل ev1 بعد ثانية واحدة
                         ev1Audio.play();
-
-                        // عند انتهاء ev1 شغل bey
+                        
                         ev1Audio.onended = () => {
                             beyAudio.play();
-
-                            // عند انتهاء bey ارجع للموقع
+                            
                             beyAudio.onended = () => {
-                                window.location.href = " سؤال واحد.html";
+                                window.location.href = "سؤال واحد.html";
                             }
                         }
-
-                    }, 1000); // تأخير ثانية واحدة قبل بدء الصوت
+                    }, 1000);
                 };
 
-            }, 2000); // ينتظر ثانيتين يقرأ النص قبل تشغيل الفيديو
+            }, 2000);
         }
     }
-
 </script>
 
 </body>
