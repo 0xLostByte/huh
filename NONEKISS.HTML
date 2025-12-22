@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>none</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+        color: white;
+        font-family: 'Cairo', sans-serif;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        transition: background-color 1s ease;
+        position: relative;
+    }
+
+    /* --- تنسيق النصوص --- */
+    #storyText {
+        font-size: 22px;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        max-width: 90%;
+        line-height: 1.6;
+        position: absolute;
+        z-index: 100;
+    }
+
+    /* --- تنسيق الفيديوهات (معدل لهونر X6b) --- */
+    .intro-video {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        /* التعديل هنا: contain يضمن ظهور الفيديو كاملاً بوضوح دون قص */
+        object-fit: contain; 
+        z-index: 50;
+        display: none;
+        background: black; /* خلفية سوداء للفراغات إن وجدت */
+    }
+
+    /* --- تنسيق شاشة الاتصال --- */
+    #fakeCallScreen {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 200;
+        display: none;
+        background: black;
+    }
+
+    #joke2Img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .call-buttons-container {
+        position: absolute;
+        bottom: 15%; /* رفعناها قليلاً لتناسب الشاشات الطويلة */
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 40px;
+        box-sizing: border-box;
+        z-index: 210;
+    }
+
+    .call-btn {
+        width: 75px;
+        height: 75px;
+        border-radius: 50%;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        transition: transform 0.1s;
+    }
+
+    .call-btn:active { transform: scale(0.95); }
+    .call-btn:disabled { opacity: 0.5; pointer-events: none; }
+    .call-btn svg { width: 35px; height: 35px; margin-bottom: 5px; fill: white; }
+    .btn-decline { background-color: #ff3b30; }
+    .btn-accept { background-color: #34c759; animation: pulse 1.5s infinite; }
+    .call-btn:disabled.btn-accept { animation: none; }
+    .btn-label { margin-top: 8px; font-size: 14px; text-shadow: 0 1px 3px black;}
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7); }
+        70% { box-shadow: 0 0 0 15px rgba(52, 199, 89, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); }
+    }
+
+    /* --- تنسيق الصفحة الأخيرة --- */
+    #noneKissPage {
+        display: none;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        z-index: 300;
+        position: relative;
+    }
+
+    .password-container {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 25px;
+        border-radius: 25px;
+        text-align: center;
+        width: 85%;
+        max-width: 400px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        z-index: 310;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        margin: auto;
+        transition: opacity 0.5s ease;
+    }
+
+    .password-container h2 {
+        font-size: 1.6rem;
+        color: #fff;
+        text-shadow: 0 0 5px #ff6b81;
+        margin-bottom: 15px;
+    }
+
+    .password-container p.message {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        color: #fff;
+        font-weight: 500;
+    }
+
+    .highlight { 
+        color: #ff6b81; 
+        font-weight: bold; 
+        text-decoration: underline; 
+        text-shadow: 0 0 2px black;
+    }
+
+    input[type="password"] {
+        padding: 12px;
+        border-radius: 12px;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        background: rgba(0, 0, 0, 0.3);
+        color: white;
+        width: 80%;
+        font-size: 16px;
+        text-align: center;
+        outline: none;
+        margin-bottom: 15px;
+    }
+    
+    input[type="password"]::placeholder { color: #ddd; }
+
+    .submit-btn {
+        padding: 10px 30px;
+        border-radius: 12px;
+        border: none;
+        background-color: #ff6b81;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(255, 107, 129, 0.4);
+        transition: 0.2s;
+    }
+    .submit-btn:active { transform: scale(0.95); }
+
+    .error-msg { 
+        color: #ff0000; 
+        background: rgba(255,255,255,0.9);
+        padding: 8px;
+        border-radius: 8px;
+        font-weight: bold; 
+        margin-top: 10px; 
+        display: none; 
+        font-size: 0.95rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .video-box { 
+        margin-top: 20px; 
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .video-title { font-size: 12px; color: #fff; margin-bottom: 8px; display: block; opacity: 0.8;}
+    
+    #passVideo { 
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+        border-radius: 15px; 
+        border: 4px solid white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+    }
+
+    /* --- تنسيق نص النجاح (البالون) --- */
+    #balloonText {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 30px #ff6b81;
+        width: 100%;
+        z-index: 500;
+        pointer-events: none;
+    }
+
+    .inflate-explode {
+        animation: balloonPop 4s forwards;
+    }
+
+    @keyframes balloonPop {
+        0% { transform: translate(-50%, -50%) scale(0.1); opacity: 0; }
+        20% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+        50% { transform: translate(-50%, -50%) scale(1.1); }
+        70% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; filter: blur(0px); }
+        80% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(3); opacity: 0; filter: blur(20px); }
+    }
+
+    .heart {
+        position: absolute;
+        bottom: -50px;
+        font-size: 24px;
+        animation: floatUp 8s linear infinite;
+        z-index: 290;
+        opacity: 0.6;
+    }
+    
+    .white-heart {
+        color: white !important;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        z-index: 400;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+</style>
+</head>
+<body>
+
+    <audio id="phoneAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406778/phone_jlhxdl.mp3" loop></audio>
+    <audio id="dontCallAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406777/dont_call_zycu1l.mp3"></audio> 
+    <audio id="yesAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406778/yes_vwv5uj.mp3"></audio>
+    <audio id="noAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406776/no_rtkc9o.mp3"></audio>
+    <audio id="kissAudio" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406777/huh1_gx9yln.mp3"></audio>
+
+    <div id="storyText"></div>
+
+    <video id="workVideo" class="intro-video" playsinline>
+        <source src="https://res.cloudinary.com/dpvvxtuny/video/upload/work_gufouz.mp4" type="video/mp4">
+    </video>
+    <video id="jokeVideo" class="intro-video" playsinline>
+        <source src="https://res.cloudinary.com/dpvvxtuny/video/upload/joke_y6grrw.mp4" type="video/mp4">
+    </video>
+
+    <div id="fakeCallScreen">
+        <img id="joke2Img" src="joke2.jpg" alt="Incoming Call">
+        <div class="call-buttons-container">
+            <div style="text-align: center;">
+                <button class="call-btn btn-accept" onclick="handleCall('yes')">
+                    <svg viewBox="0 0 24 24"><path d="M20.5 15.2c-1.4 0-2.8-.2-4.1-.7-.6-.2-1.3-.1-1.7.4l-2.5 2.5c-3.1-1.7-5.6-4.2-7.3-7.3l2.5-2.5c.4-.4.6-1.1.4-1.7-.4-1.3-.7-2.7-.7-4.1 0-.6-.4-1-1-1H3c-.6 0-1 .4-1 1C2 12.4 11.6 22 22 22c.6 0 1-.4 1-1v-4.9c0-.5-.5-1-1-1h-1.5z"/></svg>
+                </button>
+                <div class="btn-label">قبول</div>
+            </div>
+            <div style="text-align: center;">
+                <button class="call-btn btn-decline" onclick="handleCall('no')">
+                    <svg viewBox="0 0 24 24"><path d="M12 9c-2.5 0-4.8.8-6.7 2.1-.4.3-1 .2-1.2-.2l-1.9-2.2c-.3-.3-.2-.8.1-1.1C5.6 4.9 8.7 3 12 3s6.4 1.9 9.7 4.6c.3.3.4.7.1 1.1L19.9 11c-.3.4-.8.4-1.2.2-1.9-1.3-4.2-2.1-6.7-2.1z"/></svg>
+                </button>
+                <div class="btn-label">رفض</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="noneKissPage">
+        <div id="balloonText">🤍 احلي بوسه اخذها من احلي شخص 🤍</div>
+
+        <div class="password-container" id="passContainer">
+            <h2>هلو 👋</h2>
+            <p class="message">
+                تقديراً لتعبي عشان أقدر أكمل ولازم نعبي طاقة روحي..<br>
+                ارسلي <span class="highlight">للمتوحد</span> اللي في الانستا <span class="highlight">بوسة فويس!!!!!!!!</span><br>
+                والرجاء تكون طالعة من قلبك ❤️<br><br>
+                <span style="font-size: 0.8em; color: #eee;">
+                ولا تستغربي إذا صار يعيد كلمة "الرجاء إدخال الكلمة الصحيحة".. لازم ترسلي الفويس عشان يعطيك مفتاح عشان تقدري تروحي للموقع اللي بعده.
+                </span>
+            </p>
+
+            <input type="password" id="passInput" placeholder="أدخلي المفتاح هنا">
+            <br>
+            <button class="submit-btn" onclick="checkPass()">تأكيد</button>
+            <p id="errorText" class="error-msg"></p>
+
+            <div class="video-box">
+                <span class="video-title">(هو حالياً في الخاص)</span>
+                <video id="passVideo" muted playsinline loop>
+                    <source src="https://res.cloudinary.com/dpvvxtuny/video/upload/talk_k73cpr.mp4" type="video/mp4">
+                    المتصفح لا يدعم الفيديو.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const storyText = document.getElementById('storyText');
+        const workVideo = document.getElementById('workVideo');
+        const jokeVideo = document.getElementById('jokeVideo');
+        const fakeCallScreen = document.getElementById('fakeCallScreen');
+        const noneKissPage = document.getElementById('noneKissPage');
+        const phoneAudio = document.getElementById('phoneAudio');
+        const dontCallAudio = document.getElementById('dontCallAudio');
+        const yesAudio = document.getElementById('yesAudio');
+        const noAudio = document.getElementById('noAudio');
+        const kissAudio = document.getElementById('kissAudio');
+
+        const delay = (ms) => new Promise(res => setTimeout(res, ms));
+
+        async function showText(text, duration = 3000) {
+            storyText.innerText = text;
+            storyText.style.opacity = 1;
+            await delay(duration);
+            storyText.style.opacity = 0;
+            await delay(1000); 
+        }
+
+        async function startScenario() {
+            await delay(5000);
+            await showText("ايش صار");
+            await showText("فجأه الاتصال الانقطع");
+            await showText("مدري شو فيه");
+            await showText("وحذفت الموقع");
+            await showText("هل صار لك شي او شفتي شي؟");
+            await showText("الحين خلاص برجع اعمل شي جديد");
+
+            workVideo.style.display = "block";
+            workVideo.play();
+            await new Promise(resolve => { workVideo.onended = () => { workVideo.style.display = "none"; resolve(); }; });
+
+            await showText("خلصت");
+            await showText("مستعده تشوفي النتيجه؟");
+            await showText("بس بقول نكته الاول");
+
+            jokeVideo.style.display = "block";
+            jokeVideo.play();
+            await new Promise(resolve => { jokeVideo.onended = () => { jokeVideo.style.display = "none"; resolve(); }; });
+
+            startFakeCall();
+        }
+
+        let dontCallTimeout;
+
+        function startFakeCall() {
+            fakeCallScreen.style.display = "block";
+            phoneAudio.currentTime = 0;
+            phoneAudio.play().catch(e => console.log("Audio autoplay error"));
+            dontCallTimeout = setTimeout(() => {
+                dontCallAudio.currentTime = 0;
+                dontCallAudio.play();
+            }, 5000);
+        }
+
+        window.handleCall = function(choice) {
+            const buttons = document.querySelectorAll('.call-btn');
+            buttons.forEach(btn => btn.disabled = true);
+            phoneAudio.pause();
+            dontCallAudio.pause();
+            clearTimeout(dontCallTimeout); 
+
+            const proceed = function() {
+                showFinalPage();
+            };
+
+            if (choice === 'yes') {
+                yesAudio.play();
+                yesAudio.onended = proceed;
+            } else {
+                noAudio.currentTime = 0;
+                noAudio.play();
+                noAudio.onended = proceed;
+            }
+        };
+
+        function showFinalPage() {
+            fakeCallScreen.style.display = "none";
+            document.body.style.backgroundColor = "#ffc0cb";
+            noneKissPage.style.display = "flex";
+            
+            // قلوب وردية عادية للخلفية
+            setInterval(() => createHeart(false, '#ff6b81'), 400);
+
+            kissAudio.volume = 1.0; 
+            kissAudio.play().catch(e => {
+                console.log("Music play blocked", e);
+            });
+
+            const vid = document.getElementById('passVideo');
+            vid.muted = true; 
+            vid.play().catch(e => console.log("Video Autoplay blocked"));
+        }
+
+        function createHeart(isWhite = false, color = '#ff6b81') {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            
+            if (isWhite) {
+                heart.innerHTML = '🤍'; // قلب أبيض
+                heart.classList.add('white-heart');
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.bottom = Math.random() * 50 + 20 + 'vh'; 
+                heart.style.animationDuration = Math.random() * 2 + 2 + 's';
+                heart.style.fontSize = Math.random() * 20 + 25 + 'px';
+            } else {
+                heart.style.color = color;
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 3 + 5 + 's';
+                heart.style.fontSize = Math.random() * 15 + 20 + 'px';
+            }
+            
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 8000);
+        }
+
+        window.checkPass = function() {
+            const pass = document.getElementById('passInput').value;
+            const error = document.getElementById('errorText');
+            const container = document.getElementById('passContainer');
+            const balloonText = document.getElementById('balloonText');
+            
+            if (pass === "159716061984") {
+                container.style.display = "none";
+                error.style.display = "none";
+                
+                balloonText.style.display = "block";
+                balloonText.classList.add('inflate-explode');
+
+                for(let i=0; i<30; i++) {
+                    setTimeout(() => createHeart(true), i * 100);
+                }
+
+                if(kissAudio) {
+                    localStorage.setItem('savedAudioTime', kissAudio.currentTime);
+                }
+
+                setTimeout(() => {
+                    window.location.href = "NONEGAME.html";
+                }, 4000);
+
+            } else {
+                error.innerText = "(روحي اعطي للمتوحد بوسه وتعالي🤬)";
+                error.style.display = "block";
+                container.style.transform = "translateX(10px)";
+                setTimeout(() => container.style.transform = "translateX(-10px)", 100);
+                setTimeout(() => container.style.transform = "translateX(0)", 200);
+            }
+        }
+
+        window.onload = startScenario;
+    </script>
+</body>
+</html>
