@@ -8,7 +8,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-        /* --- الإعدادات الأساسية --- */
+        /* --- الإعدادات الأساسية (محسنة لـ Honor X6b) --- */
         body {
             margin: 0; padding: 0;
             background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
@@ -26,33 +26,13 @@
         #scenarioText { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2rem; font-weight: bold; display: none; z-index: 10000; text-shadow: 0 0 20px rgba(0,0,0,1); text-align: center; width: 100%; }
 
         /* --- الفيديوهات --- */
-        /* 1. فيديو الخلفية (Smoke) */
-        #bgVideo { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            object-fit: cover; z-index: -3; display: none; 
-            filter: brightness(1.0) contrast(1.1);
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
-            animation: glowPulse 3s infinite alternate;
-        }
-
-        /* 2. فيديو الكلمات (Lyrics/Itoff) */
-        #lyricsVideo {
-            position: fixed; bottom: 5%; left: 50%; transform: translateX(-50%);
-            width: 90%; max-height: 200px; object-fit: contain; 
-            z-index: -2; display: none; opacity: 0.9; mix-blend-mode: screen;
-        }
+        #bgVideo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; display: none; filter: brightness(0.6); }
         
-        /* 3. فيديو BURN */
         #burnBgVideo {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover; z-index: -1; display: none; 
-            filter: blur(8px) brightness(0.6);
-            transition: filter 2s ease;
-        }
-
-        @keyframes glowPulse {
-            from { filter: brightness(1.0) drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
-            to { filter: brightness(1.2) drop-shadow(0 0 30px rgba(255,255,255,0.6)); }
+            filter: blur(8px) brightness(0.6); /* خلفية ضبابية */
+            transition: filter 3s ease;
         }
 
         /* --- فيديو الزواج (Marry) --- */
@@ -64,8 +44,28 @@
         #marryVideo {
             width: 100%; height: 100%; 
             object-fit: contain; 
-            display: block; 
+            display: none;
         }
+        #fingerHint {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: white; text-align: center; z-index: 6001;
+        }
+        .finger-text { font-size: 1.5rem; font-weight: bold; color: black; margin-bottom: 20px; }
+
+        /* زر البصمة */
+        .finger-circle {
+            width: 140px; height: 140px; 
+            border: 8px solid #ff0055; border-radius: 50%;
+            animation: pulseCircle 1.5s infinite; cursor: pointer; 
+            position: absolute; bottom: 80px; right: 40px; 
+        }
+        .finger-circle::after { 
+            content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; 
+            background: rgba(255, 0, 85, 0.4); border-radius: 50%; 
+            transform: translate(-50%, -50%); transition: width 2s linear, height 2s linear; 
+        }
+        .pressing .finger-circle::after { width: 100%; height: 100%; }
 
         /* --- الحاوية (Games Container) --- */
         .game-container {
@@ -131,12 +131,24 @@
         body.dark-mode #yellow { background: #ffea00; box-shadow: 0 0 15px rgba(255, 234, 0, 0.4); }
         body.dark-mode #blue { background: #2979ff; box-shadow: 0 0 15px rgba(41, 121, 255, 0.4); }
 
-        /* --- Mario --- */
+        /* --- Mario (معدل) --- */
         #fullMarioGame { width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 5000; display: none; background: #000; }
         #marioFrame { width: 100%; height: 100%; border: none; }
-        #finishMarioBtn { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: linear-gradient(45deg, #ff0055, #ff4444); color: white; border: none; padding: 15px 40px; border-radius: 50px; font-weight: bold; font-size: 1.2rem; cursor: pointer; z-index: 5001; box-shadow: 0 5px 20px rgba(255, 0, 85, 0.5); border: 2px solid white; animation: pulseBtn 2s infinite; }
+        
+        /* تعديل مكان الزر ليكون في الزاوية العلوية اليسرى */
+        #finishMarioBtn { 
+            position: fixed; 
+            top: 20px; left: 20px; /* نقلناه فوق يسار */
+            transform: none; /* ألغينا التوسط */
+            background: linear-gradient(45deg, #ff0055, #ff4444); 
+            color: white; border: none; padding: 10px 25px; 
+            border-radius: 50px; font-weight: bold; font-size: 1rem; 
+            cursor: pointer; z-index: 5001; 
+            box-shadow: 0 5px 20px rgba(255, 0, 85, 0.5); 
+            border: 2px solid white; animation: pulseBtn 2s infinite; 
+        }
 
-        /* --- Magic Heart & Box Game (المرحلة الأخيرة) --- */
+        /* --- Magic Heart & Box Game --- */
         .magic-heart-stage {
             height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
@@ -170,12 +182,11 @@
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
         @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
         @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-        @keyframes pulseBtn { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } 100% { transform: translateX(-50%) scale(1); } }
+        @keyframes pulseBtn { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes heartBeat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         @keyframes pulseCircle { 0% { transform: scale(1); border-color: #ff0055; } 50% { transform: scale(1.1); border-color: #ff4444; } 100% { transform: scale(1); border-color: #ff0055; } }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(90deg); } }
         @keyframes flash { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
         .flashing { display: block !important; animation: flash 0.1s infinite; }
     </style>
@@ -189,11 +200,6 @@
     <video id="lyricsVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/itoff_hczlk5.mp4" loop playsinline muted></video>
     
     <video id="burnBgVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/burn_mkp2b6.mp4" playsinline muted></video>
-
-    <div id="rotateMessage">
-        <div id="rotateIcon">🔄</div>
-        <h2 style="color:white !important;">يرجى تدوير الجهاز للعب</h2>
-    </div>
 
     <div id="blackOverlay"></div>
     <div id="whiteFlash"></div>
@@ -249,6 +255,10 @@
     </div>
 
     <div id="marryVideoLayer">
+        <div id="fingerHint">
+            <div class="finger-text" style="position: absolute; top: 10%; width: 100%;">ضع إصبعك هنا لمده ثانيتين</div>
+            <div class="finger-circle" id="mainFingerBtn"></div>
+        </div>
         <video id="marryVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/marry_saos4r.mp4" playsinline muted></video>
     </div>
 
@@ -343,9 +353,6 @@
 
         // --- Mario Full Game ---
         function startFullMario() {
-            // تفعيل وضع ماريو للتدوير
-            document.body.classList.add('mario-mode');
-
             const bgVideo = document.getElementById('bgVideo');
             const lyricsVideo = document.getElementById('lyricsVideo');
             
@@ -361,9 +368,6 @@
         }
 
         function finishMario() {
-            // إلغاء وضع ماريو
-            document.body.classList.remove('mario-mode');
-
             const bgVideo = document.getElementById('bgVideo');
             const lyricsVideo = document.getElementById('lyricsVideo');
             
@@ -382,8 +386,8 @@
         let marryPressTimer;
         const marryLayer = document.getElementById('marryVideoLayer');
         const marryVid = document.getElementById('marryVideo');
-        const bgVideo = document.getElementById('bgVideo');
-        const lyricsVideo = document.getElementById('lyricsVideo');
+        const fingerHint = document.getElementById('fingerHint');
+        const mainBtn = document.getElementById('mainFingerBtn');
 
         function initMarriageVideo() {
             marryLayer.style.display = 'block';
@@ -391,27 +395,27 @@
             marryVid.pause(); 
         }
 
-        function startMarryPress(e) {
+        function startPress(e) {
             e.preventDefault();
+            fingerHint.classList.add('pressing');
             marryPressTimer = setTimeout(() => {
                 runMarryVideo();
             }, 2000); 
         }
 
-        function endMarryPress() {
+        function endPress() {
             clearTimeout(marryPressTimer);
+            fingerHint.classList.remove('pressing');
         }
 
-        marryLayer.addEventListener('mousedown', startMarryPress);
-        marryLayer.addEventListener('touchstart', startMarryPress);
-        window.addEventListener('mouseup', endMarryPress);
-        window.addEventListener('touchend', endMarryPress);
+        mainBtn.addEventListener('mousedown', startPress);
+        mainBtn.addEventListener('touchstart', startPress);
+        window.addEventListener('mouseup', endPress);
+        window.addEventListener('touchend', endPress);
 
         function runMarryVideo() {
-            // إيقاف فيديوهات الخلفية مؤقتاً
-            bgVideo.pause();
-            lyricsVideo.pause();
-
+            fingerHint.style.display = 'none';
+            marryVid.style.display = 'block';
             marryVid.muted = false;
             marryVid.play();
             
@@ -419,10 +423,6 @@
                 marryLayer.style.background = 'black';
                 marryVid.style.display = 'none';
                 
-                // استئناف فيديوهات الخلفية
-                bgVideo.play();
-                lyricsVideo.play();
-
                 const scText = document.getElementById('marryText');
                 scText.innerText = "(هيهيهيهيي صرتي حلالي)";
                 scText.style.display = 'block';
@@ -476,7 +476,7 @@
             const white = document.getElementById('whiteFlash');
             const burnVid = document.getElementById('burnBgVideo');
             const somkeVid = document.getElementById('bgVideo');
-            const lyricVid = document.getElementById('lyricsVideo');
+            const lyricsVid = document.getElementById('lyricsVideo');
             const container = document.getElementById('game6');
 
             // 1. شاشة سوداء
@@ -492,7 +492,7 @@
                 
                 // إيقاف الفيديوهات القديمة نهائياً
                 somkeVid.pause(); somkeVid.style.display = 'none';
-                lyricVid.pause(); lyricVid.style.display = 'none';
+                lyricsVid.pause(); lyricsVid.style.display = 'none';
                 
                 document.body.classList.remove('dark-mode');
                 document.body.classList.add('burn-mode');
