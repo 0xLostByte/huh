@@ -17,6 +17,7 @@
             align-items: center; justify-content: center; overflow: hidden;
             user-select: none; touch-action: manipulation; transition: all 0.8s ease;
             cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* --- طبقات التأثيرات --- */
@@ -83,21 +84,25 @@
         }
         #green { background: #48cfad; } #red { background: #ff6b81; } #yellow { background: #ffce54; } #blue { background: #5d9cec; }
 
-        /* --- Mario (Zoom Out 30%) --- */
+        /* --- Mario (Fixed Centering & Zoom) --- */
         #fullMarioGame { 
             width: 100vw; height: 100vh; 
             position: fixed; top: 0; left: 0; 
-            z-index: 5000; display: none; background: #000; 
+            z-index: 5000; background: #000; 
+            display: none; 
+            justify-content: center; /* توسيط أفقي */
+            align-items: center;     /* توسيط عمودي */
             overflow: hidden;
         }
-        /* تصغير الفريم بنسبة 30% ليعمل كـ Zoom Out */
+        
         #marioFrame { 
-            width: 142.85%; /* 100 / 0.7 */
-            height: 142.85%; 
+            width: 100vw; 
+            height: 100vh; 
             border: none; 
-            transform: scale(0.7); 
-            transform-origin: top left;
+            transform: scale(0.8); /* Zoom Out */
+            transform-origin: center; /* التوسيط */
         }
+        
         #finishMarioBtn { 
             position: fixed; top: 20px; left: 20px; 
             background: linear-gradient(45deg, #ff0055, #ff4444); 
@@ -140,12 +145,13 @@
 
     </style>
 </head>
-<body onclick="tryAutoStart()">
+<body onclick="forceAudioStart()">
 
     <audio id="snapSound" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406788/FINGERSNAP_kr2iw3.mp3"></audio>
     <audio id="audio1" src="https://res.cloudinary.com/dpvvxtuny/video/upload/v1766406777/huh1_gx9yln.mp3"></audio>
     
-    <video id="bgVideo" src="https://player.cloudinary.com/embed/?cloud_name=dpvvxtuny&public_id=soke_it_ubssdx&profile=cld-default" loop playsinline></video>
+    <video id="bgVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/soke_it_ubssdx.mp4" loop playsinline></video>
+    
     <video id="lyricsVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/itoff_hczlk5.mp4" loop playsinline muted></video>
     <video id="burnBgVideo" src="https://res.cloudinary.com/dpvvxtuny/video/upload/burn_mkp2b6.mp4" playsinline muted></video>
 
@@ -214,18 +220,21 @@
     </div>
 
     <script>
-        // --- Start Logic ---
-        let started = false;
-        function tryAutoStart() {
-            if(started) return;
-            started = true;
+        // --- Audio Enforcer Logic ---
+        let audioStarted = false;
+        function forceAudioStart() {
+            if(audioStarted) return;
+            audioStarted = true;
+            
+            // محاولة تشغيل الصوت فوراً عند أول لمسة
             const audio1 = document.getElementById('audio1');
-            audio1.play().catch(e=>{});
+            audio1.play().catch(e => {});
         }
-        
+
         window.onload = function() {
             initMemoryGame();
-            tryAutoStart();
+            const audio1 = document.getElementById('audio1');
+            audio1.play().then(() => audioStarted = true).catch(() => {});
         };
 
         // --- Navigation ---
@@ -277,6 +286,7 @@
                     document.body.classList.add('dark-mode');
                     document.querySelectorAll('.game-container').forEach(c => c.classList.add('dark-mode'));
                     
+                    // تشغيل فيديو الخلفية والصوت
                     bgVideo.style.display = 'block';
                     bgVideo.muted = false; bgVideo.volume = 1.0; bgVideo.play();
                     
@@ -314,7 +324,11 @@
                 d.onclick=()=>doFlip(d); grid.appendChild(d);
             });
         }
-        function doFlip(c) { if(flip.length<2 && !c.classList.contains('flipped')) { c.classList.add('flipped'); flip.push(c); if(flip.length===2) chkMatch(); }}
+        function doFlip(c) { 
+            // تشغيل الصوت عند أول تقليب لضمان العمل
+            forceAudioStart();
+            if(flip.length<2 && !c.classList.contains('flipped')) { c.classList.add('flipped'); flip.push(c); if(flip.length===2) chkMatch(); }
+        }
         function chkMatch() {
             if(flip[0].dataset.name === flip[1].dataset.name) {
                 pairs++; flip=[]; if(pairs===target) setTimeout(()=>{ if(mLevel<3){mLevel++; initMemoryGame();} else nextStage('game1','game2'); },500);
@@ -332,6 +346,7 @@
             board.forEach((v,i)=>{ let b=document.createElement('div'); b.className=`cell ${v=='X'?'x':v=='O'?'o':''}`; b.innerText=v; b.onclick=()=>mv(i); d.appendChild(b); });
         }
         function mv(i) { 
+            forceAudioStart(); // ضمان الصوت
             if(board[i]=='' && active) { 
                 board[i]='X'; drawXO(); 
                 if(chk('X')) winXO(); 
@@ -383,6 +398,7 @@
             setTimeout(()=>{ b.classList.remove('active'); setTimeout(()=>playSeq(i+1),500); },500);
         }
         function handleColorClick(c) {
+            forceAudioStart(); // ضمان الصوت
             if(!turn) return;
             let b=document.getElementById(c); b.classList.add('active'); setTimeout(()=>b.classList.remove('active'),200);
             usr.push(c);
@@ -409,28 +425,17 @@
 
         // --- Mario Full Game ---
         function startFullMario() {
-            const bgVideo = document.getElementById('bgVideo');
-            const lyricsVideo = document.getElementById('lyricsVideo');
-            
-            // إيقاف الصوت مؤقتاً عند دخول ماريو
-            bgVideo.pause(); 
-            lyricsVideo.pause();
-
             const marioContainer = document.getElementById('fullMarioGame');
             const marioFrame = document.getElementById('marioFrame');
             marioFrame.src = "https://0xlostbyte.github.io/mariohtml5/";
-            marioContainer.style.display = 'block';
+            
+            // العرض بـ Flex لضمان التوسيط
+            marioContainer.style.display = 'flex';
+            
             showToast("استمتعي بماريو! 😍");
         }
 
         function finishMario() {
-            const bgVideo = document.getElementById('bgVideo');
-            const lyricsVideo = document.getElementById('lyricsVideo');
-            
-            // إعادة تشغيل الصوت
-            bgVideo.play(); 
-            lyricsVideo.play();
-
             const marioContainer = document.getElementById('fullMarioGame');
             const marioFrame = document.getElementById('marioFrame');
             marioContainer.style.display = 'none';
@@ -442,19 +447,23 @@
         let marryPressTimer;
         const marryLayer = document.getElementById('marryVideoLayer');
         const marryVid = document.getElementById('marryVideo');
+        const bgVideo = document.getElementById('bgVideo');
+        const lyricsVideo = document.getElementById('lyricsVideo');
 
         function initMarriageVideo() {
             marryLayer.style.display = 'block';
             marryVid.currentTime = 0;
             marryVid.pause(); 
-
-            // إيقاف الموسيقى الخلفية عند بدء هذه المرحلة
-            document.getElementById('bgVideo').pause();
-            document.getElementById('lyricsVideo').pause();
+            // *ملاحظة:* الصوت الخلفي يبقى شغالاً هنا حتى يبدأ الضغط
         }
 
         function startPress(e) {
             e.preventDefault();
+            
+            // كتم الصوت الخلفي فوراً عند اللمس
+            bgVideo.muted = true;
+            lyricsVideo.muted = true;
+
             marryPressTimer = setTimeout(() => {
                 runMarryVideo();
             }, 2000); 
@@ -462,6 +471,11 @@
 
         function endPress() {
             clearTimeout(marryPressTimer);
+            // إذا شالت اصبعها قبل الثانيتين، نرجع الصوت
+            if (marryVid.paused) {
+                bgVideo.muted = false;
+                lyricsVideo.muted = false;
+            }
         }
 
         marryLayer.addEventListener('mousedown', startPress);
@@ -476,9 +490,9 @@
             marryVid.onended = () => {
                 marryLayer.style.display = 'none';
                 
-                // إعادة تشغيل الموسيقى الخلفية بعد انتهاء الزواج
-                document.getElementById('bgVideo').play();
-                document.getElementById('lyricsVideo').play();
+                // إعادة الصوت الخلفي بعد انتهاء الفيديو
+                bgVideo.muted = false;
+                lyricsVideo.muted = false;
 
                 document.getElementById('game6').classList.add('active-game');
             };
@@ -533,15 +547,15 @@
             document.getElementById('magicHeart').style.display = 'none';
             heartInst.style.display = 'none';
 
-            // إيقاف الفيديوهات القديمة هنا
+            // إيقاف الفيديوهات القديمة
             somkeVid.pause(); somkeVid.style.display = 'none';
             lyricsVid.pause(); lyricsVid.style.display = 'none';
 
             setTimeout(() => {
-                // 2. فلاش أبيض قوي + صوت السناب (لمدة ثانية)
+                // 2. فلاش أبيض قوي + صوت السناب
                 snap.play();
                 black.style.display = 'none';
-                white.style.opacity = '1'; // تأكيد الشفافية
+                white.style.opacity = '1'; 
                 white.style.display = 'block';
 
                 document.body.classList.remove('dark-mode');
@@ -549,12 +563,12 @@
                 container.classList.remove('dark-mode');
                 container.classList.add('burn-mode');
                 
-                // تجهيز فيديو الحرق
+                // فيديو الحرق
                 burnVid.style.display = 'block';
                 burnVid.muted = false; burnVid.volume = 1.0; burnVid.play(); 
 
                 setTimeout(() => {
-                    // 3. اختفاء الفلاش وظهور فيديو الحرق
+                    // 3. اختفاء الفلاش
                     white.style.opacity = '0';
                     setTimeout(() => { white.style.display = 'none'; }, 1000);
                     
@@ -563,8 +577,8 @@
                     const gift = document.getElementById('finalGift');
                     gift.style.display = 'block';
                     document.querySelector('#game6 h2').innerText = "اضغطي 10 مرات!";
-                }, 1000); // مدة الفلاش الأبيض ثانية
-            }, 1000); // مدة الشاشة السوداء ثانية
+                }, 1000); 
+            }, 1000); 
         }
 
         function clickGift() {

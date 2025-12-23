@@ -15,27 +15,29 @@
         background: black;
         color: white;
         text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    /* فيديو الخلفية (mess) - يظهر بعد الفيديوهات الافتتاحية */
+    /* فيديو الخلفية (mess) - تم تعديله ليظهر كاملاً */
     #messVideo {
         position: fixed;
-        right: 0;
-        bottom: 0;
-        min-width: 100%;
-        min-height: 100%;
-        width: auto;
-        height: auto;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         z-index: 0; 
-        object-fit: cover;
+        object-fit: contain; /* يمنع القص والزوم الزائد */
         opacity: 0.8; 
+        background: black;
     }
 
-    /* فيديوهات المقدمة (2 و 3) والمقلب النهائي (MUHA) */
+    /* فيديوهات المقدمة والمقلب - تم تعديلها لتظهر كاملة */
     .fullscreen-video {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain; /* يمنع القص والزوم الزائد */
         position: fixed;
         top: 0;
         left: 0;
@@ -56,7 +58,7 @@
         justify-content: center;
         align-items: center;
         background: rgba(0, 0, 0, 0.5); 
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(3px);
         transition: all 0.5s ease;
     }
 
@@ -66,9 +68,9 @@
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-radius: 25px;
-        padding: 40px 25px;
-        width: 85%;
-        max-width: 380px;
+        padding: 30px 20px;
+        width: 90%;
+        max-width: 400px;
         border: 1px solid rgba(255, 255, 255, 0.3);
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
         display: flex;
@@ -80,17 +82,17 @@
     .hidden { display: none !important; }
 
     #message {
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 700;
-        line-height: 1.6;
+        line-height: 1.5;
         text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
 
     #countdown {
-        font-size: 70px;
+        font-size: 60px;
         font-weight: bold;
         color: #ff4d6d;
-        text-shadow: 0 0 25px rgba(255, 77, 109, 0.8);
+        text-shadow: 0 0 20px rgba(255, 77, 109, 0.8);
         margin: 10px 0;
     }
 
@@ -101,7 +103,7 @@
         background-color: rgba(0, 0, 0, 0.3);
         border-radius: 15px;
         overflow: hidden;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         position: relative;
         border: 1px solid rgba(255,255,255,0.2);
     }
@@ -122,32 +124,33 @@
         100% { background-position: 0% 50%; }
     }
 
-    /* زر القلب */
+    /* زر القلب - تم إصلاحه وتنسيقه */
     #pumpBtn {
         background: linear-gradient(135deg, #ff0055, #ff4d6d);
-        border: none;
+        border: 3px solid white; /* إطار أبيض واضح */
         color: white;
-        padding: 18px 40px;
-        font-size: 22px;
+        padding: 20px 10px;
+        font-size: 20px;
         border-radius: 50px;
         cursor: pointer;
         box-shadow: 0 8px 20px rgba(255, 0, 85, 0.5);
         font-family: 'Cairo', sans-serif;
         font-weight: bold;
+        width: 100%;
         transform: scale(1);
         transition: transform 0.1s;
         -webkit-tap-highlight-color: transparent;
-        width: 100%;
+        display: block;
     }
 
-    #pumpBtn:active { transform: scale(0.90); }
+    #pumpBtn:active { transform: scale(0.95); }
 
-    /* زر الرجوع (المقفل والمفتوح) */
+    /* زر الرجوع */
     #returnBtn {
-        background: linear-gradient(45deg, #7f8c8d, #95a5a6); /* رمادي (مقفل) */
+        background: linear-gradient(45deg, #7f8c8d, #95a5a6); 
         border: none;
         color: #eee;
-        padding: 15px 40px;
+        padding: 15px 30px;
         font-size: 18px;
         border-radius: 12px;
         cursor: not-allowed;
@@ -160,18 +163,16 @@
         opacity: 0.7;
     }
 
-    /* كلاس التفعيل */
     #returnBtn.active {
-        background: linear-gradient(45deg, #2ecc71, #27ae60); /* أخضر (مفتوح) */
+        background: linear-gradient(45deg, #2ecc71, #27ae60); 
         cursor: pointer;
         color: white;
         box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
         opacity: 1;
     }
 
-    /* نص الانتظار */
     #waitMessage {
-        font-size: 16px;
+        font-size: 15px;
         color: #ffeb3b;
         margin-bottom: 5px;
         font-weight: bold;
@@ -217,7 +218,7 @@
             <div class="progress-container">
                 <div id="progressBar" class="progress-bar"></div>
             </div>
-            <button id="pumpBtn" class="pulsing"❤️ اضغطي هنا بسرعة ❤️</button>
+            <button id="pumpBtn" class="pulsing">❤️ اضغطي هنا بسرعة ❤️</button>
         </div>
 
         <div id="returnArea" class="hidden" style="width: 100%;">
@@ -262,7 +263,7 @@
     video3.onended = () => {
         video3.classList.add("hidden");
         
-        // إظهار الخلفية وتشغيلها (صوت وصورة)
+        // إظهار الخلفية وتشغيلها
         messVideo.classList.remove("hidden");
         messVideo.muted = false; 
         messVideo.play();
@@ -309,6 +310,10 @@
             pumpBtn.classList.remove("pulsing");
             void pumpBtn.offsetWidth; 
 
+            // تأثير بسيط عند الضغط
+            pumpBtn.style.transform = "scale(0.95)";
+            setTimeout(() => pumpBtn.style.transform = "scale(1)", 50);
+
             if (clicks >= requiredClicks) {
                 winGame();
             }
@@ -352,7 +357,6 @@
         // إظهار منطقة الرجوع مع العداد
         returnArea.classList.remove("hidden");
         
-        // --- كود العداد 20 ثانية للزر ---
         let lockTime = 20;
         returnBtn.innerText = `الرجوع (${lockTime})`;
         
@@ -362,7 +366,6 @@
             
             if(lockTime <= 0) {
                 clearInterval(lockInterval);
-                // تفعيل الزر
                 returnBtn.innerText = "الرجوع للصفحة الرئيسية";
                 returnBtn.disabled = false;
                 returnBtn.classList.add("active");
@@ -370,18 +373,14 @@
             }
         }, 1000);
         
-        // عند ضغط زر الرجوع (بعد التفعيل)
         returnBtn.onclick = () => {
-            // إيقاف فيديو الخلفية (mess)
             messVideo.pause();
-
             returnArea.classList.add("hidden"); 
             message.textContent = "هيهيهييي انضحك عليكي كمان مره 😝";
             
             setTimeout(() => {
                 overlay.classList.add("hidden"); 
                 
-                // تشغيل فيديو MUHA
                 muhaVideo.classList.remove("hidden"); 
                 muhaVideo.currentTime = 0; 
                 muhaVideo.play();
@@ -392,13 +391,10 @@
                     
                     message.textContent = "خلاص امزح ارجعي 🏃‍♂️";
                     
-                    // التسلسل النهائي: ev1 ثم bey
                     setTimeout(() => {
                         ev1Audio.play();
-                        
                         ev1Audio.onended = () => {
                             beyAudio.play();
-                            
                             beyAudio.onended = () => {
                                 window.location.href = "سؤال واحد.html";
                             }
